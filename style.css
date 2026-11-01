@@ -299,8 +299,9 @@ a:hover {
 @media (max-width: 768px) {
     .container {
         min-width: 85vh;
-        margin: auto;
+        margin-bottom: 30px;
         border-radius: 0;
+        padding: 15px;
     }
 
     .figure img {
@@ -309,5 +310,9 @@ a:hover {
 
     * {
         font-size: 16pt;
+    }
+
+    h1 {
+        margin-top: 0.2em;
     }
 }
