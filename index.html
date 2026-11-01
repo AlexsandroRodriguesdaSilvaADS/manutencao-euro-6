@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manutenção em Motores: Norma Euro VI</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mapeamento.css">
 </head>
 
 <body>
@@ -267,7 +268,7 @@
         <section class="page intro">
             <p>A norma Euro 6, que no Brasil equivale à Proconve L7/L8 para veículos ciclo Otto e Proconve P8 para
                 veículos
-                ciclo Diesel, impõe limites extremamente rígidos para emissões de Óxidos de Nitrogênio ($NO_{x}$) e
+                ciclo Diesel, impõe limites extremamente rígidos para emissões de Óxidos de Nitrogênio (NOx) e
                 Material
                 Particulado (MP).</p>
             <p>A manutenção nesses motores exige precisão técnica, pois falhas de manutenção preventiva afetam
@@ -287,13 +288,34 @@
                 <img src="./Img/euro6.jpg" alt="Arquitetura Pós Tratamento Euro VI">
                 <img src="./Img/pos-tratamento-completo.jpeg" alt="Pós Tratamento">
             </div>
+
+            <div class="image-container" id="imgContainer">
+                <!-- Imagem principal -->
+                <img src="./Img/euro6.jpg" alt="Motor Euro 6" id="mainImage">
+
+                <!-- Pontos de Mapeamento (Hotspots) -->
+                <!-- Coordenadas em % (top, left, width, height) para ser responsivo -->
+                <div class="hotspot" style="top: 35%; left: 3%; width: 28%; height: 40%;"
+                    data-title="Sistema de Pós-tratamento (DPF/SCR)" data-zoom-x="17%" data-zoom-y="55%"></div>
+                <div class="hotspot" style="top: 45%; left: 70%; width: 20%; height: 35%;"
+                    data-title="Bloco e Pistões do Motor" data-zoom-x="80%" data-zoom-y="62%"></div>
+            </div>
+
+            <!-- Modal para exibir a área ampliada -->
+            <div class="modal" id="zoomModal">
+                <div class="modal-content">
+                    <span class="close-btn" id="closeBtn">&times;</span>
+                    <h3 id="modalTitle"></h3>
+                    <div class="zoom-view" id="zoomView"></div>
+                </div>
+            </div>
         </section>
 
         <!-- EGR -->
         <section class="page">
             <h1>I. EGR (Exhaust Gas Recirculation)</h1>
             <p>A válvula EGR (Recirculação dos Gases de Exaustão) é um componente fundamental para reduzir a emissão de
-                poluentes (como óxidos de nitrogênio - $NO_x$), mas, por lidar diretamente com gases de escape e
+                poluentes (como óxidos de nitrogênio - NOx), mas, por lidar diretamente com gases de escape e
                 fuligem,
                 está sujeita a alguns problemas comuns ao longo do tempo.</p>
 
@@ -334,7 +356,7 @@
             <p><strong>Sintomas:</strong></p>
             <ul>
                 <li>Aumento na temperatura dentro da câmara de combustão.</li>
-                <li>Emissão de níveis elevados de gases poluentes ($NO_x$), o que pode fazer o veículo reprovar em
+                <li>Emissão de níveis elevados de gases poluentes (NOx), o que pode fazer o veículo reprovar em
                     inspeções
                     veiculares.</li>
                 <li>Possível detonação (batida de pino) no motor devido ao aumento térmico.</li>
@@ -489,7 +511,7 @@
                 finalmente
                 conseguir uma regeneração (ou se houver excesso de combustível não queimado), a queima descontrolada de
                 uma
-                massa muito grande de fuligem gera temperaturas extremas (acima de $1000^{\circ}C$).</p>
+                massa muito grande de fuligem gera temperaturas extremas (acima de 1000°C).</p>
             <p><strong>Consequência:</strong> A estrutura interna de cerâmica ou silício do filtro pode trincar,
                 deformar ou
                 derreter, destruindo permanentemente a eficiência de filtragem.</p>
@@ -518,18 +540,18 @@
                 entupa,
                 o sistema precisa queimar essa fuligem periodicamente, transformando-a em cinzas finas e dióxido de
                 carbono
-                através de altas temperaturas (entre $550^{\circ}C$ e $650^{\circ}C$).</p>
+                através de altas temperaturas (entre 550°C e 650°C).</p>
 
             <p>Existem três tipos principais de regeneração:</p>
 
             <h3>7.1. Regeneração Passiva:</h3>
             <ul>
                 <li><strong>Como ocorre:</strong> Acontece naturalmente quando o veículo roda em rodovias ou vias de
-                    trânsito rápido por um período prolongado (geralmente acima de $80\text{ km/h}$ por 20 a 30
+                    trânsito rápido por um período prolongado (geralmente acima de 80km/h por 20 a 30
                     minutos).
                 </li>
                 <li><strong>O porquê:</strong> Os gases de escape naturalmente atingem temperaturas elevadas (acima de
-                    $350^{\circ}C$ a $400^{\circ}C$) e, combinados com o catalisador que fica antes do DPF, já conseguem
+                    350°C a 400°C) e, combinados com o catalisador que fica antes do DPF, já conseguem
                     queimar parte da fuligem continuamente sem intervenção da central eletrônica (ECU).</li>
             </ul>
 
@@ -544,7 +566,7 @@
                     os parâmetros de funcionamento: realiza pós-injeções de combustível (injetando diesel após a queima
                     principal para que ele queime no escapamento), atrasa o ponto de injeção e pode até acionar cargas
                     elétricas para forçar o aumento da temperatura dos gases de escape até a faixa de queima da fuligem
-                    (cerca de $600^{\circ}C$).</li>
+                    (cerca de 600°C).</li>
                 <li><strong>Atenção:</strong> O motorista pode notar uma marcha lenta ligeiramente mais alta, ventoinha
                     ligada ao desligar o carro ou um leve odor característico. O erro mais comum é desligar o carro no
                     meio
@@ -601,7 +623,7 @@
         <!-- SCR -->
         <section class="page">
             <h1>IV. SCR (Selective Catalytic Reduction)</h1>
-            <p>O SCR ou Redução Catalítica Seletiva é o sistema responsável por reduzir os óxidos de nitrogênio ($NO_x$)
+            <p>O SCR ou Redução Catalítica Seletiva é o sistema responsável por reduzir os óxidos de nitrogênio (NOx)
                 dos gases de escape em motores diesel. Ele funciona injetando um líquido redutor (conhecido no Brasil
                 como ARLA 32 ou AdBlue na Europa) antes de um catalisador específico.</p>
 
@@ -625,7 +647,7 @@
             <h3>2. Falhas na Unidade de Dosagem (Injetor de ARLA)</h3>
             <p><strong>O que acontece:</strong> O injetor responsável por pulverizar o ARLA no escapamento pode sofrer
                 falhas elétricas, entupimento severo por cristais ou vazamentos.</p>
-            <p><strong>Consequência:</strong> Se o líquido não for pulverizado corretamente, a conversão de $NO_x$ cai
+            <p><strong>Consequência:</strong> Se o líquido não for pulverizado corretamente, a conversão de NOx cai
                 drasticamente. Se vazar, pode corroer componentes ao redor.</p>
 
             <h3>3. Contaminação ou Baixa Qualidade do ARLA 32</h3>
@@ -634,7 +656,7 @@
                 excessivo) ou a introdução acidental de água da torneira, combustível ou outros líquidos no tanque de
                 ARLA.
             </p>
-            <p><strong>Consequência:</strong> Os minerais e impurezas contaminam o catalisador SCR e o sensor de $NO_x$,
+            <p><strong>Consequência:</strong> Os minerais e impurezas contaminam o catalisador SCR e o sensor de NOx,
                 destruindo a eficácia química e provocando alertas severos no painel.</p>
 
             <h3>4. Degradação ou Envenenamento do Catalisador SCR</h3>
@@ -643,12 +665,12 @@
                 causado por óleo queimado vindo do motor ou contaminações por combustíveis de baixa qualidade com alto
                 teor
                 de enxofre.</p>
-            <p><strong>Consequência:</strong> Perda permanente da capacidade de converter o $NO_x$, fazendo o veículo
+            <p><strong>Consequência:</strong> Perda permanente da capacidade de converter o NOx, fazendo o veículo
                 reprovar em testes de emissão.</p>
 
             <h3>5. Falhas nos Sensores de NOx e de Temperatura</h3>
             <p><strong>O que acontece:</strong> O sistema SCR depende fortemente de leituras precisas de sensores de
-                $NO_x$
+                NOx
                 (localizados antes e depois do catalisador) e de temperatura para calcular a quantidade exata de ARLA a
                 ser
                 injetada. Com o tempo, esses sensores delicados acumulam fuligem ou sofrem falhas eletrônicas.</p>
@@ -694,7 +716,8 @@
                 <img src="./Img/asc.jpg" alt="Catalizador de Deslizamento de Amônia">
             </div>
 
-            <p>Sua função é reter e converter o excesso de amônia ($NH_3$) que pode escapar do sistema SCR quando há uma
+            <p>Sua função é reter e converter o excesso de amônia (NH<sub>3</sub>) que pode escapar do sistema SCR
+                quando há uma
                 sobrecarga de ARLA 32 ou variações bruscas de temperatura, transformando-a em nitrogênio inofensivo e
                 vapor
                 de água antes que saia pelo escapamento.</p>
@@ -731,7 +754,7 @@
 
             <h3>4. Falhas de Eficiência por Desalinhamento com o SCR</h3>
             <p><strong>O que acontece:</strong> O ASC depende diretamente de um bom funcionamento do sistema SCR que o
-                antecede. Se os sensores de $NO_x$ estiverem descalibrados ou o injetor de ARLA estiver gotejando, o
+                antecede. Se os sensores de NOx estiverem descalibrados ou o injetor de ARLA estiver gotejando, o
                 volume
                 de amônia que chega ao ASC pode ser muito superior ao projeto original.</p>
             <p><strong>Consequência:</strong> O catalisador fica "sobrecarregado", não conseguindo processar todo o
@@ -814,7 +837,7 @@
                 </li>
                 <li>
                     <strong>Sistema de Admissão e EGR (Recirculação dos Gases de Escape):</strong>
-                    O sistema EGR reduz a formação de $NO_x$ recirculando parte dos gases de escape de volta para a
+                    O sistema EGR reduz a formação de NOx recirculando parte dos gases de escape de volta para a
                     admissão.
                     <br><em>Limpeza Periódica:</em> A mistura de gases de escape com os vapores de óleo da admissão gera
                     acúmulo de fuligem (borra) na válvula EGR e no coletor de admissão. Programe a limpeza do sistema
@@ -892,7 +915,7 @@
                     </tr>
                     <tr>
                         <td><strong>Diagnóstico</strong></td>
-                        <td>Leitura de pressão diferencial do DPF e $NO_x$</td>
+                        <td>Leitura de pressão diferencial do DPF e NOx</td>
                         <td>Análise de correlação de sondas lambda e contadores de <em>misfire</em></td>
                     </tr>
                 </tbody>
@@ -909,7 +932,7 @@
             <ol>
                 <li>
                     <strong>Monitoramento de Pressão Diferencial do DPF:</strong> Conectar o scanner e ler o valor da
-                    pressão antes e depois do filtro ($\Delta P$).
+                    pressão antes e depois do filtro (&Delta; P).
                     <br><em>Ação Preditiva:</em> Se a pressão em marcha lenta superar 20 mbar (100 mbar sob carga),
                     agendar
                     a regeneração ativa preventiva.
@@ -918,7 +941,7 @@
                     <strong>Análise de Qualidade do ARLA 32 (Refratometria):</strong> Coletar uma amostra do
                     reservatório e
                     medir a concentração de ureia utilizando um refratômetro óptico.
-                    <br><em>Ação Preditiva:</em> O valor ideal deve ser exatamente 32,5% (variação de $\pm 0,7\%$).
+                    <br><em>Ação Preditiva:</em> O valor ideal deve ser exatamente 32,5% (variação de 0,7%).
                     Valores
                     divergentes exigem substituição imediata do fluido para evitar contaminação do catalisador SCR.
                 </li>
@@ -1003,7 +1026,7 @@
             <p>Quando o DPF atinge nível crítico de fuligem e a regeneração passiva em rodovia não ocorre:</p>
             <ol>
                 <li><strong>Preparação do Veículo (Pré-requisitos de Segurança):</strong> Estacionar o veículo em local
-                    aberto (longe de materiais inflamáveis) devido à alta temperatura do escapamento ($>600^{\circ}C$).
+                    aberto (longe de materiais inflamáveis) devido à alta temperatura do escapamento (>600°C).
                     Verificar se os níveis de óleo e arrefecimento estão corretos.</li>
                 <li><strong>Início do Ciclo via Scanner (Utilização do Scanner Automotivo):</strong> Conectar o scanner
                     na
@@ -1111,7 +1134,7 @@
                     <tr>
                         <td><strong>P20EE</strong></td>
                         <td>SCR NOx Catalyst Efficiency Below Threshold (Bank 1)</td>
-                        <td>Baixa eficiência de conversão de $NO_x$. Pode indicar ARLA 32 adulterado/diluído ou
+                        <td>Baixa eficiência de conversão de NOx. Pode indicar ARLA 32 adulterado/diluído ou
                             catalisador
                             envenenado.</td>
                     </tr>
@@ -1135,7 +1158,7 @@
                     <tr>
                         <td><strong>P2200</strong></td>
                         <td>NOx Sensor Circuit (Bank 1 Sensor 1)</td>
-                        <td>Falha no circuito elétrico ou elemento de leitura do sensor de $NO_x$ pré-catalisador.</td>
+                        <td>Falha no circuito elétrico ou elemento de leitura do sensor de NOx pré-catalisador.</td>
                     </tr>
                 </tbody>
             </table>
@@ -1197,7 +1220,7 @@
                     todos os códigos presentes (Passados/Pendentes e Ativos).</li>
                 <li><strong>Checagem dos Parâmetros em Tempo Real (Live Data - Análise Visual e Elétrica):</strong> Não
                     apagar os códigos imediatamente. Analisar os fluxos de dados: pressão de combustível (bar), pressão
-                    diferencial (mbar), temperatura dos gases de escape (EGT) e concentração de $NO_x$ (ppm).</li>
+                    diferencial (mbar), temperatura dos gases de escape (EGT) e concentração de NOx (ppm).</li>
                 <li><strong>Teste de Componentes e Periferias (Atuadores e Sensores):</strong> Verificar integridade
                     mecânica e elétrica do componente (ex: refratometria do ARLA 32 para P20EE ou teste de leque nos
                     injetores GDI para P0300).</li>
@@ -1215,7 +1238,7 @@
             <ul>
                 <li><strong>Bosch Automotive Handbook (Manual de Tecnologia Automotiva Bosch):</strong> Referência
                     global em
-                    sistemas de injeção, sensores de $NO_x$, dosagem de ARLA 32/AdBlue e estratégias de gerenciamento
+                    sistemas de injeção, sensores de NOx, dosagem de ARLA 32/AdBlue e estratégias de gerenciamento
                     eletrônico (ECU/ACM). <br><a href="https://pt.scribd.com/document/820482861/Bosch-10"
                         target="_blank">https://pt.scribd.com/document/820482861/Bosch-10</a></li>
                 <li><strong>Commercial Vehicles (Cummins, Volvo, Scania e Mercedes-Benz):</strong> Documentações
@@ -1239,10 +1262,11 @@
                     as
                     diretrizes da fase Proconve P8 no Brasil (equivalente à norma europeia Euro VI). <br><a
                         href="https://www.gov.br/ibama/pt-br/assuntos/emissoes-e-residuos/emissoes/programa-de-controle-de-emissoes-veiculares-proconve"
-                        target="_blank">Portal IBAMA - PROCONVE</a></li>
+                        target="_blank">Portal IBAMA - PROCONVE</a>
+                </li>
                 <li><strong>SAE International (Society of Automotive Engineers):</strong> Normas e papers técnicos sobre
                     o
-                    controle de emissões de óxidos de nitrogênio ($NO_x$) e material particulado (MP) em motores a
+                    controle de emissões de óxidos de nitrogênio (NOx) e material particulado (MP) em motores a
                     combustão
                     interna a diesel.</li>
             </ul>
@@ -1302,6 +1326,7 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="mapeamento.js"></script>
 
 </body>
 
