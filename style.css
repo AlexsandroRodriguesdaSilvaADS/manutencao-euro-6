@@ -40,6 +40,11 @@ body {
     display: block;
 }
 
+.page-footer {
+    font-size: 14px;
+    color: #777;
+}
+
 .book-navigation {
     position: fixed;
     bottom: 0;
@@ -92,7 +97,7 @@ body {
 
 .cover-page h2 {
     font-size: 1.2rem;
-    color: #555;
+    color: var(--text-color);
     margin-bottom: 5px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -102,13 +107,13 @@ body {
 
 .cover-page h3 {
     font-size: 1.1rem;
-    color: #666;
+    color: var(--text-color);
     margin-bottom: 30px;
 }
 
 .cover-author {
     max-width: 100%;
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     font-weight: bold;
     margin-top: 40px;
     margin-bottom: 40px;
@@ -118,15 +123,15 @@ body {
 }
 
 .cover-title {
-    font-size: 2rem;
+    font-size: 1.1rem;
     color: var(--primary-color);
     margin: 20px 0;
     text-transform: uppercase;
 }
 
 .cover-subtitle {
-    font-size: 1.1rem;
-    color: #555;
+    font-size: 1rem;
+    color: var(--text-color);
     font-style: italic;
     margin-bottom: 50px;
 }
@@ -134,7 +139,7 @@ body {
 .cover-footer {
     margin-top: 400px;
     font-weight: bold;
-    color: #777;
+    color: var(--text-color);
 }
 
 .intro {
@@ -280,21 +285,28 @@ a:hover {
     text-decoration: underline;
 }
 
-/*@media print {
-    body {
-        background-color: #fff;
-    }
+@page {
+    size: A4;
+    margin: 20mm;
 
-    .container {
-        box-shadow: none;
-        padding: 0;
-        max-width: 100%;
+    @bottom-right {
+        content: "Página " counter(page) " de " counter(pages);
+        font-family: Arial, sans-serif;
+        font-size: 10pt;
+        color: #555;
     }
+}
 
-    .page-break {
-        page-break-before: always;
-    }
-}*/
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.page-break {
+    page-break-after: always;
+    /* Força a quebra de página */
+}
 
 @media (max-width: 768px) {
     .container {
