@@ -266,15 +266,52 @@
 
         <!-- INTRODUÇÃO -->
         <section class="page intro">
-            <p>A norma Euro 6, que no Brasil equivale à Proconve L7/L8 para veículos ciclo Otto e Proconve P8 para
-                veículos
-                ciclo Diesel, impõe limites extremamente rígidos para emissões de Óxidos de Nitrogênio (NOx) e
-                Material
-                Particulado (MP).</p>
-            <p>A manutenção nesses motores exige precisão técnica, pois falhas de manutenção preventiva afetam
-                diretamente o
-                sistema de pós-tratamento, principalmente em veículos diesel, e podem colocar o veículo em modo de
-                emergência (<em>limp mode</em>).</p>
+            <h1>O Contexto Brasileiro: Da Norma Euro VI ao Proconve P8 No Brasil</h1>
+            <p>Os parâmetros equivalentes à Euro VI foram adotados sob a regulamentação do Proconve P8 (Programa de
+                Controle da Poluição do Ar por Veículos Automotores). A transição exigiu uma modernização expressiva da
+                infraestrutura nacional e trouxe exigências diretas:
+            <ul>
+                <li><strong>Qualidade do Combustível:</strong> A eficiência e a
+                    durabilidade dos componentes (especialmente o DPF e a câmara de combustão) dependem estritamente do
+                    uso continuado do Óleo Diesel S10 (máximo de 10 ppm de enxofre). O uso de combustível com
+                    alto
+                    teor de enxofre inativa o catalisador e danifica severamente os filtros.</li>
+                <li><strong>Telemetria e Diagnóstico On-Board (OBD):</strong> Os veículos contam com diagnósticos
+                    eletrônicos rigorosos
+                    que monitoram a eficiência do pós-tratamento em tempo real, podendo limitar a potência do motor caso
+                    haja anomalias nas emissões ou falta de ARLA 32.</li>
+            </ul>
+            </p>
+            <h3>Benefícios Ambientais e Desafios Operacionais</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Detalhes e Impactos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Benefícios Ambientais</strong></td>
+                        <td>Redução drástica de até 80% em NOx e 50% em Material Particulado em comparação ao padrão Euro V/P7, impactando diretamente a qualidade do ar nas zonas urbanas e a saúde pública.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ganhos de Eficiência</strong></td>
+                        <td>Combustão mais otimizada e gerenciamento térmico eficiente que podem resultar em melhor rendimento energético do veículo a longo prazo.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Desafios Operacionais</strong></td>
+                        <td>Maior complexidade na manutenção preventiva, necessidade de capacitação técnica especializada da equipe de oficina e custo inicial elevado de aquisição e insumos.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>A norma Euro VI impõe limites extremamente rígidos para emissões de Óxidos de Nitrogênio (NOx) e
+                Material Particulado (MP). A manutenção nesses motores exige precisão técnica, pois falhas de manutenção
+                preventiva afetam
+                diretamente o sistema de pós-tratamento, principalmente em veículos diesel, e podem colocar o veículo em
+                modo de emergência (<em>limp mode</em>).</p>
+
         </section>
 
         <!-- Arquitetura Euro 6 -->
@@ -287,27 +324,6 @@
             <div class="figure">
                 <img src="./Img/euro6.jpg" alt="Arquitetura Pós Tratamento Euro VI">
                 <img src="./Img/pos-tratamento-completo.jpeg" alt="Pós Tratamento">
-            </div>
-
-            <div class="image-container" id="imgContainer">
-                <!-- Imagem principal -->
-                <img src="./Img/euro6.jpg" alt="Motor Euro 6" id="mainImage">
-
-                <!-- Pontos de Mapeamento (Hotspots) -->
-                <!-- Coordenadas em % (top, left, width, height) para ser responsivo -->
-                <div class="hotspot" style="top: 35%; left: 3%; width: 28%; height: 40%;"
-                    data-title="Sistema de Pós-tratamento (DPF/SCR)" data-zoom-x="17%" data-zoom-y="55%"></div>
-                <div class="hotspot" style="top: 45%; left: 70%; width: 20%; height: 35%;"
-                    data-title="Bloco e Pistões do Motor" data-zoom-x="80%" data-zoom-y="62%"></div>
-            </div>
-
-            <!-- Modal para exibir a área ampliada -->
-            <div class="modal" id="zoomModal">
-                <div class="modal-content">
-                    <span class="close-btn" id="closeBtn">&times;</span>
-                    <h3 id="modalTitle"></h3>
-                    <div class="zoom-view" id="zoomView"></div>
-                </div>
             </div>
         </section>
 
