@@ -183,7 +183,6 @@ body {
 
 .page {
     display: none;
-
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 12px;
@@ -207,7 +206,7 @@ body {
     bottom: 0;
     right: 0;
     left: 0;
-    width: 96%;
+    max-width: 1280px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -422,10 +421,20 @@ a:hover {
 
 @media (max-width: 768px) {
 
+    body {
+        padding: 0;
+    }
+
     .theme-toggle-btn {
         font-size: 0.7rem;
         top: 10px;
-        right: 10px;
+        right: 5px;
+        padding: 5px 8px;
+    }
+
+    .floating-toc-btn {
+        top: 50px;
+        right: 5px;
         padding: 5px 8px;
     }
 
@@ -433,11 +442,14 @@ a:hover {
         min-width: 85vh;
         margin-bottom: 30px;
         border-radius: 0;
-        /*padding: 15px;*/
+        /*padding: 0;*/
     }
 
     .page {
-        padding: 10px;
+        padding: 15px;
+        padding-bottom: 25px;
+        margin: 0;
+        border-radius: 0;
     }
 
     .figure img {
