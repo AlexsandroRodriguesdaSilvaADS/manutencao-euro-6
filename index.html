@@ -15,6 +15,92 @@
         <span id="themeText">Modo Escuro</span>
     </button>
 
+    <div class="sumario-overlay" id="sumarioOverlay">
+        <div class="sumario-content-box">
+            <button class="close-sumario-btn" onclick="toggleSumarioOverlay()">&times;</button>
+            <div class="toc">
+                <h2>Sumário</h2>
+                <table>
+                    <!-- Introdução -->
+                    <tr data-page="2" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold;">
+                        <td>O Contexto Brasileiro: Da Norma Euro VI ao Proconve P8 No Brasil</td>
+                        <td class="page-num">3</td>
+                    </tr>
+                    <!-- Componentes do Sistema Euro 6 -->
+                    <tr data-page="3" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold;">
+                        <td>1. Arquitetura Euro VI</td>
+                        <td class="page-num">4</td>
+                    </tr>
+                    <!-- EGR -->
+                    <tr data-page="4" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold;">
+                        <td>2. EGR (Exhaust Gas Recirculation)</td>
+                        <td class="page-num">5</td>
+                    </tr>
+                    <!-- DOC -->
+                    <tr data-page="5" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold">
+                        <td>3. DOC (Diesel Oxidation Catalyst)</td>
+                        <td class="page-num">6</td>
+                    </tr>
+                    <!-- DPF -->
+                    <tr data-page="6" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold">
+                        <td>4. DPF (Diesel Particulate Filter)</td>
+                        <td class="page-num">7</td>
+                    </tr>
+                    <!-- SCR -->
+                    <tr data-page="7" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold">
+                        <td>5. SCR (Selective Catalytic Reduction)</td>
+                        <td class="page-num">8</td>
+                    </tr>
+                    <!-- ASC -->
+                    <tr data-page="8" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold">
+                        <td>6. ASC (Ammonia Slip Catalyst)</td>
+                        <td class="page-num">9</td>
+                    </tr>
+                    <!-- Manutenção em Motores Euro VI - Ciclo Diesel -->
+                    <tr data-page="9" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold">
+                        <td>7. Manutenção em Motores Euro VI - Ciclo Diesel</td>
+                        <td class="page-num">10</td>
+                    </tr>
+                    <!-- Manutenção em Motores Euro 6 - Ciclo Otto -->
+                    <tr data-page="10" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold">
+                        <td>8. Manutenção em Motores Euro 6 - Ciclo Otto</td>
+                        <td class="page-num">11</td>
+                    </tr>
+                    <!-- Manutenção Preditiva -->
+                    <tr data-page="11" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold">
+                        <td>9. Manutenção Preditiva (Monitoramento e Análise Contínua)</td>
+                        <td class="page-num">12</td>
+                    </tr>
+                    <!-- Manutenção Preventiva -->
+                    <tr data-page="12" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold">
+                        <td>10. Manutenção Preventiva (Intervenções Programadas)</td>
+                        <td class="page-num">13</td>
+                    </tr>
+                    <!-- Manutenção Corretiva -->
+                    <tr data-page="13" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold">
+                        <td>11. Manutenção Corretiva (Procedimentos de Reparo)</td>
+                        <td class="page-num">14</td>
+                    </tr>
+                    <!-- Códigos de falha DTC -->
+                    <tr data-page="14" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold">
+                        <td>12. Códigos de falha DTC (Diagnostic Trouble Codes)</td>
+                        <td class="page-num">15</td>
+                    </tr>
+                    <!-- Procedimento Padrão para Diagnóstico -->
+                    <tr data-page="15" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold">
+                        <td>13. Procedimento Padrão para Diagnóstico com Scanner</td>
+                        <td class="page-num">16</td>
+                    </tr>
+                    <!-- Bibliografia -->
+                    <tr data-page="16" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold">
+                        <td>Bibliografia</td>
+                        <td class="page-num">17</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
 
         <!-- CAPA -->
@@ -32,6 +118,10 @@
                 <div class="cover-footer">Caruaru, 2026</div>
             </div>
         </section>
+
+        <button class="floating-toc-btn" onclick="toggleSumarioOverlay()">
+            📖 Sumário
+        </button>
 
         <!-- SUMÁRIO -->
         <section class="page sumario no-number">
@@ -188,7 +278,7 @@
         <!-- 1. Arquitetura Euro 6 -->
         <section class="page">
             <h1>1. Arquitetura Euro 6</h1>
-            <p>As tecnologias que compõem os motores a combustão na atualidade estão cada vez mais integradas, em
+            <p>As tecnologias que compõem os motores a combustão na atualidade estão cada vez mais integradas e em
                 crescente avanço tecnológico (Euro 7) por isso necessitam de maior atenção.</p>
             <div class="figure">
                 <!--<img src="./img/euro6.jpg" alt="Arquitetura Pós Tratamento Euro VI">
@@ -1352,6 +1442,7 @@
     <script src="script.js"></script>
     <script src="page-footer.js"></script>
     <script src="theme.js"></script>
+    <script src="sumario.js"></script>
 
 </body>
 
