@@ -96,7 +96,7 @@ body {
     align-items: center;
     gap: 8px;
     box-shadow: var(--shadow);
-    z-index: 1000;
+    z-index: 10;
     transition: all 0.2s ease;
 }
 
@@ -182,50 +182,47 @@ body {
 }
 
 .cover-page h2 {
-    font-size: 1.1rem;
-    color: var(--subtext-color);
+    font-size: 1.2rem;
+    color: var(--primary);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-bottom: 10px;
-
-    margin-top: 30px;
+    margin-bottom: 60px;
+    margin-top: 120px;
 }
 
 .cover-page h3 {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: var(--primary);
-    margin-bottom: 40px;
+    margin-bottom: 180px;
+    margin-top: 60px;
 }
 
 .cover-author {
     font-weight: bold;
-    font-size: 1.1rem;
-    margin-top: 60px;
-    margin-bottom: 60px;
+    font-size: 1rem;
+    margin-top: 180px;
+    margin-bottom: 180px;
     color: var(--heading-color);
 }
 
 .cover-title {
-    font-size: 2rem;
+    font-size: 1.2rem;
     font-weight: 800;
     color: var(--primary);
     margin-bottom: 15px;
-
     text-transform: uppercase;
 }
 
 .cover-subtitle {
     font-size: 1.2rem;
     color: var(--subtext-color);
-    margin-bottom: 60px;
-
+    margin-bottom: 120px;
     font-style: italic;
 }
 
 .cover-footer {
     font-size: 0.9rem;
     color: var(--subtext-color);
-
     margin-top: 400px;
 }
 
@@ -349,11 +346,22 @@ a:hover {
 
 @media (max-width: 768px) {
 
+    .theme-toggle-btn {
+        font-size: 0.7rem;
+        top: 10px;
+        right: 10px;
+        padding: 5px 8px;
+    }
+
     .container {
         min-width: 85vh;
         margin-bottom: 30px;
         border-radius: 0;
         /*padding: 15px;*/
+    }
+
+    .page {
+        padding: 10px;
     }
 
     .figure img {
@@ -365,10 +373,14 @@ a:hover {
     }
 
     * {
-        font-size: 17pt;
+        font-size: 12pt;
     }
 
     h1 {
         margin-top: 0.2em;
+    }
+
+    table {
+        font-size: 0.01rem;
     }
 }
