@@ -947,107 +947,6 @@
             <p>A manutenção corretiva entra em ação quando o sistema apresenta códigos de falha (DTCs) ou perda de
                 potência (<em>Limp Mode</em>).</p>
 
-            <h2>3.1 Procedimento Corretivo A: Regeneração Forçada do DPF (Diesel)</h2>
-            <p>Quando o DPF atinge nível crítico de fuligem e a regeneração passiva em rodovia não ocorre:</p>
-            <ol>
-                <li><strong>Preparação do Veículo (Pré-requisitos de Segurança):</strong> Estacionar o veículo em local
-                    aberto (longe de materiais inflamáveis) devido à alta temperatura do escapamento (>600°C).
-                    Verificar se os níveis de óleo e arrefecimento estão corretos.</li>
-                <li><strong>Início do Ciclo via Scanner (Utilização do Scanner Automotivo):</strong> Conectar o scanner
-                    na
-                    tomada OBD-II, selecionar o módulo da ECU e iniciar o procedimento de Regeneração Estática do Filtro
-                    de
-                    Partículas.</li>
-                <li><strong>Execução da Queima de Fuligem (Monitoramento Térmico):</strong> A ECU elevará a rotação
-                    (normalmente para 2000-2500 RPM) e atrasará o ponto de injeção para elevar a temperatura do
-                    exaustor.
-                    Monitorar a temperatura dos sensores EGT no scanner.</li>
-                <li><strong>Redefinição dos Parâmetros (Verificação Final):</strong> Após a conclusão do ciclo (aprox.
-                    20 a
-                    40 min), zerar os contadores do DPF via scanner e verificar a nova pressão diferencial em marcha
-                    lenta.
-                </li>
-            </ol>
-
-            <h2>3.2 Procedimento Corretivo B: Descarbonização de Válvulas de Admissão (GDI - Ciclo Otto)</h2>
-            <p>Ocorre quando há perda de torque, marcha lenta instável ou código de <em>misfire</em> devido à crosta de
-                carvão nas válvulas.</p>
-            <ol>
-                <li><strong>Desmontagem e Posicionamento do PISTÃO (Garantia de Vedação):</strong> Remover o coletor de
-                    admissão. Girar o virabrequim manualmente até que as válvulas de admissão do cilindro trabalhado
-                    estejam
-                    completamente fechadas.</li>
-                <li><strong>Jateamento ou Raspagem (Remoção Mecânica/Química):</strong> Aplica-se o jateamento com
-                    microesferas de casca de noz (<em>walnut blasting</em>) ou produto químico descarbonizante adequado
-                    para
-                    amolecer a borra e remover os resíduos sem danificar a haste da válvula.</li>
-                <li><strong>Aspiração e Limpeza Total (Prevenção de Danos):</strong> Aspirar todo o material e resíduos
-                    do
-                    duto antes de passar para o próximo cilindro, garantindo que nenhum resíduo caia dentro da câmara de
-                    combustão.</li>
-            </ol>
-
-            <!--<h2>1. Manutenção Corretiva: Conjunto Móvel, Bloco e Cabeçote</h2>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Componente</th>
-                            <th>Parâmetro / Sintoma de Falha</th>
-                            <th class="otto-header">Critério de Decisão Otto</th>
-                            <th class="diesel-header">Critério de Decisão Diesel</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="component-name">Compressão dos Cilindros</td>
-                            <td>Baixa compressão, fumaça azul, falta de potência, partida longa.</td>
-                            <td class="otto-column"><strong>Limite:</strong> &lt; 8,5 a 10 bar. Variação máx. entre
-                                cilindros: <strong>10% a 15%</strong>. Se houver desvio, realizar teste de
-                                estanqueidade.
-                            </td>
-                            <td><strong>Limite:</strong> &lt; 20 a 24 bar. Variação máx. entre
-                                cilindros: <strong>5% a 8%</strong>.</td>
-                        </tr>
-                        <tr>
-                            <td class="component-name">Folga de Bronzinas (Mancal / Biela)</td>
-                            <td>Batida metálica oca, baixa pressão de óleo a quente.</td>
-                            <td class="otto-column"><strong>Folga Plastigage:</strong> 0,025 a 0,050 mm. Acima de 0,070
-                                mm:
-                                retífica de virabrequim (-0.25, -0.50 mm).</td>
-                            <td class="diesel-column"><strong>Folga Plastigage:</strong> 0,035 a 0,075 mm (pesados até
-                                0,10
-                                mm). Acima do limite: retífica ou substituição da árvore de manivelas.</td>
-                        </tr>
-                        <tr>
-                            <td class="component-name">Ovalização e Conicidade</td>
-                            <td>Consumo excessivo de óleo, excesso de blow-by (pressão no cárter).</td>
-                            <td class="otto-column"><strong>Limite Ovalização/Conicidade:</strong> 0,010 a 0,015 mm.
-                                Corretiva: brunimento ou abertura do bloco para pistões sobremedida.</td>
-                            <td class="diesel-column"><strong>Limite Ovalização/Conicidade:</strong> 0,020 a 0,030 mm.
-                                Corretiva em camisas úmidas/secas: substituição do kit (camisa, pistão e anéis).</td>
-                        </tr>
-                        <tr>
-                            <td class="component-name">Empeno do Cabeçote</td>
-                            <td>Queima da junta, passagem de água para óleo ou compressão para água.</td>
-                            <td class="otto-column"><strong>Empeno máximo:</strong> 0,05 mm. Acima disso: passe/plaina
-                                respeitando a altura mínima especificada.</td>
-                            <td class="diesel-column"><strong>Empeno máximo:</strong> 0,03 a 0,05 mm. Atenção ao valor
-                                de
-                                projeção das válvulas em relação à face da plana.</td>
-                        </tr>
-                        <tr>
-                            <td class="component-name">Válvulas e Guias</td>
-                            <td>Folga excessiva de guia, carbonização, haste torta, perda de vácuo.</td>
-                            <td class="otto-column"><strong>Folga haste/guia:</strong> 0,08 mm (admissão) e 0,10 mm
-                                (escape). Retífica de sedes/válvulas e troca de retentores.</td>
-                            <td class="diesel-column"><strong>Folga haste/guia:</strong> 0,10 mm (admissão) e 0,12 mm
-                                (escape). Recesso da válvula fora de norma exige troca de sedes.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>-->
-
             <h2>1. Manutenção Corretiva: Ignição, Injeção e Alimentação</h2>
             <div class="table-responsive">
                 <table>
@@ -1062,32 +961,38 @@
                     <tbody>
                         <tr>
                             <td>Bobinas e Velas</td>
-                            <td>Misfire (P0300-P0304), trancos sob carga, luz de injeção piscando.</td>
-                            <td><strong>Velas:</strong> Folga &gt; 1,1 mm ou cerâmica
-                                trincada.<br><strong>Bobina:</strong> Resistência fora da faixa (ex: primário 0,5 a 1,5
-                                Ω).Trocar componente falhado.</td>
-                            <td><strong>Velas Aquecedoras:</strong> Substituição se a resistência
-                                R = ∞ Ω (circuito aberto).</td>
+                            <td>Misfire (P0300-P0304), trancos sob carga, luz de injeção piscando.
+                            </td>
+                            <td>Velas: Folga &gt; 1,1 mm ou cerâmica
+                                trincada.<br>
+                                Bobina: Resistência fora da faixa (ex: primário 0,5 a 1,5
+                                Ω).Trocar componente falhado.
+                            </td>
+                            <td>Velas Aquecedoras: Substituição se a resistência
+                                R = ∞ Ω (circuito aberto).
+                            </td>
                         </tr>
                         <tr>
                             <td>Bomba de Baixa Pressão</td>
                             <td>Falta de rendimento em alta rotação, motor apaga, partida longa.</td>
-                            <td><strong>Pressão limite:</strong> Indireta &lt; 3,0-4,2 bar; GDI &lt;
-                                4,5-6,0 bar.<br><strong>Vazão limite:</strong> &lt; 1,5 a 2,0 L/min. Substituir
+                            <td>Pressão limite: Indireta &lt; 3,0-4,2 bar; GDI &lt;
+                                4,5-6,0 bar.<br>
+                                Vazão limite: &lt; 1,5 a 2,0 L/min. Substituir
                                 refil/bomba.
                             </td>
-                            <td><strong>Pressão limite:</strong> &lt; 2,5 a 5,0 bar. Presença de
-                                bolhas de ar ou queda de vazão exige revisão de vedações e troca da bomba alimentadora.
+                            <td>Pressão limite: &lt; 2,5 a 5,0 bar. Presença de bolhas de ar ou queda de vazão exige
+                                revisão de vedações e troca da bomba alimentadora.
                             </td>
                         </tr>
                         <tr>
                             <td>Bomba de Alta Pressão</td>
                             <td>Códigos de pressão de rampa (P0087/P0088), desligamento sob aceleração.</td>
-                            <td><strong>GDI:</strong> Pressão fora da faixa (40 a 200 bar). Se
-                                houver desgaste no topo do tucho roletado, trocar tucho e comando.</td>
-                            <td><strong>Common Rail:</strong> Pressão fora de alvo (250 a 2200
-                                bar). Se houver limalha no regulador (MPROP/VCV), exige lavagem completa do sistema e
-                                troca da bomba/rail.</td>
+                            <td>GDI: Pressão fora da faixa (40 a 200 bar). Se houver desgaste no topo do tucho roletado,
+                                trocar tucho e comando.
+                            </td>
+                            <td>Common Rail: Pressão fora de alvo (250 a 2200 bar). Se houver limalha no regulador
+                                (MPROP/VCV), exige lavagem completa do sistema e troca da bomba/rail.
+                            </td>
                         </tr>
                         <tr>
                             <td>Bicos Injetores</td>
@@ -1116,22 +1021,23 @@
                         <tr>
                             <td>Turbocompressor</td>
                             <td>Ruído de "apito", óleo no intercooler, falta de pressão, fumaça azul.</td>
-                            <td><strong>Folga radial máx:</strong> 0,40 mm.<br><strong>Folga axial
-                                    máx:</strong> 0,05 a 0,08 mm. Rotor tocando na carcaça exige troca do conjunto
+                            <td>Folga radial máx: 0,40 mm.<br>
+                                Folga axial máx: 0,05 a 0,08 mm. Rotor tocando na carcaça exige troca do conjunto
                                 rotativo ou turbo.</td>
-                            <td><strong>Folga radial máx:</strong> 0,50 mm.<br><strong>Folga axial
-                                    máx:</strong> 0,08 a 0,10 mm. Óleo na admissão exige checagem de vedação dinâmica e
+                            <td>Folga radial máx: 0,50 mm.<br>
+                                Folga axial máx: 0,08 a 0,10 mm. Óleo na admissão exige checagem de vedação dinâmica e
                                 respiro (blow-by).</td>
                         </tr>
                         <tr>
                             <td>Embreagem e Volante Bimassa</td>
                             <td>Patinação sob carga, trepidação, vibração excessiva em lenta, estalos.</td>
-                            <td><strong>Espessura do disco:</strong> &lt; 1,5 mm acima do
-                                rebite.<br><strong>Bimassa:</strong> Folga angular &gt; 5-7 dentes da cremalheira ou
+                            <td>Espessura do disco: &lt; 1,5 mm acima do
+                                rebite.<br>
+                                Bimassa: Folga angular &gt; 5-7 dentes da cremalheira ou
                                 folga axial &gt; 1,5 mm exige troca.</td>
-                            <td><strong>Embreagem:</strong> Azulamento por superaquecimento exige
-                                troca do kit e passe no volante.<br><strong>Bimassa:</strong> Folga &gt; 6-8 dentes
-                                exige substituição direta.</td>
+                            <td>Embreagem: Azulamento por superaquecimento exige
+                                troca do kit e passe no volante.<br>
+                                Bimassa: Folga &gt; 6-8 dentes exige substituição direta.</td>
                         </tr>
                         <tr>
                             <td>Câmbio Automático / CVT</td>
@@ -1144,18 +1050,40 @@
                         <tr>
                             <td>Sistema de Emissões (DPF/SCR/Catalisador)</td>
                             <td>Luz de injeção acesa, derate (perda de potência), saturação de fuligem.</td>
-                            <td><strong>Catalisador:</strong> Contra-pressão &gt; 0,2 bar (20 kPa) a
+                            <td>Catalisador: Contra-pressão &gt; 0,2 bar (20 kPa) a
                                 2500 RPM indica entupimento. Falha P0420 exige troca do
-                                elemento.<br><strong>GPF:</strong>
-                                Regeneração via scanner.</td>
-                            <td><strong>DPF:</strong> Pressão diferencial &gt; 150-200 mbar em
+                                elemento.<br>
+                                GPF: Regeneração via scanner.</td>
+                            <td>DPF: Pressão diferencial &gt; 150-200 mbar em
                                 plena carga (saturação &gt; 70%). Limpeza mecânica/térmica ou
-                                troca.<br><strong>SCR:</strong>
-                                Diferença de eficiência &lt; 80% nos sensores de NOx exige manutenção.</td>
+                                troca.<br>
+                                SCR: Diferença de eficiência &lt; 80% nos sensores de NOx exige manutenção.</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+
+            <h2>Procedimento Corretivo: Regeneração Forçada do DPF (Diesel)</h2>
+            <p>Quando o DPF atinge nível crítico de fuligem e a regeneração passiva em rodovia não ocorre:</p>
+            <ol>
+                <li><strong>Preparação do Veículo (Pré-requisitos de Segurança):</strong> Estacionar o veículo em local
+                    aberto (longe de materiais inflamáveis) devido à alta temperatura do escapamento (>600°C).
+                    Verificar se os níveis de óleo e arrefecimento estão corretos.</li>
+                <li><strong>Início do Ciclo via Scanner (Utilização do Scanner Automotivo):</strong> Conectar o scanner
+                    na
+                    tomada OBD-II, selecionar o módulo da ECU e iniciar o procedimento de Regeneração Estática do Filtro
+                    de
+                    Partículas.</li>
+                <li><strong>Execução da Queima de Fuligem (Monitoramento Térmico):</strong> A ECU elevará a rotação
+                    (normalmente para 2000-2500 RPM) e atrasará o ponto de injeção para elevar a temperatura do
+                    exaustor.
+                    Monitorar a temperatura dos sensores EGT no scanner.</li>
+                <li><strong>Redefinição dos Parâmetros (Verificação Final):</strong> Após a conclusão do ciclo (aprox.
+                    20 a
+                    40 min), zerar os contadores do DPF via scanner e verificar a nova pressão diferencial em marcha
+                    lenta.
+                </li>
+            </ol>
 
         </section>
 
