@@ -9,12 +9,6 @@
 </head>
 
 <body>
-
-    <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">
-        <span id="themeIcon">🌙</span>
-        <span id="themeText">Modo Escuro</span>
-    </button>
-
     <div class="sumario-overlay" id="sumarioOverlay">
         <div class="sumario-content-box">
             <button class="close-sumario-btn" onclick="toggleSumarioOverlay()">&times;</button>
@@ -101,6 +95,14 @@
         </div>
     </div>
 
+    <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">
+        <span id="themeIcon">🌙</span>
+        <span id="themeText">Modo Escuro</span>
+    </button>
+    <button class="floating-toc-btn" onclick="toggleSumarioOverlay()">
+        📖 Sumário
+    </button>
+
     <div class="container">
 
         <!-- CAPA -->
@@ -118,10 +120,6 @@
                 <div class="cover-footer">Caruaru, 2026</div>
             </div>
         </section>
-
-        <button class="floating-toc-btn" onclick="toggleSumarioOverlay()">
-            📖 Sumário
-        </button>
 
         <!-- SUMÁRIO -->
         <section class="page sumario no-number">
