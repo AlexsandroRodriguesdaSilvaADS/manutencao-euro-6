@@ -212,8 +212,9 @@ body {
     align-items: center;
     margin: auto;
     padding: 10px;
-    background-color: #f4f4f4;
-    border-radius: 8px;
+    background-color: var(--bg-color);
+    /*background-color: #f4f4f4;
+    border-radius: 8px;*/
     border: 1px solid #ddd;
 }
 
@@ -222,15 +223,22 @@ body {
     /*font-size: 16px;*/
     font-size: 0.6rem;
     cursor: pointer;
-    background-color: #0056b3;
+
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--secondary);
+
+    /*background-color: #0056b3;
     color: white;
-    border: none;
-    border-radius: 4px;
+    border: none;*/
+    border-radius: 30px;
     transition: background 0.3s;
 }
 
 .book-navigation button:hover {
-    background-color: #003d82;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    /*background-color: #003d82;*/
 }
 
 .book-navigation button:disabled {
