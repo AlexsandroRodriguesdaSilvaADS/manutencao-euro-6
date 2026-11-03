@@ -438,6 +438,10 @@ a:hover {
         padding: 5px 8px;
     }
 
+    .themeText {
+        display: none;
+    }
+
     .container {
         min-width: 85vh;
         margin-bottom: 30px;
@@ -469,6 +473,6 @@ a:hover {
     }
 
     table {
-        font-size: 0.01rem;
+        font-size: 1rem;
     }
 }
