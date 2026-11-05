@@ -472,10 +472,8 @@ a:hover {
         max-height: 380px;
     }
 
-
-    /*table {
-        background-color: red;
-        font-size: 0.1rem;
-        width: 80%;
-    }*/
+    .table th,
+    td {
+        font-size: 8.8pt;
+    }
 }
