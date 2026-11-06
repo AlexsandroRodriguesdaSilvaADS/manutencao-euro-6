@@ -242,7 +242,8 @@ body {
 }
 
 .book-navigation button:disabled {
-    background-color: #ccc;
+    background-color: var(--card-bg);
+    color: var(--bg-color);
     cursor: not-allowed;
 }
 
