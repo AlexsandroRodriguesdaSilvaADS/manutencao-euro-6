@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="theme.css">
     <title>P&D</title>
 </head>
 
@@ -11,37 +12,37 @@
     <p>
     <h1>1. Motores Ciclo Diesel (PROCONVE P8 / Euro 6)</h1>
 
-    <p>Os motores diesel modernos combinam injeção *Common Rail* de altíssima pressão (acima de 2.000 a 2.500 bar) com
-        sistemas integrados de pós-tratamento: **EGR** (Recirculação de Gases de Escape), **DOC** (Catalisador de
-        Oxidação Diesel), **DPF** (Filtro de Partículas Diesel), **SCR** (Redução Catalítica Seletiva com ARLA 32) e
-        **ASC** (Catalisador de Escorregamento de Amônia).
+    <p>Os motores diesel modernos combinam injeção Common Rail de altíssima pressão (acima de 2.000 a 2.500 bar) com
+        sistemas integrados de pós-tratamento: EGR (Recirculação de Gases de Escape), DOC (Catalisador de
+        Oxidação Diesel), DPF (Filtro de Partículas Diesel), SCR (Redução Catalítica Seletiva com ARLA 32) e
+        ASC (Catalisador de Escorregamento de Amônia).
     </p>
 
     <h2>A. Manutenção Preditiva (Monitoramento e Diagnóstico Antecipado)</h2>
 
     <ul>
-        <li>Análise de Óleo Lubrificante em Laboratório: Monitoramento periódico de contaminação por fuligem (*soot*),
+        <li>Análise de Óleo Lubrificante em Laboratório: Monitoramento periódico de contaminação por fuligem (soot),
             diluição por combustível (causada por pós-injeções de regeneração do DPF) e reserva alcalina (TBN) para
             evitar
             desgaste prematuro de bronzinas e comando de válvulas.</li>
-        <li>Telemetria e Monitoramento via OBD-II / J1939:** Acompanhamento remoto e em tempo real de códigos de falha
+        <li>Telemetria e Monitoramento via OBD-II / J1939: Acompanhamento remoto e em tempo real de códigos de falha
             pendentes, eficiência de conversão de NOx (comparação entre sensores de NOx pré e pós-SCR) e taxa de consumo
             de
             ARLA 32 (que deve girar em torno de 5% a 8% do consumo de diesel, variando conforme a presença de EGR).</li>
-        <li>Acompanhamento de Pressão Diferencial do DPF:** Leitura contínua do sensor $\Delta P$ (pressão diferencial)
-            e da massa calculada de fuligem/cinzas (*soot/ash load*) via scanner para prever o momento exato da
+        <li>Acompanhamento de Pressão Diferencial do DPF: Leitura contínua do sensor $\Delta P$ (pressão diferencial)
+            e da massa calculada de fuligem/cinzas (soot/ash load) via scanner para prever o momento exato da
             necessidade
             de limpeza fora do veículo antes do bloqueio total.</li>
-        <li>Análise de Qualidade dos Fluidos:** Uso de refratômetro para verificar a concentração de ureia no ARLA 32
-            (padrão ISO 22241: **32,5% $\pm$ 0,7%**) e testes de teor de água e contaminação microbiológica no Diesel
+        <li>Análise de Qualidade dos Fluidos: Uso de refratômetro para verificar a concentração de ureia no ARLA 32
+            (padrão ISO 22241: 32,5% $\pm$ 0,7%) e testes de teor de água e contaminação microbiológica no Diesel
             S10.</li>
     </ul>
     <h2>B. Manutenção Preventiva (Rotina Programada)</h2>
     <ul>
-        <li>Lubrificação Estrita (Óleo Low-SAPS):** Uso obrigatório de lubrificantes de baixo teor de cinzas sulfatadas,
-            fósforo e enxofre (normas **API CK-4 / FA-4** ou **ACEA E6 / E9 / E11**). Óleos convencionais entopem
+        <li>Lubrificação Estrita (Óleo Low-SAPS): Uso obrigatório de lubrificantes de baixo teor de cinzas sulfatadas,
+            fósforo e enxofre (normas API CK-4 / FA-4 ou ACEA E6 / E9 / E11). Óleos convencionais entopem
             irreversivelmente a colmeia do DPF com cinzas metálicas incombustíveis.</li>
-        <li>Filtragem de Combustível de Alta Eficiência:** Troca rigorosa dos filtros separadores de água e filtros
+        <li>Filtragem de Combustível de Alta Eficiência: Troca rigorosa dos filtros separadores de água e filtros
             principais (retenção de partículas de 2 a 4 mícrons) para proteger os injetores piezoelétricos ou solenoides
             de
             alta pressão contra engripamento.</li>
@@ -49,12 +50,12 @@
             <ol>
                 <li>Troca periódica do filtro da bomba dosadora de ARLA 32 e limpeza do respiro do reservatório.</li>
                 <li>Inspeção da válvula injetora de ARLA (bico dosador) para remoção de cristalizações de ureia na base
-                    do misturador (*mixer*).</li>
+                    do misturador (mixer).</li>
             </ol>
         </li>
-        <li>Sistema de Admissão e Respiro do Cárter:** Substituição do filtro coalescente (*blow-by*) dos gases do
+        <li>Sistema de Admissão e Respiro do Cárter: Substituição do filtro coalescente (blow-by) dos gases do
             cárter para evitar que névoa de óleo alcance o turbocompressor e contamine o DOC/DPF.</li>
-        <li>Drenagem Diária:** Purga do copo sedimentador do filtro separador de água antes da partida.</li>
+        <li>Drenagem Diária: Purga do copo sedimentador do filtro separador de água antes da partida.</li>
     </ul>
     <h2>C. Manutenção Corretiva (Intervenções e Reparos)</h2>
     <ul>
@@ -63,109 +64,108 @@
                 <li>Quando a regeneração passiva ou ativa em rodagem falha (comum em operações urbanas severas),
                     executa-se a
                     regeneração estacionária via scanner.</li>
-                <li>Caso o acúmulo seja de **cinzas (*ash*)** — subproduto do óleo lubrificante e aditivos que não
+                <li>Caso o acúmulo seja de cinzas (ash) — subproduto do óleo lubrificante e aditivos que não
                     queima —, é
                     necessária a remoção física do DPF para limpeza em máquina especializada (jato de ar pulsado +
                     aquecimento
                     controlado) ou substituição do miolo cerâmico.</li>
             </ol>
         </li>
-        <li>Descarbonização do Sistema EGR:** Remoção e limpeza química/ultrassônica da válvula EGR, do trocador de
+        <li>Descarbonização do Sistema EGR: Remoção e limpeza química/ultrassônica da válvula EGR, do trocador de
             calor (resfriador de EGR) e do coletor de admissão, frequentemente obstruídos por borra formada pela mistura
             de
             fuligem com vapores de óleo.</li>
-        <li>Substituição de Sensores Críticos:** Troca de sensores de NOx (extremamente sensíveis a choques térmicos por
+        <li>Substituição de Sensores Críticos: Troca de sensores de NOx (extremamente sensíveis a choques térmicos por
             umidade no escape), sensores de temperatura de gases de escape (EGT) e sensores de material particulado
             (PM).</li>
-        <li>Reparo do Sistema *Common Rail*:** Substituição de bicos injetores e válvulas reguladoras de pressão
+        <li>Reparo do Sistema Common Rail: Substituição de bicos injetores e válvulas reguladoras de pressão
             (DRV/MPROP) danificados por diesel adulterado ou presença de água (perda de lubricidade).</li>
-        <li>Descontaminação do Tanque de ARLA 32:** Drenagem completa, lavagem com água desmineralizada e substituição
+        <li>Descontaminação do Tanque de ARLA 32: Drenagem completa, lavagem com água desmineralizada e substituição
             de bomba/injetor caso haja abastecimento acidental com diesel ou água comum (que destrói o catalisador SCR).
         </li>
         <li></li>
     </ul>
-    2. Motores Ciclo Otto (PROCONVE L8 / Equivalente Euro 6d)
+    <h1>2. Motores Ciclo Otto (PROCONVE L8 / Equivalente Euro 6d)</h1>
+    <p>Para atender ao PROCONVE L8 (com redução drástica de NMOG+NOx, CO e material particulado), os motores ciclo
+        Otto no Brasil consolidaram o uso de downsizing com turbocompressor, injeção direta de combustível (GDI /
+        Flex), variação dupla de comando de válvulas (Dual VVT), sistemas Start-Stop, sistemas híbridos leves
+        (MHEV 12V/48V) e a introdução do GPF (Gasoline Particulate Filter — Filtro de Partículas para Motores
+        Ciclo Otto).
+    </p>
 
-    Para atender ao **PROCONVE L8** (com redução drástica de NMOG+NOx, CO e material particulado), os motores ciclo
-    Otto no Brasil consolidaram o uso de *downsizing* com turbocompressor, **injeção direta de combustível (GDI /
-    Flex)**, variação dupla de comando de válvulas (Dual VVT), sistemas *Start-Stop*, sistemas híbridos leves
-    (**MHEV 12V/48V**) e a introdução do **GPF** (*Gasoline Particulate Filter* — Filtro de Partículas para Motores
-    Ciclo Otto).
+    <h2>A. Manutenção Preditiva (Monitoramento e Diagnóstico Antecipado)</h2>
 
-    ### A. Manutenção Preditiva (Monitoramento e Diagnóstico Antecipado)
+    <ul>
+        <li>Análise de Parâmetros de Injeção (Fuel Trims): Monitoramento de LTFT (Long Term Fuel Trim) e STFT
+            (Short Term Fuel Trim) via scanner OBD-II para detectar desvios na relação ar/combustível, falhas de
+            reconhecimento de etanol/gasolina (AF) ou perda de vazão nos bicos de alta pressão antes que ocorra falha de
+            ignição (misfire) que danifique o catalisador/GPF.</li>
+        <li>Monitoramento da Contrapressão do GPF: Leitura do sensor de pressão diferencial do GPF e avaliação da
+            temperatura dos gases de escape para verificar a eficiência da regeneração passiva (que no ciclo Otto ocorre
+            naturalmente nas desacelerações por cut-off, onde há excesso de oxigênio e alta temperatura).</li>
+        <li>Diagnóstico de Sistema de Ignição por Osciloscópio: Análise dos sinais primário e secundário das bobinas
+            individuais (Coil-on-Plug) para identificar desgaste de velas antes que gerem falhas de combustão e
+            combustível não queimado no escape.</li>
+        <li>Estado de Saúde (SoH) do Sistema 48V / MHEV: Leitura da resistência interna e balanceamento das células da
+            bateria de íons de lítio auxiliar e do gerador de partida por correia (BSG/ISG).</li>
+    </ul>
+    <h2>B. Manutenção Preventiva (Rotina Programada)</h2>
 
-    * **Análise de Parâmetros de Injeção (Fuel Trims):** Monitoramento de LTFT (*Long Term Fuel Trim*) e STFT
-    (*Short Term Fuel Trim*) via scanner OBD-II para detectar desvios na relação ar/combustível, falhas de
-    reconhecimento de etanol/gasolina (AF) ou perda de vazão nos bicos de alta pressão antes que ocorra falha de
-    ignição (*misfire*) que danifique o catalisador/GPF.
-    * **Monitoramento da Contrapressão do GPF:** Leitura do sensor de pressão diferencial do GPF e avaliação da
-    temperatura dos gases de escape para verificar a eficiência da regeneração passiva (que no ciclo Otto ocorre
-    naturalmente nas desacelerações por *cut-off*, onde há excesso de oxigênio e alta temperatura).
-    * **Diagnóstico de Sistema de Ignição por Osciloscópio:** Análise dos sinais primário e secundário das bobinas
-    individuais (*Coil-on-Plug*) para identificar desgaste de velas antes que gerem falhas de combustão e
-    combustível não queimado no escape.
-    * **Estado de Saúde (SoH) do Sistema 48V / MHEV:** Leitura da resistência interna e balanceamento das células da
-    bateria de íons de lítio auxiliar e do gerador de partida por correia (BSG/ISG).
+    <ul>
+        <li>
+            Lubrificação Específica (Prevenção de LSPI e Proteção ao GPF):
+            <ol>
+                <li>Uso obrigatório de óleos sintéticos de ultrabaixa viscosidade (ex.: 0W-20, 0W-16, 5W-30) com
+                    especificações API SP / ILSAC GF-6 ou normas específicas das montadoras (ex.: ACEA C5/C6, VW 508
+                    00, Dexos1
+                    Gen 3).</li>
+                <li>Esses óleos possuem formulação Low/Mid-SAPS para não entupir o GPF e aditivos modificadores para
+                    evitar a
+                    LSPI (Low-Speed Pre-Ignition — pré-ignição em baixa rotação, fenômeno destrutivo típico de
+                    motores turbo
+                    com injeção direta).</li>
+            </ol>
+        </li>
+        <li>Correias Banhadas a Óleo (Quando Aplicável): Inspeção visual periódica da largura e integridade da correia
+            dentada imersa em óleo e cumprimento rigoroso do prazo de troca com o lubrificante homologado, evitando o
+            esfarelamento que entope o pescador da bomba de óleo e a bomba de vácuo.</li>
+        <li>Velas de Ignição de Alta Performance: Substituição preventiva de velas de Irídio ou Platina nos prazos
+            exatos (geralmente entre 40.000 km e 60.000 km), pois motores turbo GDI operam com maiores pressões na
+            câmara e
+            exigem maior tensão de centelha.</li>
+        <li>Sistema de Arrefecimento de Duplo Circuito: Troca do fluido aditivado (OAT) que atende tanto o bloco do
+            motor quanto o intercooler ar-água e o turbocompressor, evitando superaquecimento e detonação.</li>
+        <li>Bateria AGM / EFB: Verificação periódica da bateria de 12V específica para sistemas Start-Stop e reset
+            do sistema de gerenciamento de bateria (BMS) na substituição.</li>
+    </ul>
 
-    ### B. Manutenção Preventiva (Rotina Programada)
+    <h2>C. Manutenção Corretiva (Intervenções e Reparos)</h2>
 
-    * **Lubrificação Específica (Prevenção de LSPI e Proteção ao GPF):**
-    * Uso obrigatório de óleos sintéticos de ultrabaixa viscosidade (ex.: **0W-20, 0W-16, 5W-30**) com
-    especificações **API SP / ILSAC GF-6** ou normas específicas das montadoras (ex.: ACEA C5/C6, VW 508 00, Dexos1
-    Gen 3).
-    * Esses óleos possuem formulação *Low/Mid-SAPS* para não entupir o GPF e aditivos modificadores para evitar a
-    **LSPI** (*Low-Speed Pre-Ignition* — pré-ignição em baixa rotação, fenômeno destrutivo típico de motores turbo
-    com injeção direta).
-
-
-    * **Correias Banhadas a Óleo (Quando Aplicável):** Inspeção visual periódica da largura e integridade da correia
-    dentada imersa em óleo e cumprimento rigoroso do prazo de troca com o lubrificante homologado, evitando o
-    esfarelamento que entope o pescador da bomba de óleo e a bomba de vácuo.
-    * **Velas de Ignição de Alta Performance:** Substituição preventiva de velas de Irídio ou Platina nos prazos
-    exatos (geralmente entre 40.000 km e 60.000 km), pois motores turbo GDI operam com maiores pressões na câmara e
-    exigem maior tensão de centelha.
-    * **Sistema de Arrefecimento de Duplo Circuito:** Troca do fluido aditivado (OAT) que atende tanto o bloco do
-    motor quanto o *intercooler* ar-água e o turbocompressor, evitando superaquecimento e detonação.
-    * **Bateria AGM / EFB:** Verificação periódica da bateria de 12V específica para sistemas *Start-Stop* e reset
-    do sistema de gerenciamento de bateria (BMS) na substituição.
-
-    ### C. Manutenção Corretiva (Intervenções e Reparos)
-
-    * **Descarbonização das Válvulas de Admissão (*Walnut Blasting*):** Como nos motores puramente de injeção direta
-    (GDI) o combustível é pulverizado diretamente na câmara — sem lavar a haste e o prato das válvulas de admissão
-    —, os vapores do sistema PCV formam crostas severas de carvão. A correção exige limpeza mecânica com jateamento
-    de casca de noz triturada (*walnut blasting*) ou limpeza química específica, pois aditivos no tanque não
-    alcançam essa região.
-    * **Reparo da Linha de Alta Pressão de Combustível:** Substituição da bomba mecânica de alta pressão (acionada
-    pelo comando de válvulas), sensor de pressão do *rail* e bicos injetores de alta pressão (que operam entre 200 e
-    350 bar), suscetíveis a desgaste por etanol adulterado ou baixa lubricidade.
-    * **Regeneração Forçada ou Troca do Conjunto Catalisador / GPF:** Em veículos que rodam exclusivamente em
-    trajetos curtos e frios (onde o GPF não atinge temperatura de oxidação da fuligem), realiza-se procedimento de
-    regeneração via scanner (elevação controlada de rotação e atraso de ponto de ignição para aquecer o escape) ou
-    substituição da peça em caso de derretimento cerâmico por *misfire*.
-    * **Manutenção do Turbocompressor e Atuador *Wastegate* Eletrônico:** Calibração ou troca do atuador eletrônico
-    da válvula *wastegate* e reparo de folgas no conjunto rotativo causadas por carbonização de óleo (falta de
-    respeito ao tempo de resfriamento ou óleo degradado).
-    * **Sistema EVAP (Controle de Emissões Evaporativas):** Substituição da válvula de purga do cânister e
-    diagnóstico de vazamentos com máquina de fumaça, já que o OBD do Proconve L8 monitora rigorosamente a
-    estanqueidade do tanque e linhas de vapor.
-
-    ---
-
-    ## Resumo Comparativo de Impacto na Oficina
-
-    | Aspecto Técnico | Ciclo Diesel (PROCONVE P8 / Euro 6) | Ciclo Otto (PROCONVE L8) |
-    | --- | --- | --- |
-    | **Principal Filtro de Escape** | **DPF** (Filtro de Partículas Diesel) | **GPF** (Filtro de Partículas
-    Gasolina/Flex) |
-    | **Controle de NOx** | **EGR** + **SCR** (com ARLA 32) | Catalisador de 3 vias de alta eficiência + EGR
-    refrigerada / VVT |
-    | **Risco Crítico de Lubrificante** | Entupimento do DPF por cinzas (exige *Low-SAPS* CK-4/FA-4) | Pré-ignição
-    (LSPI) + entupimento do GPF (exige API SP / baixa viscosidade) |
-    | **Combustível Exigido** | Diesel S-10 (máx. 10 ppm de enxofre) | Gasolina/Etanol com controle rigoroso de
-    octanagem e pureza |
-    | **Diagnóstico Obrigatório** | Scanner pesado + Refratômetro ARLA + Manômetro $\Delta P$ | Scanner OBD-II
-    avançado + Osciloscópio + Máquina de fumaça (EVAP) |
+    <ul>
+        <li>Descarbonização das Válvulas de Admissão (Walnut Blasting): Como nos motores puramente de injeção direta
+            (GDI) o combustível é pulverizado diretamente na câmara — sem lavar a haste e o prato das válvulas de
+            admissão
+            —, os vapores do sistema PCV formam crostas severas de carvão. A correção exige limpeza mecânica com
+            jateamento
+            de casca de noz triturada (*walnut blasting*) ou limpeza química específica, pois aditivos no tanque não
+            alcançam essa região.</li>
+        <li>Reparo da Linha de Alta Pressão de Combustível: Substituição da bomba mecânica de alta pressão (acionada
+            pelo comando de válvulas), sensor de pressão do rail e bicos injetores de alta pressão (que operam entre
+            200 e
+            350 bar), suscetíveis a desgaste por etanol adulterado ou baixa lubricidade.</li>
+        <li>Regeneração Forçada ou Troca do Conjunto Catalisador / GPF: Em veículos que rodam exclusivamente em
+            trajetos curtos e frios (onde o GPF não atinge temperatura de oxidação da fuligem), realiza-se procedimento
+            de
+            regeneração via scanner (elevação controlada de rotação e atraso de ponto de ignição para aquecer o escape)
+            ou
+            substituição da peça em caso de derretimento cerâmico por misfire.</li>
+        <li>Manutenção do Turbocompressor e Atuador Wastegate Eletrônico: Calibração ou troca do atuador eletrônico
+            da válvula wastegate e reparo de folgas no conjunto rotativo causadas por carbonização de óleo (falta de
+            respeito ao tempo de resfriamento ou óleo degradado).</li>
+        <li>Sistema EVAP (Controle de Emissões Evaporativas): Substituição da válvula de purga do cânister e
+            diagnóstico de vazamentos com máquina de fumaça, já que o OBD do Proconve L8 monitora rigorosamente a
+            estanqueidade do tanque e linhas de vapor.</li>
+    </ul>
     </p>
 </body>
 
