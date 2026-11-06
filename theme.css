@@ -10,7 +10,8 @@
     --primary: #004080;
     --secondary: #00264d;
     --primary-hover: #1d4ed8;
-    --table-header-bg: #1e293b;
+    /*--table-header-bg: #1e293b;*/
+    --table-header-bg: #293548;
     --table-header-text: #ffffff;
     --table-row-even: #f1f5f9;
     --table-row-hover: #e2e8f0;
@@ -109,7 +110,7 @@ body {
     position: fixed;
     top: 0;
     right: 0;
-    min-width: 100vw;
+    min-width: 100%;
     min-height: 100%;
     /*background-color: rgba(0, 0, 0, 0.7);*/
     backdrop-filter: blur(5px);
@@ -206,7 +207,7 @@ body {
     bottom: 0;
     right: 0;
     left: 0;
-    max-width: 1280px;
+    max-width: 1278px;
     display: flex;
     justify-content: space-between;
     align-items: center;
