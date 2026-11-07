@@ -10,7 +10,8 @@
     --primary: #004080;
     --secondary: #00264d;
     --primary-hover: #1d4ed8;
-    --table-header-bg: #1e293b;
+    /*--table-header-bg: #1e293b;*/
+    --table-header-bg: #293548;
     --table-header-text: #ffffff;
     --table-row-even: #f1f5f9;
     --table-row-hover: #e2e8f0;
@@ -105,11 +106,15 @@ body {
     transform: translateY(-2px);
 }
 
+.themeText {
+    display: none;
+}
+
 .sumario-overlay {
     position: fixed;
     top: 0;
     right: 0;
-    min-width: 100vw;
+    min-width: 100%;
     min-height: 100%;
     /*background-color: rgba(0, 0, 0, 0.7);*/
     backdrop-filter: blur(5px);
@@ -154,7 +159,7 @@ body {
 /* Botão flutuante para abrir o sumário de qualquer página */
 .floating-toc-btn {
     position: fixed;
-    top: 70px;
+    top: 80px;
     right: 20px;
     background-color: var(--card-bg);
     color: var(--text-color);
@@ -162,7 +167,7 @@ body {
     /*background-color: #007bff;*/
     /*color: white;*/
     /*border: none;*/
-    padding: 12px 18px;
+    padding: 10px 16px;
     border-radius: 30px;
     cursor: pointer;
     box-shadow: var(--shadow);
@@ -206,7 +211,7 @@ body {
     bottom: 0;
     right: 0;
     left: 0;
-    max-width: 1280px;
+    max-width: 1278px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -242,7 +247,8 @@ body {
 }
 
 .book-navigation button:disabled {
-    background-color: #ccc;
+    background-color: var(--card-bg);
+    color: var(--bg-color);
     cursor: not-allowed;
 }
 
@@ -446,10 +452,6 @@ a:hover {
         padding: 5px 8px;
     }
 
-    .themeText {
-        display: none;
-    }
-
     .container {
         min-width: 85vh;
         margin-bottom: 30px;
@@ -472,10 +474,8 @@ a:hover {
         max-height: 380px;
     }
 
-
-    /*table {
-        background-color: red;
-        font-size: 0.1rem;
-        width: 80%;
-    }*/
+    .table th,
+    td {
+        font-size: 8.8pt;
+    }
 }
