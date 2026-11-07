@@ -5,10 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manutenção em Motores: Norma Euro VI</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="./style/theme.css">
 </head>
 
 <body>
+
+    <!-- SUMÁRIO -->
     <div class="sumario-overlay" id="sumarioOverlay">
         <div class="sumario-content-box">
             <button class="close-sumario-btn" onclick="toggleSumarioOverlay()">&times;</button>
@@ -20,7 +22,7 @@
                         <td>1. Introdução</td>
                         <td class="page-num">3</td>
                     </tr>
-                    <!-- 2. Componentes do Sistema Euro 6 -->
+                    <!-- 2. Componentes do Sistema Euro VI -->
                     <tr data-page="3" onclick="navegarParaPagina(this)" style="cursor: pointer; font-weight: bold;">
                         <td>2. Arquitetura Euro VI</td>
                         <td class="page-num">4</td>
@@ -97,11 +99,11 @@
 
     <div class="buttons">
         <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">
-            <span class="icon" id="themeIcon">🌙</span>
+            <span id="themeIcon">🌙</span>
             <span class="themeText" id="themeText">Modo Escuro</span>
         </button>
         <button class="floating-toc-btn" onclick="toggleSumarioOverlay()">
-            <span class="icon">📖</span>
+            <span>📖</span>
             <span class="themeText">Sumário</span>
         </button>
     </div>
@@ -277,11 +279,11 @@
                 modo de emergência (<em>limp mode</em>).</p>
         </section>
 
-        <!-- 2. Arquitetura Euro 6 -->
+        <!-- 2. Arquitetura Euro VI -->
         <section class="page">
-            <h1>2. Arquitetura Euro 6</h1>
+            <h1>2. Arquitetura Euro VI</h1>
             <p>As tecnologias que compõem os motores a combustão na atualidade estão cada vez mais integradas e em
-                crescente avanço tecnológico (Euro 7) por isso necessitam de maior atenção.</p>
+                crescente avanço tecnológico (Euro VII) por isso necessitam de maior atenção.</p>
             <div class="figure">
                 <video src="./video/MotorEuro-6.mkv" controls poster="./img/video.png"></video>
             </div>
@@ -902,7 +904,7 @@
             <h1>11. Manutenção Preventiva (Intervenções Programadas)</h1>
             <p>A manutenção preventiva segue prazos de quilometragem ou tempo para evitar o desgaste acelerado.</p>
             <h2>Tabela de Manutenção Preventiva Programada</h2>
-            <div>
+            <div class="table-container">
                 <table>
                     <thead>
                         <tr>
@@ -1045,7 +1047,7 @@
                 potência (<em>Limp Mode</em>).</p>
 
             <h2>1. Manutenção Corretiva: Ignição, Injeção e Alimentação</h2>
-            <div class="table">
+            <div class="table-container">
                 <table>
                     <thead>
                         <tr>
@@ -1104,7 +1106,7 @@
             </div>
 
             <h2>2. Manutenção Corretiva: Turbocompressor, Transmissão e Emissões</h2>
-            <div class="table">
+            <div class="table-container">
                 <table>
                     <thead>
                         <tr>
@@ -1443,10 +1445,10 @@
         <button id="next-btn" onclick="mudarPagina(1)">Próxima ❯</button>
     </div>
 
-    <script src="script.js"></script>
-    <script src="page-footer.js"></script>
-    <script src="theme.js"></script>
-    <script src="sumario.js"></script>
+    <script src="./script/script.js"></script>
+    <script src="./script/page-footer.js"></script>
+    <script src="./script/theme.js"></script>
+    <script src="./script/sumario.js"></script>
 
 </body>
 
