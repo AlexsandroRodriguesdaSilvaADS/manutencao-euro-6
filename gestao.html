@@ -1,0 +1,2380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARS Sistem — Sistema de Gestão de Oficina Mecânica</title>
+    <!-- Tailwind CSS via CDN para estilização responsiva e moderna -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome para ícones automotivos e de interface -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Fonte Inter para máxima legibilidade -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        slate: {
+                            850: '#172033',
+                            900: '#0f172a',
+                            950: '#090d16',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos personalizados e regras críticas de impressão */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+        }
+
+        /* Scrollbar discreta */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Oculta área de impressão na visualização normal de tela */
+        #print-container {
+            display: none;
+        }
+
+        /* Regras @media print para emissão limpa de OS e Comprovante de Check-out em folha A4 */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 12mm;
+            }
+
+            body {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                margin: 0;
+                padding: 0;
+            }
+
+            /* Oculta toda a interface web */
+            #app-shell,
+            #modal-backdrop,
+            #toast-container {
+                display: none !important;
+            }
+
+            /* Exibe apenas o documento formatado para impressão */
+            #print-container {
+                display: block !important;
+                width: 100%;
+                background: #ffffff;
+                font-size: 11pt;
+                line-height: 1.4;
+            }
+
+            .print-box {
+                border: 1px solid #334155;
+                border-radius: 4px;
+                padding: 8px 10px;
+                margin-bottom: 10px;
+            }
+
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 10px;
+            }
+
+            .print-table th,
+            .print-table td {
+                border: 1px solid #cbd5e1;
+                padding: 5px 8px;
+                text-align: left;
+                font-size: 9.5pt;
+            }
+
+            .print-table th {
+                background-color: #f1f5f9 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                font-weight: 700;
+            }
+        }
+    </style>
+</head>
+
+<body class="text-slate-800 antialiased selection:bg-blue-600 selection:text-white">
+
+    <!-- ===================================================================== -->
+    <!-- CONTAINER PRINCIPAL DA APLICAÇÃO (OCULTO NA IMPRESSÃO)                -->
+    <!-- ===================================================================== -->
+    <div id="app-shell" class="min-h-screen flex flex-col">
+
+        <!-- BARRA SUPERIOR / NAVBAR -->
+        <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-30 border-b border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between py-3 gap-3">
+
+                    <!-- Logo & Identidade da Oficina -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('patio')">
+                            <div class="bg-blue-600 p-2.5 rounded-xl shadow-inner shadow-blue-400/30">
+                                <i class="fa-solid fa-wrench text-xl text-white"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h1 class="text-lg font-extrabold tracking-tight text-white">ARS <span
+                                            class="text-blue-400">ERP</span></h1>
+                                    <span
+                                        class="text-[10px] font-bold uppercase tracking-wider bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700">v2.6</span>
+                                </div>
+                                <p class="text-xs text-slate-400" id="header-workshop-name">Centro Automotivo &
+                                    Diagnóstico</p>
+                            </div>
+                        </div>
+
+                        <!-- Botão Mobile Rápido Novo Check-in -->
+                        <button onclick="openCheckinModal()"
+                            class="md:hidden bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-3 py-2 rounded-lg shadow flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-plus"></i> Check-in
+                        </button>
+                    </div>
+
+                    <!-- Busca Global & Ações Rápidas -->
+                    <div class="flex flex-1 max-w-xl items-center gap-2">
+                        <div class="relative flex-1">
+                            <i
+                                class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                            <input type="text" id="global-search" oninput="handleGlobalSearch(this.value)"
+                                placeholder="Buscar por placa (ABC-1234), cliente, CPF ou nº da OS..."
+                                class="w-full bg-slate-800 text-sm text-white placeholder-slate-400 pl-10 pr-8 py-2 rounded-xl border border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+                            <button id="clear-search-btn" onclick="clearGlobalSearch()"
+                                class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                            </button>
+                        </div>
+                        <button onclick="openCheckinModal()"
+                            class="hidden md:flex bg-blue-600 hover:bg-blue-500 active:scale-[0.99] text-white text-sm font-semibold px-4 py-2 rounded-xl shadow-md shadow-blue-950/50 items-center gap-2 transition whitespace-nowrap">
+                            <i class="fa-solid fa-car-side"></i> Novo Check-in
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+            <!-- KPIs / INDICADORES EM TEMPO REAL -->
+            <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <!-- KPI 1: Veículos no Pátio -->
+                <div onclick="switchTab('patio')"
+                    class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:border-blue-300 cursor-pointer transition group">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Veículos no
+                            Pátio</span>
+                        <div
+                            class="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 group-hover:bg-blue-50 group-hover:text-blue-600 flex items-center justify-center transition">
+                            <i class="fa-solid fa-warehouse"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="kpi-patio" class="text-2xl sm:text-3xl font-extrabold text-slate-900">0</span>
+                        <span class="text-xs text-slate-500">ativos</span>
+                    </div>
+                </div>
+
+                <!-- KPI 2: Aguardando Diagnóstico -->
+                <div onclick="switchTab('diagnostico')"
+                    class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:border-amber-300 cursor-pointer transition group">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Em
+                            Diagnóstico</span>
+                        <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                            <i class="fa-solid fa-stethoscope"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="kpi-diagnostico" class="text-2xl sm:text-3xl font-extrabold text-amber-600">0</span>
+                        <span class="text-xs text-slate-500">aguardando laudo</span>
+                    </div>
+                </div>
+
+                <!-- KPI 3: OS em Execução -->
+                <div onclick="switchTab('os')"
+                    class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:border-blue-300 cursor-pointer transition group">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">OS em
+                            Execução</span>
+                        <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                            <i class="fa-solid fa-gears"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="kpi-os" class="text-2xl sm:text-3xl font-extrabold text-blue-600">0</span>
+                        <span class="text-xs text-slate-500">em serviço / peça</span>
+                    </div>
+                </div>
+
+                <!-- KPI 4: Faturamento Concluído -->
+                <div onclick="switchTab('historico')"
+                    class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:border-emerald-300 cursor-pointer transition group">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Faturamento
+                            Total</span>
+                        <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                            <i class="fa-solid fa-sack-dollar"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-1">
+                        <span id="kpi-faturamento"
+                            class="text-xl sm:text-2xl font-extrabold text-emerald-600 truncate">R$ 0,00</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NAVEGAÇÃO POR ABAS DO FLUXO OPERACIONAL & BANCO DE DADOS -->
+            <nav
+                class="bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200/80 flex overflow-x-auto gap-1 no-scrollbar">
+                <button data-tab="patio" onclick="switchTab('patio')"
+                    class="tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span>Visão Pátio</span>
+                    <span id="badge-patio"
+                        class="bg-slate-200 text-slate-700 text-[11px] px-2 py-0.5 rounded-full">0</span>
+                </button>
+                <button data-tab="diagnostico" onclick="switchTab('diagnostico')"
+                    class="tab-btn flex-1 min-w-[140px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-laptop-medical"></i>
+                    <span>2. Diagnóstico</span>
+                    <span id="badge-diagnostico"
+                        class="bg-amber-100 text-amber-800 text-[11px] px-2 py-0.5 rounded-full">0</span>
+                </button>
+                <button data-tab="os" onclick="switchTab('os')"
+                    class="tab-btn flex-1 min-w-[145px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                    <span>3. Ordem de Serviço</span>
+                    <span id="badge-os" class="bg-blue-100 text-blue-800 text-[11px] px-2 py-0.5 rounded-full">0</span>
+                </button>
+                <button data-tab="checkout" onclick="switchTab('checkout')"
+                    class="tab-btn flex-1 min-w-[135px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-flag-checkered"></i>
+                    <span>4. Check-out</span>
+                    <span id="badge-checkout"
+                        class="bg-purple-100 text-purple-800 text-[11px] px-2 py-0.5 rounded-full">0</span>
+                </button>
+                <button data-tab="historico" onclick="switchTab('historico')"
+                    class="tab-btn flex-1 min-w-[120px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Histórico</span>
+                </button>
+                <button data-tab="database" onclick="switchTab('database')"
+                    class="tab-btn flex-1 min-w-[145px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-database"></i>
+                    <span>Clientes & Banco</span>
+                </button>
+            </nav>
+
+            <!-- ÁREA DINÂMICA DE CONTEÚDO DAS ABAS -->
+            <div id="main-content-area" class="space-y-6">
+                <!-- Renderizado dinamicamente via JavaScript -->
+            </div>
+
+        </main>
+
+        <!-- RODAPÉ -->
+        <footer class="bg-white border-t border-slate-200 py-4 mt-8">
+            <div
+                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+                <p><strong>AutoTech ERP</strong> — Persistência Local Ativa (<code
+                        class="bg-slate-100 px-1.5 py-0.5 rounded text-slate-700">localStorage</code>)</p>
+                <div class="flex items-center gap-4">
+                    <button onclick="openWorkshopSettingsModal()"
+                        class="hover:text-blue-600 transition flex items-center gap-1">
+                        <i class="fa-solid fa-sliders"></i> Dados da Oficina (Cabeçalho OS)
+                    </button>
+                    <button onclick="switchTab('database')"
+                        class="hover:text-blue-600 transition flex items-center gap-1">
+                        <i class="fa-solid fa-download"></i> Backup JSON
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- SISTEMA DE MODAIS (CHECK-IN, DIAGNÓSTICO, OS, CHECK-OUT, CONFIG)      -->
+    <!-- ===================================================================== -->
+    <div id="modal-backdrop"
+        class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-40 flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+        <div id="modal-box"
+            class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden my-auto">
+            <!-- Header do Modal -->
+            <div class="bg-slate-900 text-white px-5 py-4 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-2.5">
+                    <i id="modal-icon" class="fa-solid fa-car text-blue-400 text-lg"></i>
+                    <h2 id="modal-title" class="text-base sm:text-lg font-bold">Título do Modal</h2>
+                </div>
+                <button onclick="closeModal()"
+                    class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <!-- Corpo do Modal -->
+            <div id="modal-body" class="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1">
+                <!-- Conteúdo injetado dinamicamente -->
+            </div>
+            <!-- Rodapé do Modal -->
+            <div id="modal-footer"
+                class="bg-slate-50 border-t border-slate-200 px-5 py-3.5 flex flex-wrap items-center justify-end gap-2 shrink-0">
+                <!-- Botões injetados dinamicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- NOTIFICAÇÕES TOAST (SUBSTITUI ALERT/CONFIRM NATIVOS)                  -->
+    <!-- ===================================================================== -->
+    <div id="toast-container"
+        class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+    <!-- ===================================================================== -->
+    <!-- ÁREA EXCLUSIVA PARA IMPRESSÃO FORMATADA A4 (@media print)             -->
+    <!-- ===================================================================== -->
+    <div id="print-container"></div>
+
+    <!-- ===================================================================== -->
+    <!-- LÓGICA COMPLETA DO SISTEMA EM JAVASCRIPT PURO                         -->
+    <!-- ===================================================================== -->
+    <script>
+        /**
+         * ARQUITETURA DE DADOS E PERSISTÊNCIA (localStorage)
+         */
+        const STORAGE_KEY = 'autotech_oficina_db_v1';
+
+        // Estado global da aplicação
+        let db = {
+            workshop: {
+                name: 'AUTOTECH CENTRO AUTOMOTIVO LTDA',
+                cnpj: '12.345.678/0001-99',
+                phone: '(11) 98765-4321',
+                address: 'Av. das Engrenagens, 1500 - Distrito Industrial - São Paulo/SP',
+                email: 'contato@autotechoficina.com.br'
+            },
+            lastOsNumber: 0,
+            clients: [],   // { id, name, document, phone, email, createdAt }
+            vehicles: [],  // { id, clientId, plate, brandModel, year, engine, color }
+            orders: []     // Fluxo completo: 'DIAGNOSTICO' | 'OS' | 'CHECKOUT' | 'CONCLUIDO'
+        };
+
+        let currentTab = 'patio';
+        let searchQuery = '';
+
+        /**
+         * Inicializa o banco de dados a partir do localStorage
+         */
+        function loadDatabase() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    db = { ...db, ...parsed };
+                } else {
+                    // Popula automaticamente dados de demonstração na primeira abertura para facilitar avaliação imediata
+                    seedDemoData(false);
+                }
+            } catch (err) {
+                console.error('Erro ao carregar localStorage:', err);
+                showToast('Erro ao ler dados locais. Iniciando base limpa.', 'error');
+            }
+            updateHeaderWorkshop();
+        }
+
+        /**
+         * Salva todo o estado no localStorage
+         */
+        function saveDatabase() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+                refreshUI();
+            } catch (err) {
+                console.error('Erro ao salvar no localStorage:', err);
+                showToast('Falha ao salvar dados no navegador!', 'error');
+            }
+        }
+
+        function updateHeaderWorkshop() {
+            const el = document.getElementById('header-workshop-name');
+            if (el) el.textContent = db.workshop.name;
+        }
+
+        /**
+         * Utilitários de Formatação e Geração de IDs
+         */
+        function generateId(prefix = 'id') {
+            return `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+        }
+
+        function formatCurrency(val) {
+            const num = parseFloat(val) || 0;
+            return num.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function formatDateTime(isoStr) {
+            if (!isoStr) return '-';
+            const d = new Date(isoStr);
+            return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function formatOsNumber(num) {
+            return String(num).padStart(4, '0');
+        }
+
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        /**
+         * Sistema de Notificações Toast (Sem uso de alert)
+         */
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+
+            const styles = {
+                success: 'bg-slate-900 border-emerald-500 text-white',
+                error: 'bg-red-950 border-red-500 text-white',
+                info: 'bg-slate-900 border-blue-500 text-white',
+                warning: 'bg-amber-950 border-amber-500 text-white'
+            };
+            const icons = {
+                success: 'fa-circle-check text-emerald-400',
+                error: 'fa-circle-exclamation text-red-400',
+                info: 'fa-circle-info text-blue-400',
+                warning: 'fa-triangle-exclamation text-amber-400'
+            };
+
+            toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl border-l-4 ${styles[type] || styles.info} transform transition-all duration-300 translate-y-2 opacity-0`;
+            toast.innerHTML = `
+                <i class="fa-solid ${icons[type] || icons.info} text-base"></i>
+                <span class="text-xs sm:text-sm font-medium flex-1">${escapeHtml(message)}</span>
+            `;
+
+            container.appendChild(toast);
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        /**
+         * Controle de Modais
+         */
+        function openModal({ title, icon = 'fa-wrench', bodyHtml, footerHtml, maxWidth = 'max-w-4xl' }) {
+            const backdrop = document.getElementById('modal-backdrop');
+            const box = document.getElementById('modal-box');
+            box.className = `bg-white rounded-2xl shadow-2xl border border-slate-200 w-full ${maxWidth} max-h-[92vh] flex flex-col overflow-hidden my-auto`;
+
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-icon').className = `fa-solid ${icon} text-blue-400 text-lg`;
+            document.getElementById('modal-body').innerHTML = bodyHtml;
+            document.getElementById('modal-footer').innerHTML = footerHtml || '';
+
+            backdrop.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-backdrop').classList.add('hidden');
+        }
+
+        /**
+         * Cálculos Financeiros da Ordem de Serviço
+         */
+        function calculateOrderTotals(order) {
+            const parts = order.parts || [];
+            const services = order.services || [];
+
+            const partsTotal = parts.reduce((acc, item) => acc + ((parseFloat(item.qty) || 0) * (parseFloat(item.unitPrice) || 0)), 0);
+            const servicesTotal = services.reduce((acc, item) => acc + ((parseFloat(item.qty) || 0) * (parseFloat(item.unitPrice) || 0)), 0);
+            const subtotal = partsTotal + servicesTotal;
+
+            const discountVal = parseFloat(order.discountValue) || 0;
+            const discountType = order.discountType || 'R$'; // 'R$' ou '%'
+            let discountAmount = 0;
+
+            if (discountType === '%') {
+                discountAmount = subtotal * (Math.min(discountVal, 100) / 100);
+            } else {
+                discountAmount = Math.min(discountVal, subtotal);
+            }
+
+            const grandTotal = Math.max(0, subtotal - discountAmount);
+
+            return {
+                partsTotal,
+                servicesTotal,
+                subtotal,
+                discountAmount,
+                grandTotal
+            };
+        }
+
+        /**
+         * Navegação e Filtro Global
+         */
+        function switchTab(tabName) {
+            currentTab = tabName;
+            refreshUI();
+        }
+
+        function handleGlobalSearch(val) {
+            searchQuery = val.trim().toLowerCase();
+            const clearBtn = document.getElementById('clear-search-btn');
+            if (searchQuery) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            refreshUI();
+        }
+
+        function clearGlobalSearch() {
+            const input = document.getElementById('global-search');
+            input.value = '';
+            handleGlobalSearch('');
+        }
+
+        function filterOrdersBySearch(ordersList) {
+            if (!searchQuery) return ordersList;
+            return ordersList.filter(o => {
+                const client = db.clients.find(c => c.id === o.clientId) || {};
+                const vehicle = db.vehicles.find(v => v.id === o.vehicleId) || {};
+                const osNumStr = formatOsNumber(o.osNumber);
+
+                return (
+                    osNumStr.includes(searchQuery) ||
+                    (vehicle.plate && vehicle.plate.toLowerCase().includes(searchQuery)) ||
+                    (vehicle.brandModel && vehicle.brandModel.toLowerCase().includes(searchQuery)) ||
+                    (client.name && client.name.toLowerCase().includes(searchQuery)) ||
+                    (client.document && client.document.toLowerCase().includes(searchQuery))
+                );
+            });
+        }
+
+        /**
+         * Atualização Geral da Interface (KPIs, Badges e Aba Ativa)
+         */
+        function refreshUI() {
+            // Contadores
+            const inDiag = db.orders.filter(o => o.stage === 'DIAGNOSTICO');
+            const inOs = db.orders.filter(o => o.stage === 'OS');
+            const inCheckout = db.orders.filter(o => o.stage === 'CHECKOUT');
+            const completed = db.orders.filter(o => o.stage === 'CONCLUIDO');
+            const inYard = db.orders.filter(o => o.stage !== 'CONCLUIDO');
+
+            const totalRevenue = completed.reduce((acc, o) => acc + calculateOrderTotals(o).grandTotal, 0);
+
+            // Atualiza KPIs
+            document.getElementById('kpi-patio').textContent = inYard.length;
+            document.getElementById('kpi-diagnostico').textContent = inDiag.length;
+            document.getElementById('kpi-os').textContent = inOs.length;
+            document.getElementById('kpi-faturamento').textContent = formatCurrency(totalRevenue);
+
+            // Atualiza Badges das Abas
+            document.getElementById('badge-patio').textContent = inYard.length;
+            document.getElementById('badge-diagnostico').textContent = inDiag.length;
+            document.getElementById('badge-os').textContent = inOs.length;
+            document.getElementById('badge-checkout').textContent = inCheckout.length;
+
+            // Atualiza Estilização das Abas
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                const isActive = btn.dataset.tab === currentTab;
+                if (isActive) {
+                    btn.className = 'tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition bg-slate-900 text-white shadow';
+                } else {
+                    btn.className = 'tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition text-slate-600 hover:bg-slate-100';
+                }
+            });
+
+            // Renderiza conteúdo da aba atual
+            const area = document.getElementById('main-content-area');
+            switch (currentTab) {
+                case 'patio':
+                    area.innerHTML = renderPatioKanbanView();
+                    break;
+                case 'diagnostico':
+                    area.innerHTML = renderStageListView('DIAGNOSTICO', 'Etapa 2: Diagnóstico Técnico', 'Veículos aguardando inspeção de scanner, testes mecânicos e parecer técnico.');
+                    break;
+                case 'os':
+                    area.innerHTML = renderStageListView('OS', 'Etapa 3: Ordem de Serviço & Execução', 'Orçamentos, aprovação do cliente, lançamento de peças/mão de obra e execução em box.');
+                    break;
+                case 'checkout':
+                    area.innerHTML = renderStageListView('CHECKOUT', 'Etapa 4: Check-out, Entrega & Faturamento', 'Serviços concluídos prontos para conferência final, garantia e recebimento.');
+                    break;
+                case 'historico':
+                    area.innerHTML = renderHistoryView();
+                    break;
+                case 'database':
+                    area.innerHTML = renderDatabaseView();
+                    break;
+            }
+        }
+
+        /**
+         * =====================================================================
+         * RENDERIZAÇÃO DAS VIEWS PRINCIPAIS
+         * =====================================================================
+         */
+
+        // 1. Visão Geral do Pátio (Kanban em 3 colunas ativas)
+        function renderPatioKanbanView() {
+            const diagOrders = filterOrdersBySearch(db.orders.filter(o => o.stage === 'DIAGNOSTICO'));
+            const osOrders = filterOrdersBySearch(db.orders.filter(o => o.stage === 'OS'));
+            const checkoutOrders = filterOrdersBySearch(db.orders.filter(o => o.stage === 'CHECKOUT'));
+
+            return `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">Painel Operacional do Pátio</h2>
+                        <p class="text-xs text-slate-500">Acompanhe em tempo real o fluxo dos veículos desde o Check-in até o Check-out.</p>
+                    </div>
+                    <button onclick="openCheckinModal()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl shadow-sm flex items-center gap-2 self-start sm:self-auto transition">
+                        <i class="fa-solid fa-plus"></i> 1. Realizar Novo Check-in
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                    <!-- Coluna 1: Diagnóstico -->
+                    <div class="bg-slate-200/60 rounded-2xl p-3.5 border border-slate-200 flex flex-col gap-3">
+                        <div class="flex items-center justify-between px-1">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                                <h3 class="font-bold text-sm text-slate-800">Aguardando Diagnóstico</h3>
+                            </div>
+                            <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded-full">${diagOrders.length}</span>
+                        </div>
+                        <div class="space-y-3">
+                            ${diagOrders.length ? diagOrders.map(o => renderOrderCard(o)).join('') : renderEmptyColumn('Nenhum veículo aguardando diagnóstico.')}
+                        </div>
+                    </div>
+
+                    <!-- Coluna 2: Ordem de Serviço -->
+                    <div class="bg-slate-200/60 rounded-2xl p-3.5 border border-slate-200 flex flex-col gap-3">
+                        <div class="flex items-center justify-between px-1">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+                                <h3 class="font-bold text-sm text-slate-800">Ordem de Serviço (Execução)</h3>
+                            </div>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-0.5 rounded-full">${osOrders.length}</span>
+                        </div>
+                        <div class="space-y-3">
+                            ${osOrders.length ? osOrders.map(o => renderOrderCard(o)).join('') : renderEmptyColumn('Nenhuma OS em andamento no momento.')}
+                        </div>
+                    </div>
+
+                    <!-- Coluna 3: Check-out -->
+                    <div class="bg-slate-200/60 rounded-2xl p-3.5 border border-slate-200 flex flex-col gap-3">
+                        <div class="flex items-center justify-between px-1">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span>
+                                <h3 class="font-bold text-sm text-slate-800">Prontos p/ Check-out</h3>
+                            </div>
+                            <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2.5 py-0.5 rounded-full">${checkoutOrders.length}</span>
+                        </div>
+                        <div class="space-y-3">
+                            ${checkoutOrders.length ? checkoutOrders.map(o => renderOrderCard(o)).join('') : renderEmptyColumn('Nenhum veículo pronto para entrega.')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderEmptyColumn(msg) {
+            return `
+                <div class="bg-white/60 border border-dashed border-slate-300 rounded-xl p-6 text-center text-xs text-slate-400">
+                    ${msg}
+                </div>
+            `;
+        }
+
+        // Card individual de veículo/OS
+        function renderOrderCard(order) {
+            const client = db.clients.find(c => c.id === order.clientId) || { name: 'Cliente Desconhecido', phone: '' };
+            const vehicle = db.vehicles.find(v => v.id === order.vehicleId) || { plate: '---', brandModel: 'Veículo' };
+            const totals = calculateOrderTotals(order);
+
+            let actionBtn = '';
+            let subStatusBadge = '';
+
+            if (order.stage === 'DIAGNOSTICO') {
+                subStatusBadge = `<span class="text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-md">Check-in OK</span>`;
+                actionBtn = `
+                    <button onclick="openDiagnosisModal('${order.id}')" class="w-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold py-2 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-stethoscope"></i> Realizar Diagnóstico
+                    </button>
+                `;
+            } else if (order.stage === 'OS') {
+                const statusColors = {
+                    'Aguardando Aprovação': 'bg-orange-50 text-orange-700 border-orange-200',
+                    'Em Execução': 'bg-blue-50 text-blue-700 border-blue-200',
+                    'Aguardando Peça': 'bg-rose-50 text-rose-700 border-rose-200',
+                    'Concluído': 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                };
+                const st = order.osSubStatus || 'Em Execução';
+                subStatusBadge = `<span class="text-[11px] font-semibold border px-2 py-0.5 rounded-md ${statusColors[st] || statusColors['Em Execução']}">${escapeHtml(st)}</span>`;
+                actionBtn = `
+                    <div class="flex gap-2">
+                        <button onclick="openOsModal('${order.id}')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-pen-to-square"></i> Gerenciar OS
+                        </button>
+                        <button onclick="printDocument('${order.id}', 'OS')" title="Imprimir Ordem de Serviço" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2 px-3 rounded-xl transition">
+                            <i class="fa-solid fa-print"></i>
+                        </button>
+                    </div>
+                `;
+            } else if (order.stage === 'CHECKOUT') {
+                subStatusBadge = `<span class="text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded-md">Serviço Finalizado</span>`;
+                actionBtn = `
+                    <div class="flex gap-2">
+                        <button onclick="openCheckoutModal('${order.id}')" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-flag-checkered"></i> Realizar Check-out
+                        </button>
+                        <button onclick="printDocument('${order.id}', 'OS')" title="Imprimir OS" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2 px-3 rounded-xl transition">
+                            <i class="fa-solid fa-print"></i>
+                        </button>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 hover:shadow-md transition space-y-3">
+                    <div class="flex items-start justify-between gap-2">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-extrabold text-slate-500">OS #${formatOsNumber(order.osNumber)}</span>
+                                <span class="bg-slate-900 text-white font-mono text-xs font-bold px-2 py-0.5 rounded tracking-wider">${escapeHtml(vehicle.plate)}</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-900 mt-1">${escapeHtml(vehicle.brandModel)}</h4>
+                        </div>
+                        ${subStatusBadge}
+                    </div>
+
+                    <div class="text-xs text-slate-600 space-y-1 border-t border-slate-100 pt-2">
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-user text-slate-400 w-3.5"></i>
+                            <span class="font-medium truncate">${escapeHtml(client.name)}</span>
+                        </div>
+                        <div class="flex items-center justify-between text-slate-500">
+                            <span><i class="fa-solid fa-gauge-high text-slate-400 w-3.5"></i> ${Number(order.checkin?.km || 0).toLocaleString('pt-BR')} km</span>
+                            <span>${formatDateTime(order.createdAt).split(' ')[0]}</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 rounded-lg p-2 text-xs text-slate-600 line-clamp-2 border border-slate-100">
+                        <strong class="text-slate-700">Relato:</strong> ${escapeHtml(order.checkin?.complaint || 'Não informado')}
+                    </div>
+
+                    ${totals.grandTotal > 0 ? `
+                        <div class="flex items-center justify-between text-xs pt-1">
+                            <span class="text-slate-500 font-medium">Total Previsto:</span>
+                            <span class="font-extrabold text-slate-900 text-sm">${formatCurrency(totals.grandTotal)}</span>
+                        </div>
+                    ` : ''}
+
+                    <div class="pt-1">
+                        ${actionBtn}
+                    </div>
+                </div>
+            `;
+        }
+
+        // 2, 3, 4. Listagem dedicada por Etapa
+        function renderStageListView(stage, title, subtitle) {
+            const list = filterOrdersBySearch(db.orders.filter(o => o.stage === stage));
+
+            return `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">${title}</h2>
+                        <p class="text-xs text-slate-500">${subtitle}</p>
+                    </div>
+                    ${stage === 'DIAGNOSTICO' ? `
+                        <button onclick="openCheckinModal()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-xl shadow-sm self-start">
+                            <i class="fa-solid fa-plus mr-1"></i> Novo Check-in
+                        </button>
+                    ` : ''}
+                </div>
+
+                ${list.length === 0 ? `
+                    <div class="bg-white rounded-2xl border border-slate-200 p-12 text-center space-y-2">
+                        <i class="fa-solid fa-car-tunnel text-3xl text-slate-300"></i>
+                        <p class="text-sm font-semibold text-slate-600">Nenhum veículo encontrado nesta etapa.</p>
+                        <p class="text-xs text-slate-400">Verifique outras abas do fluxo ou realize um novo Check-in.</p>
+                    </div>
+                ` : `
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        ${list.map(o => renderOrderCard(o)).join('')}
+                    </div>
+                `}
+            `;
+        }
+
+        // 5. Histórico de Atendimentos Concluídos
+        function renderHistoryView() {
+            const completed = filterOrdersBySearch(db.orders.filter(o => o.stage === 'CONCLUIDO'))
+                .sort((a, b) => new Date(b.checkout?.completedAt || b.createdAt) - new Date(a.checkout?.completedAt || a.createdAt));
+
+            return `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">Histórico de Atendimentos & Faturamento</h2>
+                        <p class="text-xs text-slate-500">Registros finalizados com check-out concluído e recibo de garantia emitido.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                                    <th class="py-3.5 px-4">OS</th>
+                                    <th class="py-3.5 px-4">Data Saída</th>
+                                    <th class="py-3.5 px-4">Cliente</th>
+                                    <th class="py-3.5 px-4">Veículo / Placa</th>
+                                    <th class="py-3.5 px-4">Pagamento</th>
+                                    <th class="py-3.5 px-4 text-right">Valor Total</th>
+                                    <th class="py-3.5 px-4 text-center">Documentos</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-xs sm:text-sm">
+                                ${completed.length === 0 ? `
+                                    <tr>
+                                        <td colspan="7" class="py-10 text-center text-slate-400 text-xs">
+                                            Nenhum atendimento finalizado ainda.
+                                        </td>
+                                    </tr>
+                                ` : completed.map(o => {
+                const client = db.clients.find(c => c.id === o.clientId) || {};
+                const vehicle = db.vehicles.find(v => v.id === o.vehicleId) || {};
+                const totals = calculateOrderTotals(o);
+                const isPaid = o.checkout?.paymentStatus === 'Pago';
+
+                return `
+                                        <tr class="hover:bg-slate-50/80 transition">
+                                            <td class="py-3 px-4 font-bold text-slate-900">#${formatOsNumber(o.osNumber)}</td>
+                                            <td class="py-3 px-4 text-slate-600 text-xs">${formatDateTime(o.checkout?.completedAt)}</td>
+                                            <td class="py-3 px-4 font-medium text-slate-800">${escapeHtml(client.name)}</td>
+                                            <td class="py-3 px-4">
+                                                <span class="bg-slate-800 text-white font-mono text-[11px] px-1.5 py-0.5 rounded mr-1">${escapeHtml(vehicle.plate)}</span>
+                                                <span class="text-slate-600 text-xs">${escapeHtml(vehicle.brandModel)}</span>
+                                            </td>
+                                            <td class="py-3 px-4">
+                                                <div class="flex flex-col">
+                                                    <span class="text-xs font-medium text-slate-700">${escapeHtml(o.checkout?.paymentMethod || '-')}</span>
+                                                    <span class="text-[10px] font-bold ${isPaid ? 'text-emerald-600' : 'text-amber-600'}">
+                                                        ${isPaid ? '● PAGO' : '● PENDENTE'}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td class="py-3 px-4 text-right font-extrabold text-slate-900">${formatCurrency(totals.grandTotal)}</td>
+                                            <td class="py-3 px-4">
+                                                <div class="flex items-center justify-center gap-1.5">
+                                                    <button onclick="printDocument('${o.id}', 'OS')" title="Imprimir OS" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition">
+                                                        <i class="fa-solid fa-file-lines"></i> OS
+                                                    </button>
+                                                    <button onclick="printDocument('${o.id}', 'CHECKOUT')" title="Imprimir Recibo de Entrega e Garantia" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition">
+                                                        <i class="fa-solid fa-receipt"></i> Recibo
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    `;
+            }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 6. Banco de Dados de Clientes, Veículos & Backup JSON
+        function renderDatabaseView() {
+            const filteredClients = db.clients.filter(c => {
+                if (!searchQuery) return true;
+                const clientVehicles = db.vehicles.filter(v => v.clientId === c.id);
+                const plateMatch = clientVehicles.some(v => v.plate.toLowerCase().includes(searchQuery) || v.brandModel.toLowerCase().includes(searchQuery));
+                return (
+                    c.name.toLowerCase().includes(searchQuery) ||
+                    (c.document && c.document.toLowerCase().includes(searchQuery)) ||
+                    (c.phone && c.phone.toLowerCase().includes(searchQuery)) ||
+                    plateMatch
+                );
+            });
+
+            return `
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">Banco de Dados Local & Backup</h2>
+                        <p class="text-xs text-slate-500">Todos os clientes, veículos e ordens de serviço ficam salvos no armazenamento do navegador.</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="openClientVehicleModal()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-3.5 py-2 rounded-xl shadow-sm flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-user-plus"></i> Novo Cliente / Veículo
+                        </button>
+                        <button onclick="exportDatabaseJson()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold px-3.5 py-2 rounded-xl shadow-sm flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-file-export"></i> Exportar JSON
+                        </button>
+                        <label class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-semibold px-3.5 py-2 rounded-xl cursor-pointer flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-file-import"></i> Importar JSON
+                            <input type="file" accept=".json" onchange="importDatabaseJson(event)" class="hidden">
+                        </label>
+                        <button onclick="seedDemoData(true)" class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-xs font-semibold px-3 py-2 rounded-xl flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Popular Exemplo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabela de Clientes e Veículos Vinculados -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="px-5 py-3.5 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+                        <h3 class="text-sm font-bold text-slate-800">Base de Clientes & Frota Cadastrada (${filteredClients.length})</h3>
+                        <span class="text-xs text-slate-500">Total de Veículos: <strong>${db.vehicles.length}</strong></span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                                    <th class="py-3 px-4">Cliente</th>
+                                    <th class="py-3 px-4">CPF / CNPJ</th>
+                                    <th class="py-3 px-4">Contato</th>
+                                    <th class="py-3 px-4">Veículos Vinculados</th>
+                                    <th class="py-3 px-4 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-xs sm:text-sm">
+                                ${filteredClients.length === 0 ? `
+                                    <tr>
+                                        <td colspan="5" class="py-8 text-center text-slate-400 text-xs">Nenhum cliente cadastrado ou encontrado na busca.</td>
+                                    </tr>
+                                ` : filteredClients.map(c => {
+                const vehicles = db.vehicles.filter(v => v.clientId === c.id);
+                return `
+                                        <tr class="hover:bg-slate-50 transition">
+                                            <td class="py-3 px-4 font-bold text-slate-900">${escapeHtml(c.name)}</td>
+                                            <td class="py-3 px-4 text-slate-600 font-mono text-xs">${escapeHtml(c.document || '-')}</td>
+                                            <td class="py-3 px-4 text-slate-600 text-xs">
+                                                <div><i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i>${escapeHtml(c.phone || '-')}</div>
+                                                <div class="text-slate-400 text-[11px]">${escapeHtml(c.email || '')}</div>
+                                            </td>
+                                            <td class="py-3 px-4">
+                                                <div class="flex flex-wrap gap-1.5">
+                                                    ${vehicles.map(v => `
+                                                        <span class="inline-flex items-center gap-1.5 bg-slate-100 border border-slate-200 px-2 py-1 rounded-lg text-xs">
+                                                            <strong class="font-mono text-slate-900">${escapeHtml(v.plate)}</strong>
+                                                            <span class="text-slate-600">${escapeHtml(v.brandModel)}</span>
+                                                        </span>
+                                                    `).join('') || '<span class="text-xs text-slate-400">Sem veículos</span>'}
+                                                </div>
+                                            </td>
+                                            <td class="py-3 px-4 text-right whitespace-nowrap">
+                                                <button onclick="openCheckinModal('${c.id}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold text-xs px-2.5 py-1.5 rounded-lg transition">
+                                                    <i class="fa-solid fa-car-side mr-1"></i> Check-in
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    `;
+            }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        /**
+         * =====================================================================
+         * ETAPA 1: MODAL DE CHECK-IN (RECEPÇÃO)
+         * =====================================================================
+         */
+        function openCheckinModal(preselectedClientId = '') {
+            const clientOptions = db.clients.map(c =>
+                `<option value="${c.id}" ${c.id === preselectedClientId ? 'selected' : ''}>${escapeHtml(c.name)} (${escapeHtml(c.document || c.phone || 'S/Doc')})</option>`
+            ).join('');
+
+            const bodyHtml = `
+                <form id="checkin-form" class="space-y-5">
+                    <!-- Bloco 1: Seleção ou Cadastro de Cliente -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                                <span class="bg-blue-600 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center">1</span>
+                                Identificação do Cliente
+                            </h3>
+                            <div class="flex items-center gap-3 text-xs">
+                                <label class="flex items-center gap-1.5 cursor-pointer font-semibold text-slate-700">
+                                    <input type="radio" name="clientMode" value="existing" ${db.clients.length > 0 ? 'checked' : ''} onchange="toggleCheckinClientMode()">
+                                    Cliente Cadastrado
+                                </label>
+                                <label class="flex items-center gap-1.5 cursor-pointer font-semibold text-blue-700">
+                                    <input type="radio" name="clientMode" value="new" ${db.clients.length === 0 ? 'checked' : ''} onchange="toggleCheckinClientMode()">
+                                    + Novo Cliente
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Modo Cliente Existente -->
+                        <div id="checkin-existing-client-box" class="${db.clients.length === 0 ? 'hidden' : ''}">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Selecione o Cliente</label>
+                            <select id="ci-client-select" onchange="onCheckinClientSelectChange()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                                <option value="">-- Escolha um cliente --</option>
+                                ${clientOptions}
+                            </select>
+                        </div>
+
+                        <!-- Modo Novo Cliente -->
+                        <div id="checkin-new-client-box" class="${db.clients.length > 0 ? 'hidden' : ''} grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Nome Completo / Razão Social *</label>
+                                <input type="text" id="ci-new-name" placeholder="Ex: Carlos Eduardo Silva" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">CPF / CNPJ</label>
+                                <input type="text" id="ci-new-doc" placeholder="000.000.000-00" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Telefone / WhatsApp *</label>
+                                <input type="text" id="ci-new-phone" placeholder="(11) 99999-8888" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">E-mail</label>
+                                <input type="email" id="ci-new-email" placeholder="cliente@email.com" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bloco 2: Identificação do Veículo -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                                <span class="bg-blue-600 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center">2</span>
+                                Dados do Veículo
+                            </h3>
+                            <div id="vehicle-mode-radios" class="flex items-center gap-3 text-xs">
+                                <label class="flex items-center gap-1.5 cursor-pointer font-semibold text-slate-700">
+                                    <input type="radio" name="vehicleMode" value="existing" onchange="toggleCheckinVehicleMode()">
+                                    Veículo do Cliente
+                                </label>
+                                <label class="flex items-center gap-1.5 cursor-pointer font-semibold text-blue-700">
+                                    <input type="radio" name="vehicleMode" value="new" checked onchange="toggleCheckinVehicleMode()">
+                                    + Cadastrar Veículo
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="checkin-existing-vehicle-box" class="hidden">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Selecione o Veículo</label>
+                            <select id="ci-vehicle-select" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                                <option value="">-- Selecione primeiro o cliente --</option>
+                            </select>
+                        </div>
+
+                        <div id="checkin-new-vehicle-box" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Placa *</label>
+                                <input type="text" id="ci-v-plate" placeholder="ABC-1D23" maxlength="8" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm uppercase font-mono font-bold">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Marca / Modelo *</label>
+                                <input type="text" id="ci-v-model" placeholder="Ex: Honda Civic EXL 2.0" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Ano Fab/Mod</label>
+                                <input type="text" id="ci-v-year" placeholder="2021/2022" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Motorização</label>
+                                <input type="text" id="ci-v-engine" placeholder="2.0 16V Flex" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Quilometragem Atual (KM) *</label>
+                                <input type="number" id="ci-km" placeholder="54200" min="0" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-semibold">
+                            </div>
+                        </div>
+                        
+                        <div id="ci-km-existing-wrapper" class="hidden">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Quilometragem Atual na Entrada (KM) *</label>
+                            <input type="number" id="ci-km-existing" placeholder="54200" min="0" class="w-full sm:w-1/3 bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-semibold">
+                        </div>
+                    </div>
+
+                    <!-- Bloco 3: Checklist Visual Rápido de Entrada & Sintomas -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                        <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <span class="bg-blue-600 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center">3</span>
+                            Checklist Visual de Entrada & Relato do Cliente
+                        </h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Nível de Combustível</label>
+                                <select id="ci-fuel" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm">
+                                    <option value="Reserva">Reserva (E)</option>
+                                    <option value="1/4">1/4 Tanque</option>
+                                    <option value="1/2" selected>1/2 Tanque</option>
+                                    <option value="3/4">3/4 Tanque</option>
+                                    <option value="Cheio">Cheio (F)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Estado dos Pneus</label>
+                                <select id="ci-tires" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm">
+                                    <option value="Bons">Bons / Regulares</option>
+                                    <option value="Meia Vida">Meia Vida</option>
+                                    <option value="Desgastados / Carecas">Desgastados / Atenção</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Luzes de Anomalia no Painel</label>
+                                <input type="text" id="ci-dash-lights" placeholder="Ex: Injeção acesa, ABS, Nenhuma" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Avarias Visíveis na Lataria / Vidros</label>
+                                <input type="text" id="ci-body-damage" placeholder="Ex: Risco para-choque dianteiro direito, sem avarias..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Pertences Deixados no Veículo</label>
+                                <input type="text" id="ci-belongings" placeholder="Ex: Estepe, macaco, chave de roda, cadeirinha..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Relato do Cliente / Sintomas Apresentados *</label>
+                            <textarea id="ci-complaint" rows="3" placeholder="Descreva detalhadamente o motivo da visita, barulhos, falhas ou serviços solicitados..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm"></textarea>
+                        </div>
+                    </div>
+                </form>
+            `;
+
+            const footerHtml = `
+                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-200 transition">Cancelar</button>
+                <button type="button" onclick="submitCheckin()" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow flex items-center gap-2 transition">
+                    <i class="fa-solid fa-check"></i> Finalizar Check-in & Enviar p/ Diagnóstico
+                </button>
+            `;
+
+            openModal({
+                title: 'Etapa 1: Check-in de Veículo (Recepção)',
+                icon: 'fa-clipboard-check',
+                bodyHtml,
+                footerHtml
+            });
+
+            if (preselectedClientId) {
+                onCheckinClientSelectChange();
+            }
+        }
+
+        function toggleCheckinClientMode() {
+            const mode = document.querySelector('input[name="clientMode"]:checked').value;
+            const existingBox = document.getElementById('checkin-existing-client-box');
+            const newBox = document.getElementById('checkin-new-client-box');
+
+            if (mode === 'existing') {
+                existingBox.classList.remove('hidden');
+                newBox.classList.add('hidden');
+            } else {
+                existingBox.classList.add('hidden');
+                newBox.classList.remove('hidden');
+                // Se é novo cliente, obrigatoriamente é novo veículo
+                document.querySelector('input[name="vehicleMode"][value="new"]').checked = true;
+                toggleCheckinVehicleMode();
+            }
+        }
+
+        function toggleCheckinVehicleMode() {
+            const mode = document.querySelector('input[name="vehicleMode"]:checked').value;
+            const exVBox = document.getElementById('checkin-existing-vehicle-box');
+            const newVBox = document.getElementById('checkin-new-vehicle-box');
+            const kmExWrap = document.getElementById('ci-km-existing-wrapper');
+
+            if (mode === 'existing') {
+                exVBox.classList.remove('hidden');
+                newVBox.classList.add('hidden');
+                kmExWrap.classList.remove('hidden');
+            } else {
+                exVBox.classList.add('hidden');
+                newVBox.classList.remove('hidden');
+                kmExWrap.classList.add('hidden');
+            }
+        }
+
+        function onCheckinClientSelectChange() {
+            const clientId = document.getElementById('ci-client-select').value;
+            const vSelect = document.getElementById('ci-vehicle-select');
+            const vehicles = db.vehicles.filter(v => v.clientId === clientId);
+
+            if (vehicles.length > 0) {
+                vSelect.innerHTML = vehicles.map(v =>
+                    `<option value="${v.id}">${escapeHtml(v.plate)} — ${escapeHtml(v.brandModel)} (${escapeHtml(v.year || '')})</option>`
+                ).join('');
+                document.querySelector('input[name="vehicleMode"][value="existing"]').checked = true;
+                toggleCheckinVehicleMode();
+            } else {
+                vSelect.innerHTML = `<option value="">Cliente sem veículos cadastrados</option>`;
+                document.querySelector('input[name="vehicleMode"][value="new"]').checked = true;
+                toggleCheckinVehicleMode();
+            }
+        }
+
+        function submitCheckin() {
+            const clientMode = document.querySelector('input[name="clientMode"]:checked').value;
+            let clientId = '';
+
+            if (clientMode === 'existing') {
+                clientId = document.getElementById('ci-client-select').value;
+                if (!clientId) {
+                    showToast('Selecione um cliente cadastrado ou escolha "+ Novo Cliente".', 'warning');
+                    return;
+                }
+            } else {
+                const name = document.getElementById('ci-new-name').value.trim();
+                const doc = document.getElementById('ci-new-doc').value.trim();
+                const phone = document.getElementById('ci-new-phone').value.trim();
+                const email = document.getElementById('ci-new-email').value.trim();
+
+                if (!name || !phone) {
+                    showToast('Informe pelo menos o Nome e Telefone do novo cliente.', 'warning');
+                    return;
+                }
+
+                clientId = generateId('cli');
+                db.clients.push({
+                    id: clientId,
+                    name,
+                    document: doc,
+                    phone,
+                    email,
+                    createdAt: new Date().toISOString()
+                });
+            }
+
+            const vehicleMode = document.querySelector('input[name="vehicleMode"]:checked').value;
+            let vehicleId = '';
+            let km = 0;
+
+            if (vehicleMode === 'existing') {
+                vehicleId = document.getElementById('ci-vehicle-select').value;
+                km = parseInt(document.getElementById('ci-km-existing').value, 10);
+                if (!vehicleId) {
+                    showToast('Selecione um veículo válido ou cadastre um novo.', 'warning');
+                    return;
+                }
+                if (isNaN(km) || km < 0) {
+                    showToast('Informe a quilometragem (KM) atual de entrada.', 'warning');
+                    return;
+                }
+            } else {
+                const plate = document.getElementById('ci-v-plate').value.trim().toUpperCase();
+                const brandModel = document.getElementById('ci-v-model').value.trim();
+                const year = document.getElementById('ci-v-year').value.trim();
+                const engine = document.getElementById('ci-v-engine').value.trim();
+                km = parseInt(document.getElementById('ci-km').value, 10);
+
+                if (!plate || !brandModel) {
+                    showToast('Informe a Placa e Marca/Modelo do veículo.', 'warning');
+                    return;
+                }
+                if (isNaN(km) || km < 0) {
+                    showToast('Informe a quilometragem (KM) atual do veículo.', 'warning');
+                    return;
+                }
+
+                vehicleId = generateId('veh');
+                db.vehicles.push({
+                    id: vehicleId,
+                    clientId,
+                    plate,
+                    brandModel,
+                    year,
+                    engine
+                });
+            }
+
+            const complaint = document.getElementById('ci-complaint').value.trim();
+            if (!complaint) {
+                showToast('Descreva o relato/sintoma do cliente para orientar o diagnóstico.', 'warning');
+                return;
+            }
+
+            db.lastOsNumber += 1;
+
+            const newOrder = {
+                id: generateId('ord'),
+                osNumber: db.lastOsNumber,
+                clientId,
+                vehicleId,
+                stage: 'DIAGNOSTICO',
+                osSubStatus: 'Aguardando Aprovação',
+                createdAt: new Date().toISOString(),
+                checkin: {
+                    km,
+                    fuel: document.getElementById('ci-fuel').value,
+                    tires: document.getElementById('ci-tires').value,
+                    dashLights: document.getElementById('ci-dash-lights').value.trim() || 'Nenhuma',
+                    bodyDamage: document.getElementById('ci-body-damage').value.trim() || 'Sem avarias aparentes',
+                    belongings: document.getElementById('ci-belongings').value.trim() || 'Padrão (estepe/macaco)',
+                    complaint
+                },
+                diagnosis: {
+                    dtcCodes: '',
+                    testsPerformed: '',
+                    technicalReport: '',
+                    recommendedItems: '',
+                    mechanicName: '',
+                    diagnosedAt: null
+                },
+                parts: [],
+                services: [],
+                discountType: 'R$',
+                discountValue: 0,
+                checkout: null
+            };
+
+            db.orders.unshift(newOrder);
+            saveDatabase();
+            closeModal();
+            showToast(`Check-in concluído! OS #${formatOsNumber(newOrder.osNumber)} enviada para Diagnóstico.`, 'success');
+        }
+
+        /**
+         * =====================================================================
+         * ETAPA 2: MODAL DE DIAGNÓSTICO TÉCNICO
+         * =====================================================================
+         */
+        function openDiagnosisModal(orderId) {
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
+            const client = db.clients.find(c => c.id === order.clientId) || {};
+            const vehicle = db.vehicles.find(v => v.id === order.vehicleId) || {};
+
+            const bodyHtml = `
+                <div class="space-y-4">
+                    <!-- Resumo do Check-in -->
+                    <div class="bg-slate-900 text-white p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-blue-400">OS #${formatOsNumber(order.osNumber)}</span>
+                                <span class="bg-slate-800 px-2 py-0.5 rounded font-mono text-xs font-bold">${escapeHtml(vehicle.plate)}</span>
+                                <span class="text-sm font-bold">${escapeHtml(vehicle.brandModel)}</span>
+                            </div>
+                            <p class="text-xs text-slate-300 mt-1">Cliente: <strong>${escapeHtml(client.name)}</strong> • Entrada: ${Number(order.checkin.km).toLocaleString('pt-BR')} km • Combustível: ${escapeHtml(order.checkin.fuel)}</p>
+                        </div>
+                        <div class="bg-slate-800/90 p-2.5 rounded-lg text-xs max-w-md border border-slate-700">
+                            <span class="text-amber-400 font-bold block mb-0.5">Queixa / Relato do Cliente:</span>
+                            <span class="text-slate-200">${escapeHtml(order.checkin.complaint)}</span>
+                        </div>
+                    </div>
+
+                    <!-- Formulário Técnico -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Códigos de Falha (Scanner OBD-II / DTC)</label>
+                            <input type="text" id="diag-dtc" value="${escapeHtml(order.diagnosis?.dtcCodes || '')}" placeholder="Ex: P0300, P0171 - Falha de ignição cilindro 1" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Mecânico / Técnico Responsável *</label>
+                            <input type="text" id="diag-mechanic" value="${escapeHtml(order.diagnosis?.mechanicName || '')}" placeholder="Nome do técnico" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Testes Realizados (Bateria, Alternador, Pressão Linha, Compressão, etc.)</label>
+                        <input type="text" id="diag-tests" value="${escapeHtml(order.diagnosis?.testsPerformed || '')}" placeholder="Ex: Teste de alternador 14.2V OK; Pressão bomba combustível 3.8 bar; Bobina cil. 1 sem centelha." class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Parecer Técnico Detalhado (Causa Raiz) *</label>
+                        <textarea id="diag-report" rows="3" placeholder="Descreva a causa raiz identificada após inspeção..." class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">${escapeHtml(order.diagnosis?.technicalReport || '')}</textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Peças & Serviços Recomendados (Resumo p/ Orçamento)</label>
+                        <textarea id="diag-recommended" rows="2" placeholder="Ex: 1x Jogo de Velas Iridium, 1x Bobina de Ignição, Limpeza de Bicos e Mão de Obra." class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">${escapeHtml(order.diagnosis?.recommendedItems || '')}</textarea>
+                    </div>
+                </div>
+            `;
+
+            const footerHtml = `
+                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-200 transition">Cancelar</button>
+                <button type="button" onclick="saveDiagnosis('${order.id}', false)" class="bg-slate-700 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition">
+                    Salvar Rascunho
+                </button>
+                <button type="button" onclick="saveDiagnosis('${order.id}', true)" class="bg-amber-500 hover:bg-amber-600 text-white px-5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow flex items-center gap-2 transition">
+                    <i class="fa-solid fa-arrow-right"></i> Aprovar Diagnóstico & Gerar OS
+                </button>
+            `;
+
+            openModal({
+                title: `Etapa 2: Diagnóstico Técnico — OS #${formatOsNumber(order.osNumber)}`,
+                icon: 'fa-stethoscope',
+                bodyHtml,
+                footerHtml
+            });
+        }
+
+        function saveDiagnosis(orderId, advanceToOs) {
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            const mechanicName = document.getElementById('diag-mechanic').value.trim();
+            const technicalReport = document.getElementById('diag-report').value.trim();
+
+            if (advanceToOs && (!mechanicName || !technicalReport)) {
+                showToast('Preencha o Técnico Responsável e o Parecer Técnico antes de avançar para OS.', 'warning');
+                return;
+            }
+
+            order.diagnosis = {
+                dtcCodes: document.getElementById('diag-dtc').value.trim(),
+                mechanicName,
+                testsPerformed: document.getElementById('diag-tests').value.trim(),
+                technicalReport,
+                recommendedItems: document.getElementById('diag-recommended').value.trim(),
+                diagnosedAt: new Date().toISOString()
+            };
+
+            if (advanceToOs) {
+                order.stage = 'OS';
+                order.osSubStatus = 'Aguardando Aprovação';
+                saveDatabase();
+                closeModal();
+                showToast(`Diagnóstico concluído! OS #${formatOsNumber(order.osNumber)} aberta para orçamento/execução.`, 'success');
+                // Abre automaticamente a OS para o usuário já lançar peças/serviços se desejar
+                openOsModal(order.id);
+            } else {
+                saveDatabase();
+                closeModal();
+                showToast('Rascunho de diagnóstico salvo.', 'info');
+            }
+        }
+
+        /**
+         * =====================================================================
+         * ETAPA 3: MODAL DE ORDEM DE SERVIÇO (OS & EXECUÇÃO)
+         * =====================================================================
+         */
+        let activeOsDraft = null;
+
+        function openOsModal(orderId) {
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            // Clona profundamente o estado da OS para edição fluida na modal
+            activeOsDraft = JSON.parse(JSON.stringify(order));
+            if (!activeOsDraft.parts) activeOsDraft.parts = [];
+            if (!activeOsDraft.services) activeOsDraft.services = [];
+
+            const client = db.clients.find(c => c.id === order.clientId) || {};
+            const vehicle = db.vehicles.find(v => v.id === order.vehicleId) || {};
+
+            const bodyHtml = `
+                <div class="space-y-5">
+                    <!-- Cabeçalho de Status da OS -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="bg-blue-600 text-white text-xs font-extrabold px-2.5 py-0.5 rounded-lg">OS #${formatOsNumber(order.osNumber)}</span>
+                                <span class="font-mono font-bold text-sm text-slate-900">${escapeHtml(vehicle.plate)}</span>
+                                <span class="text-sm font-semibold text-slate-700">${escapeHtml(vehicle.brandModel)}</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">Cliente: <strong>${escapeHtml(client.name)}</strong> (${escapeHtml(client.phone || '')})</p>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <label class="text-xs font-bold text-slate-600">Status Execução:</label>
+                            <select id="os-substatus-select" onchange="activeOsDraft.osSubStatus = this.value" class="bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs sm:text-sm font-bold text-slate-800">
+                                <option value="Aguardando Aprovação" ${activeOsDraft.osSubStatus === 'Aguardando Aprovação' ? 'selected' : ''}>Aguardando Aprovação</option>
+                                <option value="Em Execução" ${activeOsDraft.osSubStatus === 'Em Execução' ? 'selected' : ''}>Em Execução</option>
+                                <option value="Aguardando Peça" ${activeOsDraft.osSubStatus === 'Aguardando Peça' ? 'selected' : ''}>Aguardando Peça</option>
+                                <option value="Concluído" ${activeOsDraft.osSubStatus === 'Concluído' ? 'selected' : ''}>Concluído</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Resumo do Parecer Técnico -->
+                    ${order.diagnosis?.technicalReport ? `
+                        <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3 text-xs space-y-1">
+                            <div class="font-bold text-amber-900 flex items-center justify-between">
+                                <span><i class="fa-solid fa-clipboard-list mr-1"></i> Laudo Técnico (${escapeHtml(order.diagnosis.mechanicName || 'Mecânico')})</span>
+                                ${order.diagnosis.dtcCodes ? `<span class="font-mono bg-amber-100 px-1.5 py-0.5 rounded">DTC: ${escapeHtml(order.diagnosis.dtcCodes)}</span>` : ''}
+                            </div>
+                            <p class="text-slate-700">${escapeHtml(order.diagnosis.technicalReport)}</p>
+                            ${order.diagnosis.recommendedItems ? `<p class="text-slate-600"><strong>Recomendação:</strong> ${escapeHtml(order.diagnosis.recommendedItems)}</p>` : ''}
+                        </div>
+                    ` : ''}
+
+                    <!-- Tabela Dinâmica 1: PEÇAS & INSUMOS -->
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                                <i class="fa-solid fa-box-open text-blue-600"></i> Peças & Insumos
+                            </h3>
+                            <button type="button" onclick="addOsItem('parts')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold px-3 py-1.5 rounded-lg transition">
+                                + Adicionar Peça
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 text-[11px] font-bold uppercase text-slate-600 border-b border-slate-200">
+                                        <th class="py-2 px-3">Descrição da Peça</th>
+                                        <th class="py-2 px-3 w-28">Cód / Ref</th>
+                                        <th class="py-2 px-3 w-20 text-center">Qtd</th>
+                                        <th class="py-2 px-3 w-32 text-right">Valor Unit. (R$)</th>
+                                        <th class="py-2 px-3 w-28 text-right">Subtotal</th>
+                                        <th class="py-2 px-2 w-10"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="os-parts-tbody" class="divide-y divide-slate-100 text-xs">
+                                    <!-- Renderizado via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tabela Dinâmica 2: MÃO DE OBRA & SERVIÇOS -->
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                                <i class="fa-solid fa-wrench text-blue-600"></i> Mão de Obra & Serviços
+                            </h3>
+                            <button type="button" onclick="addOsItem('services')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold px-3 py-1.5 rounded-lg transition">
+                                + Adicionar Serviço
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 text-[11px] font-bold uppercase text-slate-600 border-b border-slate-200">
+                                        <th class="py-2 px-3">Descrição do Serviço / Mão de Obra</th>
+                                        <th class="py-2 px-3 w-24 text-center">Horas/Qtd</th>
+                                        <th class="py-2 px-3 w-32 text-right">Valor Unit. (R$)</th>
+                                        <th class="py-2 px-3 w-28 text-right">Subtotal</th>
+                                        <th class="py-2 px-2 w-10"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="os-services-tbody" class="divide-y divide-slate-100 text-xs">
+                                    <!-- Renderizado via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Resumo Financeiro e Descontos -->
+                    <div class="bg-slate-900 text-white rounded-xl p-4 grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                        <div class="flex items-center gap-2">
+                            <label class="text-xs font-semibold text-slate-300">Desconto:</label>
+                            <select id="os-discount-type" onchange="updateOsDiscount()" class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs font-bold text-white">
+                                <option value="R$" ${activeOsDraft.discountType === 'R$' ? 'selected' : ''}>R$ (Fixo)</option>
+                                <option value="%" ${activeOsDraft.discountType === '%' ? 'selected' : ''}>% (Percentual)</option>
+                            </select>
+                            <input type="number" id="os-discount-val" value="${activeOsDraft.discountValue || 0}" min="0" step="0.01" oninput="updateOsDiscount()" class="w-28 bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white">
+                        </div>
+
+                        <div id="os-totals-summary" class="space-y-1 text-right text-xs">
+                            <!-- Atualizado dinamicamente -->
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const footerHtml = `
+                <button type="button" onclick="saveOsDraft(false, true)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition mr-auto">
+                    <i class="fa-solid fa-print"></i> Salvar & Imprimir OS
+                </button>
+                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-200 transition">Fechar</button>
+                <button type="button" onclick="saveOsDraft(false, false)" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition">
+                    Salvar OS
+                </button>
+                <button type="button" onclick="saveOsDraft(true, false)" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-flag-checkered"></i> Concluir Serviço p/ Check-out
+                </button>
+            `;
+
+            openModal({
+                title: `Etapa 3: Ordem de Serviço #${formatOsNumber(order.osNumber)}`,
+                icon: 'fa-file-invoice-dollar',
+                bodyHtml,
+                footerHtml,
+                maxWidth: 'max-w-5xl'
+            });
+
+            renderOsTables();
+        }
+
+        function renderOsTables() {
+            const partsTbody = document.getElementById('os-parts-tbody');
+            const servicesTbody = document.getElementById('os-services-tbody');
+
+            if (activeOsDraft.parts.length === 0) {
+                partsTbody.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-slate-400">Nenhuma peça adicionada. Clique em "+ Adicionar Peça".</td></tr>`;
+            } else {
+                partsTbody.innerHTML = activeOsDraft.parts.map((p, idx) => {
+                    const sub = (parseFloat(p.qty) || 0) * (parseFloat(p.unitPrice) || 0);
+                    return `
+                        <tr>
+                            <td class="p-2"><input type="text" value="${escapeHtml(p.desc)}" onchange="updateOsItem('parts', ${idx}, 'desc', this.value)" placeholder="Ex: Filtro de Óleo" class="w-full border border-slate-200 rounded-lg px-2 py-1"></td>
+                            <td class="p-2"><input type="text" value="${escapeHtml(p.code || '')}" onchange="updateOsItem('parts', ${idx}, 'code', this.value)" placeholder="REF-01" class="w-full border border-slate-200 rounded-lg px-2 py-1 font-mono"></td>
+                            <td class="p-2"><input type="number" value="${p.qty}" min="1" step="1" onchange="updateOsItem('parts', ${idx}, 'qty', this.value)" class="w-full border border-slate-200 rounded-lg px-2 py-1 text-center"></td>
+                            <td class="p-2"><input type="number" value="${p.unitPrice}" min="0" step="0.01" onchange="updateOsItem('parts', ${idx}, 'unitPrice', this.value)" class="w-full border border-slate-200 rounded-lg px-2 py-1 text-right"></td>
+                            <td class="p-2 text-right font-bold text-slate-800">${formatCurrency(sub)}</td>
+                            <td class="p-2 text-center"><button type="button" onclick="removeOsItem('parts', ${idx})" class="text-rose-500 hover:text-rose-700"><i class="fa-solid fa-trash"></i></button></td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            if (activeOsDraft.services.length === 0) {
+                servicesTbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-400">Nenhum serviço adicionado. Clique em "+ Adicionar Serviço".</td></tr>`;
+            } else {
+                servicesTbody.innerHTML = activeOsDraft.services.map((s, idx) => {
+                    const sub = (parseFloat(s.qty) || 0) * (parseFloat(s.unitPrice) || 0);
+                    return `
+                        <tr>
+                            <td class="p-2"><input type="text" value="${escapeHtml(s.desc)}" onchange="updateOsItem('services', ${idx}, 'desc', this.value)" placeholder="Ex: Troca de óleo e filtros" class="w-full border border-slate-200 rounded-lg px-2 py-1"></td>
+                            <td class="p-2"><input type="number" value="${s.qty}" min="0.5" step="0.5" onchange="updateOsItem('services', ${idx}, 'qty', this.value)" class="w-full border border-slate-200 rounded-lg px-2 py-1 text-center"></td>
+                            <td class="p-2"><input type="number" value="${s.unitPrice}" min="0" step="0.01" onchange="updateOsItem('services', ${idx}, 'unitPrice', this.value)" class="w-full border border-slate-200 rounded-lg px-2 py-1 text-right"></td>
+                            <td class="p-2 text-right font-bold text-slate-800">${formatCurrency(sub)}</td>
+                            <td class="p-2 text-center"><button type="button" onclick="removeOsItem('services', ${idx})" class="text-rose-500 hover:text-rose-700"><i class="fa-solid fa-trash"></i></button></td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            renderOsSummaryBox();
+        }
+
+        function addOsItem(type) {
+            if (type === 'parts') {
+                activeOsDraft.parts.push({ desc: '', code: '', qty: 1, unitPrice: 0 });
+            } else {
+                activeOsDraft.services.push({ desc: '', qty: 1, unitPrice: 0 });
+            }
+            renderOsTables();
+        }
+
+        function updateOsItem(type, index, field, value) {
+            if (field === 'qty' || field === 'unitPrice') {
+                activeOsDraft[type][index][field] = parseFloat(value) || 0;
+            } else {
+                activeOsDraft[type][index][field] = value;
+            }
+            renderOsTables();
+        }
+
+        function removeOsItem(type, index) {
+            activeOsDraft[type].splice(index, 1);
+            renderOsTables();
+        }
+
+        function updateOsDiscount() {
+            activeOsDraft.discountType = document.getElementById('os-discount-type').value;
+            activeOsDraft.discountValue = parseFloat(document.getElementById('os-discount-val').value) || 0;
+            renderOsSummaryBox();
+        }
+
+        function renderOsSummaryBox() {
+            const totals = calculateOrderTotals(activeOsDraft);
+            document.getElementById('os-totals-summary').innerHTML = `
+                <div class="text-slate-300">Peças: <strong>${formatCurrency(totals.partsTotal)}</strong> | Serviços: <strong>${formatCurrency(totals.servicesTotal)}</strong></div>
+                <div class="text-slate-400">Subtotal: ${formatCurrency(totals.subtotal)} | Desconto: -${formatCurrency(totals.discountAmount)}</div>
+                <div class="text-base sm:text-lg font-extrabold text-emerald-400 pt-0.5">TOTAL DA OS: ${formatCurrency(totals.grandTotal)}</div>
+            `;
+        }
+
+        function saveOsDraft(advanceToCheckout, triggerPrint) {
+            const idx = db.orders.findIndex(o => o.id === activeOsDraft.id);
+            if (idx === -1) return;
+
+            // Filtra linhas totalmente vazias
+            activeOsDraft.parts = activeOsDraft.parts.filter(p => p.desc.trim() !== '');
+            activeOsDraft.services = activeOsDraft.services.filter(s => s.desc.trim() !== '');
+
+            if (advanceToCheckout) {
+                if (activeOsDraft.parts.length === 0 && activeOsDraft.services.length === 0) {
+                    showToast('Adicione pelo menos uma peça ou serviço antes de concluir a OS.', 'warning');
+                    return;
+                }
+                activeOsDraft.osSubStatus = 'Concluído';
+                activeOsDraft.stage = 'CHECKOUT';
+            }
+
+            db.orders[idx] = activeOsDraft;
+            saveDatabase();
+
+            if (triggerPrint) {
+                printDocument(activeOsDraft.id, 'OS');
+                return;
+            }
+
+            closeModal();
+            if (advanceToCheckout) {
+                showToast(`OS #${formatOsNumber(activeOsDraft.osNumber)} concluída e enviada para Check-out!`, 'success');
+            } else {
+                showToast(`OS #${formatOsNumber(activeOsDraft.osNumber)} atualizada com sucesso.`, 'success');
+            }
+        }
+
+        /**
+         * =====================================================================
+         * ETAPA 4: MODAL DE CHECK-OUT (ENTREGA, GARANTIA & FATURAMENTO)
+         * =====================================================================
+         */
+        function openCheckoutModal(orderId) {
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
+            const client = db.clients.find(c => c.id === order.clientId) || {};
+            const vehicle = db.vehicles.find(v => v.id === order.vehicleId) || {};
+            const totals = calculateOrderTotals(order);
+
+            const bodyHtml = `
+                <div class="space-y-5">
+                    <!-- Resumo Financeiro e do Veículo -->
+                    <div class="bg-slate-900 text-white p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <span class="text-xs font-bold text-purple-400">CHECK-OUT — OS #${formatOsNumber(order.osNumber)}</span>
+                            <h3 class="text-base font-bold mt-0.5">${escapeHtml(vehicle.plate)} — ${escapeHtml(vehicle.brandModel)}</h3>
+                            <p class="text-xs text-slate-300">Cliente: ${escapeHtml(client.name)} • KM Entrada: ${Number(order.checkin.km).toLocaleString('pt-BR')} km</p>
+                        </div>
+                        <div class="bg-slate-800 px-4 py-2.5 rounded-xl border border-slate-700 text-right">
+                            <span class="text-[11px] uppercase text-slate-400 block">Valor Final a Receber</span>
+                            <span class="text-xl font-extrabold text-emerald-400">${formatCurrency(totals.grandTotal)}</span>
+                        </div>
+                    </div>
+
+                    <!-- Conferência Final de Entrega -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                        <h4 class="text-sm font-bold text-slate-800">Conferência Técnica de Saída & Garantia</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Quilometragem de Saída (KM) *</label>
+                                <input type="number" id="co-km-out" value="${order.checkin.km}" min="${order.checkin.km}" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Termo de Garantia (Dias / KM)</label>
+                                <input type="text" id="co-warranty" value="90 dias ou 5.000 km (o que ocorrer primeiro)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-4 pt-1">
+                            <label class="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                                <input type="checkbox" id="co-road-test" checked class="w-4 h-4 rounded text-blue-600">
+                                Teste de rodagem / qualidade realizado
+                            </label>
+                            <label class="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                                <input type="checkbox" id="co-old-parts" checked class="w-4 h-4 rounded text-blue-600">
+                                Peças substituídas devolvidas ao cliente
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Faturamento / Pagamento -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                        <h4 class="text-sm font-bold text-slate-800">Faturamento & Recebimento</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Forma de Pagamento</label>
+                                <select id="co-payment-method" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-semibold">
+                                    <option value="PIX">PIX Instantâneo</option>
+                                    <option value="Cartão de Crédito">Cartão de Crédito</option>
+                                    <option value="Cartão de Débito">Cartão de Débito</option>
+                                    <option value="Dinheiro">Dinheiro</option>
+                                    <option value="Faturado / Boleto">Faturado / Boleto</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Status do Pagamento</label>
+                                <select id="co-payment-status" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold">
+                                    <option value="Pago">Pago (Quitado no ato)</option>
+                                    <option value="Pendente">Pendente (A receber)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Observações Finais / Recomendações Próxima Revisão</label>
+                            <input type="text" id="co-notes" placeholder="Ex: Retornar em 10.000 km para troca de óleo e revisão de freios." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const footerHtml = `
+                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-200 transition">Cancelar</button>
+                <button type="button" onclick="submitCheckout('${order.id}', false)" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition">
+                    Finalizar Entrega
+                </button>
+                <button type="button" onclick="submitCheckout('${order.id}', true)" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow flex items-center gap-2 transition">
+                    <i class="fa-solid fa-print"></i> Finalizar & Imprimir Recibo de Garantia
+                </button>
+            `;
+
+            openModal({
+                title: `Etapa 4: Check-out & Entrega — OS #${formatOsNumber(order.osNumber)}`,
+                icon: 'fa-flag-checkered',
+                bodyHtml,
+                footerHtml
+            });
+        }
+
+        function submitCheckout(orderId, shouldPrintReceipt) {
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            const kmOut = parseInt(document.getElementById('co-km-out').value, 10);
+            if (isNaN(kmOut) || kmOut < order.checkin.km) {
+                showToast('A KM de saída deve ser maior ou igual à KM de entrada.', 'warning');
+                return;
+            }
+
+            order.checkout = {
+                kmOut,
+                warranty: document.getElementById('co-warranty').value.trim(),
+                roadTest: document.getElementById('co-road-test').checked,
+                oldPartsReturned: document.getElementById('co-old-parts').checked,
+                paymentMethod: document.getElementById('co-payment-method').value,
+                paymentStatus: document.getElementById('co-payment-status').value,
+                notes: document.getElementById('co-notes').value.trim(),
+                completedAt: new Date().toISOString()
+            };
+
+            order.stage = 'CONCLUIDO';
+            saveDatabase();
+            closeModal();
+            showToast(`Check-out da OS #${formatOsNumber(order.osNumber)} finalizado com sucesso!`, 'success');
+
+            if (shouldPrintReceipt) {
+                printDocument(order.id, 'CHECKOUT');
+            }
+        }
+
+        /**
+         * =====================================================================
+         * IMPRESSÃO FORMATADA A4 (@media print) — OS E RECIBO DE CHECK-OUT
+         * =====================================================================
+         */
+        function printDocument(orderId, docType) {
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            const client = db.clients.find(c => c.id === order.clientId) || {};
+            const vehicle = db.vehicles.find(v => v.id === order.vehicleId) || {};
+            const totals = calculateOrderTotals(order);
+            const ws = db.workshop;
+            const isCheckout = docType === 'CHECKOUT';
+
+            const docTitle = isCheckout
+                ? `COMPROVANTE DE ENTREGA, GARANTIA E RECIBO — OS #${formatOsNumber(order.osNumber)}`
+                : `ORDEM DE SERVIÇO AUTOMOTIVA — OS #${formatOsNumber(order.osNumber)}`;
+
+            const partsRows = (order.parts || []).map((p, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${escapeHtml(p.desc)}</td>
+                    <td>${escapeHtml(p.code || '-')}</td>
+                    <td style="text-align:center;">${p.qty}</td>
+                    <td style="text-align:right;">${formatCurrency(p.unitPrice)}</td>
+                    <td style="text-align:right; font-weight:bold;">${formatCurrency(p.qty * p.unitPrice)}</td>
+                </tr>
+            `).join('') || `<tr><td colspan="6" style="text-align:center; color:#64748b;">Nenhuma peça lançada nesta OS.</td></tr>`;
+
+            const servicesRows = (order.services || []).map((s, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${escapeHtml(s.desc)}</td>
+                    <td style="text-align:center;">${s.qty}</td>
+                    <td style="text-align:right;">${formatCurrency(s.unitPrice)}</td>
+                    <td style="text-align:right; font-weight:bold;">${formatCurrency(s.qty * s.unitPrice)}</td>
+                </tr>
+            `).join('') || `<tr><td colspan="5" style="text-align:center; color:#64748b;">Nenhum serviço lançado nesta OS.</td></tr>`;
+
+            const printArea = document.getElementById('print-container');
+            printArea.innerHTML = `
+                <div style="font-family: 'Inter', Arial, sans-serif; color: #0f172a;">
+                    <!-- Cabeçalho da Oficina -->
+                    <div class="print-box" style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc;">
+                        <div>
+                            <h1 style="font-size:15pt; font-weight:800; margin:0; color:#0f172a;">${escapeHtml(ws.name)}</h1>
+                            <p style="font-size:8.5pt; margin:2px 0; color:#334155;">CNPJ: ${escapeHtml(ws.cnpj)} | Tel/WhatsApp: ${escapeHtml(ws.phone)}</p>
+                            <p style="font-size:8.5pt; margin:0; color:#334155;">${escapeHtml(ws.address)}</p>
+                        </div>
+                        <div style="text-align:right; border-left:2px solid #0f172a; padding-left:12px;">
+                            <div style="font-size:12pt; font-weight:800;">OS #${formatOsNumber(order.osNumber)}</div>
+                            <div style="font-size:8.5pt; color:#475569;">Entrada: ${formatDateTime(order.createdAt)}</div>
+                            ${isCheckout && order.checkout ? `<div style="font-size:8.5pt; color:#475569;">Saída: ${formatDateTime(order.checkout.completedAt)}</div>` : ''}
+                        </div>
+                    </div>
+
+                    <!-- Faixa Título Documento -->
+                    <div style="background:#0f172a; color:#ffffff; padding:6px 10px; font-weight:700; font-size:10pt; border-radius:4px; margin-bottom:10px; text-align:center; -webkit-print-color-adjust:exact; print-color-adjust:exact;">
+                        ${docTitle}
+                    </div>
+
+                    <!-- Dados do Cliente e Veículo -->
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+                        <div class="print-box" style="margin-bottom:0;">
+                            <div style="font-weight:700; font-size:9pt; border-bottom:1px solid #cbd5e1; padding-bottom:3px; margin-bottom:5px;">DADOS DO CLIENTE</div>
+                            <p style="font-size:9pt; margin:2px 0;"><strong>Nome:</strong> ${escapeHtml(client.name)}</p>
+                            <p style="font-size:9pt; margin:2px 0;"><strong>CPF/CNPJ:</strong> ${escapeHtml(client.document || 'Não informado')}</p>
+                            <p style="font-size:9pt; margin:2px 0;"><strong>Telefone:</strong> ${escapeHtml(client.phone || '-')}</p>
+                        </div>
+                        <div class="print-box" style="margin-bottom:0;">
+                            <div style="font-weight:700; font-size:9pt; border-bottom:1px solid #cbd5e1; padding-bottom:3px; margin-bottom:5px;">DADOS DO VEÍCULO</div>
+                            <p style="font-size:9pt; margin:2px 0;"><strong>Veículo:</strong> ${escapeHtml(vehicle.brandModel)} (${escapeHtml(vehicle.year || '-')})</p>
+                            <p style="font-size:9pt; margin:2px 0;"><strong>Placa:</strong> <span style="font-family:monospace; font-weight:bold;">${escapeHtml(vehicle.plate)}</span> | <strong>Motor:</strong> ${escapeHtml(vehicle.engine || '-')}</p>
+                            <p style="font-size:9pt; margin:2px 0;"><strong>KM Entrada:</strong> ${Number(order.checkin.km).toLocaleString('pt-BR')} km ${order.checkout ? `| <strong>KM Saída:</strong> ${Number(order.checkout.kmOut).toLocaleString('pt-BR')} km` : ''}</p>
+                        </div>
+                    </div>
+
+                    <!-- Checklist de Entrada & Diagnóstico -->
+                    <div class="print-box">
+                        <div style="font-weight:700; font-size:9pt; border-bottom:1px solid #cbd5e1; padding-bottom:3px; margin-bottom:5px;">CHECK-IN & DIAGNÓSTICO TÉCNICO</div>
+                        <p style="font-size:8.5pt; margin:2px 0;"><strong>Checklist Entrada:</strong> Combustível: ${escapeHtml(order.checkin.fuel)} | Pneus: ${escapeHtml(order.checkin.tires)} | Luzes Painel: ${escapeHtml(order.checkin.dashLights)} | Avarias: ${escapeHtml(order.checkin.bodyDamage)}</p>
+                        <p style="font-size:8.5pt; margin:3px 0;"><strong>Relato do Cliente:</strong> ${escapeHtml(order.checkin.complaint)}</p>
+                        ${order.diagnosis?.technicalReport ? `
+                            <p style="font-size:8.5pt; margin:3px 0;"><strong>Laudo Técnico (${escapeHtml(order.diagnosis.mechanicName || 'Técnico')}):</strong> ${escapeHtml(order.diagnosis.technicalReport)} ${order.diagnosis.dtcCodes ? `[DTC: ${escapeHtml(order.diagnosis.dtcCodes)}]` : ''}</p>
+                        ` : ''}
+                    </div>
+
+                    <!-- Tabela de Peças -->
+                    <div style="font-weight:700; font-size:9pt; margin-bottom:4px;">PEÇAS E INSUMOS UTILIZADOS</div>
+                    <table class="print-table">
+                        <thead>
+                            <tr>
+                                <th style="width:30px;">#</th>
+                                <th>Descrição</th>
+                                <th style="width:90px;">Ref/Cód</th>
+                                <th style="width:45px; text-align:center;">Qtd</th>
+                                <th style="width:85px; text-align:right;">Unitário</th>
+                                <th style="width:90px; text-align:right;">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>${partsRows}</tbody>
+                    </table>
+
+                    <!-- Tabela de Serviços -->
+                    <div style="font-weight:700; font-size:9pt; margin-bottom:4px;">MÃO DE OBRA E SERVIÇOS EXECUTADOS</div>
+                    <table class="print-table">
+                        <thead>
+                            <tr>
+                                <th style="width:30px;">#</th>
+                                <th>Descrição do Serviço</th>
+                                <th style="width:65px; text-align:center;">Horas/Qtd</th>
+                                <th style="width:85px; text-align:right;">Unitário</th>
+                                <th style="width:90px; text-align:right;">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>${servicesRows}</tbody>
+                    </table>
+
+                    <!-- Totais -->
+                    <div class="print-box" style="display:flex; justify-content:space-between; align-items:flex-start; background:#f8fafc;">
+                        <div style="font-size:8.5pt; max-width:60%;">
+                            ${isCheckout && order.checkout ? `
+                                <p style="margin:2px 0;"><strong>Forma de Pagamento:</strong> ${escapeHtml(order.checkout.paymentMethod)} (${escapeHtml(order.checkout.paymentStatus)})</p>
+                                <p style="margin:2px 0;"><strong>Garantia:</strong> ${escapeHtml(order.checkout.warranty)}</p>
+                                <p style="margin:2px 0;"><strong>Conferência:</strong> Teste rodagem: ${order.checkout.roadTest ? 'Sim' : 'Não'} | Peças velhas devolvidas: ${order.checkout.oldPartsReturned ? 'Sim' : 'Não'}</p>
+                                ${order.checkout.notes ? `<p style="margin:2px 0;"><strong>Obs:</strong> ${escapeHtml(order.checkout.notes)}</p>` : ''}
+                            ` : `
+                                <p style="margin:2px 0;"><strong>Status da OS:</strong> ${escapeHtml(order.osSubStatus)}</p>
+                                <p style="margin:2px 0; color:#475569;">Orçamento sujeito à aprovação prévia do cliente antes da execução de serviços adicionais.</p>
+                            `}
+                        </div>
+                        <div style="text-align:right; font-size:9.5pt;">
+                            <div>Total Peças: <strong>${formatCurrency(totals.partsTotal)}</strong></div>
+                            <div>Total Serviços: <strong>${formatCurrency(totals.servicesTotal)}</strong></div>
+                            ${totals.discountAmount > 0 ? `<div>Desconto: <strong>-${formatCurrency(totals.discountAmount)}</strong></div>` : ''}
+                            <div style="font-size:12pt; font-weight:800; border-top:1px solid #0f172a; margin-top:4px; padding-top:4px;">
+                                TOTAL GERAL: ${formatCurrency(totals.grandTotal)}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Assinaturas -->
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px; margin-top:28px; text-align:center; font-size:8.5pt;">
+                        <div>
+                            <div style="border-top:1px solid #0f172a; padding-top:4px;">
+                                <strong>${escapeHtml(ws.name)}</strong><br>Responsável Técnico / Consultor
+                            </div>
+                        </div>
+                        <div>
+                            <div style="border-top:1px solid #0f172a; padding-top:4px;">
+                                <strong>${escapeHtml(client.name)}</strong><br>${isCheckout ? 'Declaro ter recebido o veículo e o termo de garantia' : 'Autorizo a execução dos serviços acima'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Dispara diálogo nativo de impressão do navegador
+            setTimeout(() => {
+                window.print();
+            }, 150);
+        }
+
+        /**
+         * =====================================================================
+         * MODAIS AUXILIARES: CADASTRO CLIENTE/VEÍCULO, CONFIG OFICINA E BACKUP
+         * =====================================================================
+         */
+        function openClientVehicleModal() {
+            const clientOptions = db.clients.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+
+            const bodyHtml = `
+                <div class="space-y-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                        <h4 class="text-sm font-bold text-slate-800">Cadastrar Novo Cliente</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="db-c-name" placeholder="Nome Completo *" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
+                            <input type="text" id="db-c-doc" placeholder="CPF / CNPJ" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
+                            <input type="text" id="db-c-phone" placeholder="Telefone / WhatsApp *" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
+                            <input type="email" id="db-c-email" placeholder="E-mail" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
+                        </div>
+                        <button type="button" onclick="saveNewClientOnly()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition">
+                            Salvar Cliente
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                        <h4 class="text-sm font-bold text-slate-800">Vincular Novo Veículo a Cliente Existente</h4>
+                        <select id="db-v-client" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
+                            <option value="">-- Selecione o Proprietário --</option>
+                            ${clientOptions}
+                        </select>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="db-v-plate" placeholder="Placa (ABC-1234) *" maxlength="8" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white uppercase font-mono">
+                            <input type="text" id="db-v-model" placeholder="Marca / Modelo *" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
+                            <input type="text" id="db-v-year" placeholder="Ano (Ex: 2020)" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
+                            <input type="text" id="db-v-engine" placeholder="Motorização (Ex: 1.6 MSI)" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
+                        </div>
+                        <button type="button" onclick="saveNewVehicleOnly()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl transition">
+                            Vincular Veículo
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            openModal({
+                title: 'Cadastro Rápido no Banco de Dados',
+                icon: 'fa-user-plus',
+                bodyHtml,
+                footerHtml: `<button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-200">Fechar</button>`,
+                maxWidth: 'max-w-2xl'
+            });
+        }
+
+        function saveNewClientOnly() {
+            const name = document.getElementById('db-c-name').value.trim();
+            const phone = document.getElementById('db-c-phone').value.trim();
+            if (!name || !phone) {
+                showToast('Preencha Nome e Telefone do cliente.', 'warning');
+                return;
+            }
+            db.clients.push({
+                id: generateId('cli'),
+                name,
+                document: document.getElementById('db-c-doc').value.trim(),
+                phone,
+                email: document.getElementById('db-c-email').value.trim(),
+                createdAt: new Date().toISOString()
+            });
+            saveDatabase();
+            closeModal();
+            showToast('Cliente cadastrado no banco com sucesso!', 'success');
+        }
+
+        function saveNewVehicleOnly() {
+            const clientId = document.getElementById('db-v-client').value;
+            const plate = document.getElementById('db-v-plate').value.trim().toUpperCase();
+            const brandModel = document.getElementById('db-v-model').value.trim();
+            if (!clientId || !plate || !brandModel) {
+                showToast('Selecione o cliente e informe Placa e Modelo.', 'warning');
+                return;
+            }
+            db.vehicles.push({
+                id: generateId('veh'),
+                clientId,
+                plate,
+                brandModel,
+                year: document.getElementById('db-v-year').value.trim(),
+                engine: document.getElementById('db-v-engine').value.trim()
+            });
+            saveDatabase();
+            closeModal();
+            showToast('Veículo vinculado ao cliente!', 'success');
+        }
+
+        function openWorkshopSettingsModal() {
+            const ws = db.workshop;
+            const bodyHtml = `
+                <div class="space-y-3">
+                    <p class="text-xs text-slate-500">Estas informações aparecem no cabeçalho das Ordens de Serviço e Recibos impressos.</p>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Nome / Razão Social da Oficina</label>
+                        <input type="text" id="ws-name" value="${escapeHtml(ws.name)}" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">CNPJ</label>
+                            <input type="text" id="ws-cnpj" value="${escapeHtml(ws.cnpj)}" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Telefone / WhatsApp</label>
+                            <input type="text" id="ws-phone" value="${escapeHtml(ws.phone)}" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Endereço Completo</label>
+                        <input type="text" id="ws-address" value="${escapeHtml(ws.address)}" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                    </div>
+                </div>
+            `;
+            const footerHtml = `
+                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-200">Cancelar</button>
+                <button type="button" onclick="saveWorkshopSettings()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold">Salvar Dados</button>
+            `;
+            openModal({
+                title: 'Configurações da Oficina (Impressão)',
+                icon: 'fa-building',
+                bodyHtml,
+                footerHtml,
+                maxWidth: 'max-w-xl'
+            });
+        }
+
+        function saveWorkshopSettings() {
+            db.workshop.name = document.getElementById('ws-name').value.trim() || db.workshop.name;
+            db.workshop.cnpj = document.getElementById('ws-cnpj').value.trim();
+            db.workshop.phone = document.getElementById('ws-phone').value.trim();
+            db.workshop.address = document.getElementById('ws-address').value.trim();
+            updateHeaderWorkshop();
+            saveDatabase();
+            closeModal();
+            showToast('Dados da oficina atualizados!', 'success');
+        }
+
+        /**
+         * Exportação e Importação JSON (Backup)
+         */
+        function exportDatabaseJson() {
+            const dataStr = JSON.stringify(db, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const dateTag = new Date().toISOString().slice(0, 10);
+            a.href = url;
+            a.download = `backup_oficina_autotech_${dateTag}.json`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+            showToast('Backup JSON exportado com sucesso!', 'success');
+        }
+
+        function importDatabaseJson(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (!imported.clients || !imported.vehicles || !imported.orders) {
+                        throw new Error('Estrutura de arquivo inválida.');
+                    }
+                    db = imported;
+                    updateHeaderWorkshop();
+                    saveDatabase();
+                    showToast('Banco de dados restaurado com sucesso!', 'success');
+                } catch (err) {
+                    showToast('Arquivo JSON inválido ou corrompido.', 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        /**
+         * Popula dados realistas de demonstração
+         */
+        function seedDemoData(notify = true) {
+            const c1 = generateId('cli');
+            const c2 = generateId('cli');
+            const c3 = generateId('cli');
+
+            const v1 = generateId('veh');
+            const v2 = generateId('veh');
+            const v3 = generateId('veh');
+
+            db.clients = [
+                { id: c1, name: 'Roberto Almeida Mendes', document: '345.678.910-11', phone: '(11) 99123-4567', email: 'roberto.mendes@email.com', createdAt: new Date().toISOString() },
+                { id: c2, name: 'Fernanda Costa Oliveira', document: '221.456.789-00', phone: '(11) 98456-7890', email: 'fernanda.costa@email.com', createdAt: new Date().toISOString() },
+                { id: c3, name: 'Transportadora Rápida Express LTDA', document: '33.444.555/0001-66', phone: '(11) 3344-5566', email: 'frota@rapidaexpress.com.br', createdAt: new Date().toISOString() }
+            ];
+
+            db.vehicles = [
+                { id: v1, clientId: c1, plate: 'FGH-4E21', brandModel: 'Toyota Corolla XEi 2.0', year: '2021', engine: '2.0 Dual VVT-i' },
+                { id: v2, clientId: c2, plate: 'BRA-2E19', brandModel: 'Jeep Compass Longitude', year: '2020', engine: '2.0 Tigershark' },
+                { id: v3, clientId: c3, plate: 'KLM-9988', brandModel: 'Fiat Ducato Cargo', year: '2022', engine: '2.3 MultiJet Diesel' }
+            ];
+
+            db.lastOsNumber = 3;
+
+            db.orders = [
+                {
+                    id: generateId('ord'),
+                    osNumber: 1,
+                    clientId: c1,
+                    vehicleId: v1,
+                    stage: 'DIAGNOSTICO',
+                    osSubStatus: 'Aguardando Aprovação',
+                    createdAt: new Date(Date.now() - 3600 * 1000 * 2).toISOString(),
+                    checkin: {
+                        km: 62450,
+                        fuel: '3/4',
+                        tires: 'Bons',
+                        dashLights: 'Luz de Injeção Eletrônica acesa',
+                        bodyDamage: 'Pequeno risco no para-choque traseiro',
+                        belongings: 'Estepe, macaco e manual no porta-luvas',
+                        complaint: 'Veículo apresentando perda de potência em subidas e luz da injeção acendeu ontem.'
+                    },
+                    diagnosis: {},
+                    parts: [],
+                    services: [],
+                    discountType: 'R$',
+                    discountValue: 0,
+                    checkout: null
+                },
+                {
+                    id: generateId('ord'),
+                    osNumber: 2,
+                    clientId: c2,
+                    vehicleId: v2,
+                    stage: 'OS',
+                    osSubStatus: 'Em Execução',
+                    createdAt: new Date(Date.now() - 3600 * 1000 * 6).toISOString(),
+                    checkin: {
+                        km: 48900,
+                        fuel: '1/2',
+                        tires: 'Meia Vida',
+                        dashLights: 'Aviso de revisão programada',
+                        bodyDamage: 'Sem avarias aparentes',
+                        belongings: 'Padrão',
+                        complaint: 'Revisão dos 50.000 km + ruído metálico ao frear na dianteira.'
+                    },
+                    diagnosis: {
+                        dtcCodes: 'Nenhum DTC ativo',
+                        mechanicName: 'Marcos Silva (Mestre)',
+                        testsPerformed: 'Inspeção de espessura de pastilhas (1.8mm) e discos dianteiros com empenamento.',
+                        technicalReport: 'Pastilhas de freio dianteiras no limite mínimo e discos com desgaste irregular. Recomendado kit freio dianteiro + revisão básica.',
+                        recommendedItems: 'Jogo pastilhas dianteiras, par de discos ventilados, óleo 0W20 e filtros.',
+                        diagnosedAt: new Date(Date.now() - 3600 * 1000 * 4).toISOString()
+                    },
+                    parts: [
+                        { desc: 'Jogo Pastilhas de Freio Dianteira Cerâmica', code: 'PD-884', qty: 1, unitPrice: 280 },
+                        { desc: 'Par de Discos de Freio Ventilados', code: 'DF-412', qty: 1, unitPrice: 460 },
+                        { desc: 'Óleo Sintético 0W20 (Litro)', code: 'OL-020', qty: 5, unitPrice: 68 }
+                    ],
+                    services: [
+                        { desc: 'Substituição de Discos e Pastilhas Dianteiras', qty: 1.5, unitPrice: 140 },
+                        { desc: 'Troca de Óleo e Inspeção Computadorizada', qty: 1, unitPrice: 120 }
+                    ],
+                    discountType: 'R$',
+                    discountValue: 50,
+                    checkout: null
+                },
+                {
+                    id: generateId('ord'),
+                    osNumber: 3,
+                    clientId: c3,
+                    vehicleId: v3,
+                    stage: 'CHECKOUT',
+                    osSubStatus: 'Concluído',
+                    createdAt: new Date(Date.now() - 3600 * 1000 * 24).toISOString(),
+                    checkin: {
+                        km: 112300,
+                        fuel: '1/4',
+                        tires: 'Bons',
+                        dashLights: 'Luz de bateria piscando',
+                        bodyDamage: 'Arranhões leves lateral direita',
+                        belongings: 'Ferramentas da empresa',
+                        complaint: 'Dificuldade na partida pela manhã e falha no carregamento da bateria.'
+                    },
+                    diagnosis: {
+                        dtcCodes: 'P0562 - Tensão baixa do sistema',
+                        mechanicName: 'André Souza',
+                        testsPerformed: 'Alternador gerando apenas 11.9V sob carga.',
+                        technicalReport: 'Regulador de voltagem do alternador danificado e correia poly-V ressecada.',
+                        recommendedItems: 'Regulador de voltagem Bosch + Correia Poly-V.',
+                        diagnosedAt: new Date(Date.now() - 3600 * 1000 * 20).toISOString()
+                    },
+                    parts: [
+                        { desc: 'Regulador de Voltagem Alternador Bosch', code: 'RG-901', qty: 1, unitPrice: 320 },
+                        { desc: 'Correia Poly-V 6PK', code: 'CR-6PK', qty: 1, unitPrice: 95 }
+                    ],
+                    services: [
+                        { desc: 'Remoção, Reparo de Alternador e Testes Elétricos', qty: 2, unitPrice: 150 }
+                    ],
+                    discountType: 'R$',
+                    discountValue: 0,
+                    checkout: null
+                }
+            ];
+
+            saveDatabase();
+            if (notify) {
+                showToast('Dados de demonstração carregados com sucesso!', 'success');
+            }
+        }
+
+        // Inicialização no carregamento da janela
+        window.addEventListener('DOMContentLoaded', () => {
+            loadDatabase();
+            refreshUI();
+        });
+    </script>
+</body>
+
+</html>
