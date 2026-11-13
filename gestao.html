@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -12,6 +12,7 @@
 
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -33,26 +34,27 @@
         /* Estilos personalizados e regras críticas de impressão */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: f1f5f9;
+            background-color: #090d16;
+            color: #e2e8f0;
         }
 
-        /* Scrollbar discreta */
+        /* Scrollbar discreta para tema escuro */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+            background: #090d16;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
+            background: #334155;
             border-radius: 3px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+            background: #475569;
         }
 
         /* Oculta área de impressão na visualização normal de tela */
@@ -86,6 +88,7 @@
                 display: block !important;
                 width: 100%;
                 background: #ffffff;
+                color: #000000;
                 font-size: 11pt;
                 line-height: 1.4;
             }
@@ -122,7 +125,7 @@
 
 </head>
 
-<body class="text-slate-800 antialiased selection:bg-blue-600 selection:text-white">
+<body class="bg-slate-950 text-slate-200 antialiased selection:bg-blue-600 selection:text-white">
 
     <!-- ===================================================================== -->
     <!-- CONTAINER PRINCIPAL DA APLICAÇÃO (OCULTO NA IMPRESSÃO)                -->
@@ -130,7 +133,7 @@
     <div id="app-shell" class="min-h-screen flex flex-col">
 
         <!-- BARRA SUPERIOR / NAVBAR -->
-        <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-30 border-b border-slate-800">
+        <header class="bg-slate-900/95 backdrop-blur-md text-white shadow-lg shadow-black/20 sticky top-0 z-30 border-b border-slate-800">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between py-3 gap-3">
 
@@ -189,99 +192,99 @@
             <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 <!-- KPI 1: Veículos no Pátio -->
                 <div onclick="switchTab('patio')"
-                    class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:border-blue-300 cursor-pointer transition group">
+                    class="bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-800 hover:border-blue-500/50 cursor-pointer transition group">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Veículos no
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Veículos no
                             Pátio</span>
                         <div
-                            class="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 group-hover:bg-blue-50 group-hover:text-blue-600 flex items-center justify-center transition">
+                            class="w-9 h-9 rounded-xl bg-slate-800 text-slate-300 group-hover:bg-blue-500/20 group-hover:text-blue-400 flex items-center justify-center transition">
                             <i class="fa-solid fa-warehouse"></i>
                         </div>
                     </div>
                     <div class="flex items-baseline gap-2">
-                        <span id="kpi-patio" class="text-2xl sm:text-3xl font-extrabold text-slate-900">0</span>
-                        <span class="text-xs text-slate-500">ativos</span>
+                        <span id="kpi-patio" class="text-2xl sm:text-3xl font-extrabold text-white">0</span>
+                        <span class="text-xs text-slate-400">ativos</span>
                     </div>
                 </div>
 
                 <!-- KPI 2: Aguardando Diagnóstico -->
                 <div onclick="switchTab('diagnostico')"
-                    class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:border-amber-300 cursor-pointer transition group">
+                    class="bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-800 hover:border-amber-500/50 cursor-pointer transition group">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Em
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Em
                             Diagnóstico</span>
-                        <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                        <div class="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center">
                             <i class="fa-solid fa-stethoscope"></i>
                         </div>
                     </div>
                     <div class="flex items-baseline gap-2">
-                        <span id="kpi-diagnostico" class="text-2xl sm:text-3xl font-extrabold text-amber-600">0</span>
-                        <span class="text-xs text-slate-500">aguardando laudo</span>
+                        <span id="kpi-diagnostico" class="text-2xl sm:text-3xl font-extrabold text-amber-400">0</span>
+                        <span class="text-xs text-slate-400">aguardando laudo</span>
                     </div>
                 </div>
 
                 <!-- KPI 3: OS em Execução -->
                 <div onclick="switchTab('os')"
-                    class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:border-blue-300 cursor-pointer transition group">
+                    class="bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-800 hover:border-blue-500/50 cursor-pointer transition group">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">OS em
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">OS em
                             Execução</span>
-                        <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                        <div class="w-9 h-9 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center">
                             <i class="fa-solid fa-gears"></i>
                         </div>
                     </div>
                     <div class="flex items-baseline gap-2">
-                        <span id="kpi-os" class="text-2xl sm:text-3xl font-extrabold text-blue-600">0</span>
-                        <span class="text-xs text-slate-500">em serviço / peça</span>
+                        <span id="kpi-os" class="text-2xl sm:text-3xl font-extrabold text-blue-400">0</span>
+                        <span class="text-xs text-slate-400">em serviço / peça</span>
                     </div>
                 </div>
 
                 <!-- KPI 4: Faturamento Concluído -->
                 <div onclick="switchTab('historico')"
-                    class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:border-emerald-300 cursor-pointer transition group">
+                    class="bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-800 hover:border-emerald-500/50 cursor-pointer transition group">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Faturamento
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Faturamento
                             Total</span>
-                        <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                        <div class="w-9 h-9 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
                             <i class="fa-solid fa-sack-dollar"></i>
                         </div>
                     </div>
                     <div class="flex items-baseline gap-1">
                         <span id="kpi-faturamento"
-                            class="text-xl sm:text-2xl font-extrabold text-emerald-600 truncate">R$ 0,00</span>
+                            class="text-xl sm:text-2xl font-extrabold text-emerald-400 truncate">R$ 0,00</span>
                     </div>
                 </div>
             </section>
 
             <!-- NAVEGAÇÃO POR ABAS DO FLUXO OPERACIONAL & BANCO DE DADOS -->
             <nav
-                class="bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200/80 flex overflow-x-auto gap-1 no-scrollbar">
+                class="bg-slate-900 p-1.5 rounded-2xl shadow-sm border border-slate-800 flex overflow-x-auto gap-1 no-scrollbar">
                 <button data-tab="patio" onclick="switchTab('patio')"
                     class="tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition">
                     <i class="fa-solid fa-layer-group"></i>
                     <span>Visão Pátio</span>
                     <span id="badge-patio"
-                        class="bg-slate-200 text-slate-700 text-[11px] px-2 py-0.5 rounded-full">0</span>
+                        class="bg-slate-800 text-slate-300 text-[11px] px-2 py-0.5 rounded-full">0</span>
                 </button>
                 <button data-tab="diagnostico" onclick="switchTab('diagnostico')"
                     class="tab-btn flex-1 min-w-[140px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition">
                     <i class="fa-solid fa-laptop-medical"></i>
                     <span>2. Diagnóstico</span>
                     <span id="badge-diagnostico"
-                        class="bg-amber-100 text-amber-800 text-[11px] px-2 py-0.5 rounded-full">0</span>
+                        class="bg-amber-500/20 text-amber-300 text-[11px] px-2 py-0.5 rounded-full">0</span>
                 </button>
                 <button data-tab="os" onclick="switchTab('os')"
                     class="tab-btn flex-1 min-w-[145px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition">
                     <i class="fa-solid fa-file-invoice-dollar"></i>
                     <span>3. Ordem de Serviço</span>
-                    <span id="badge-os" class="bg-blue-100 text-blue-800 text-[11px] px-2 py-0.5 rounded-full">0</span>
+                    <span id="badge-os" class="bg-blue-500/20 text-blue-300 text-[11px] px-2 py-0.5 rounded-full">0</span>
                 </button>
                 <button data-tab="checkout" onclick="switchTab('checkout')"
                     class="tab-btn flex-1 min-w-[135px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition">
                     <i class="fa-solid fa-flag-checkered"></i>
                     <span>4. Check-out</span>
                     <span id="badge-checkout"
-                        class="bg-purple-100 text-purple-800 text-[11px] px-2 py-0.5 rounded-full">0</span>
+                        class="bg-purple-500/20 text-purple-300 text-[11px] px-2 py-0.5 rounded-full">0</span>
                 </button>
                 <button data-tab="historico" onclick="switchTab('historico')"
                     class="tab-btn flex-1 min-w-[120px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition">
@@ -303,18 +306,18 @@
         </main>
 
         <!-- RODAPÉ -->
-        <footer class="bg-white border-t border-slate-200 py-4 mt-8">
+        <footer class="bg-slate-900 border-t border-slate-800 py-4 mt-8">
             <div
-                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
-                <p><strong>AutoTech ERP</strong> — Persistência Local Ativa (<code
-                        class="bg-slate-100 px-1.5 py-0.5 rounded text-slate-700">localStorage</code>)</p>
+                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2">
+                <p><strong class="text-slate-200">AutoTech ERP</strong> — Persistência Local Ativa (<code
+                        class="bg-slate-800 px-1.5 py-0.5 rounded text-blue-400 border border-slate-700">localStorage</code>)</p>
                 <div class="flex items-center gap-4">
                     <button onclick="openWorkshopSettingsModal()"
-                        class="hover:text-blue-600 transition flex items-center gap-1">
+                        class="hover:text-blue-400 transition flex items-center gap-1">
                         <i class="fa-solid fa-sliders"></i> Dados da Oficina (Cabeçalho OS)
                     </button>
                     <button onclick="switchTab('database')"
-                        class="hover:text-blue-600 transition flex items-center gap-1">
+                        class="hover:text-blue-400 transition flex items-center gap-1">
                         <i class="fa-solid fa-download"></i> Backup JSON
                     </button>
                 </div>
@@ -326,11 +329,11 @@
     <!-- SISTEMA DE MODAIS (CHECK-IN, DIAGNÓSTICO, OS, CHECK-OUT, CONFIG)      -->
     <!-- ===================================================================== -->
     <div id="modal-backdrop"
-        class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-40 flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+        class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
         <div id="modal-box"
-            class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden my-auto">
+            class="bg-slate-900 rounded-2xl shadow-2xl border border-slate-800 w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden my-auto">
             <!-- Header do Modal -->
-            <div class="bg-slate-900 text-white px-5 py-4 flex items-center justify-between shrink-0">
+            <div class="bg-slate-950 text-white px-5 py-4 flex items-center justify-between shrink-0 border-b border-slate-800">
                 <div class="flex items-center gap-2.5">
                     <i id="modal-icon" class="fa-solid fa-car text-blue-400 text-lg"></i>
                     <h2 id="modal-title" class="text-base sm:text-lg font-bold">Título do Modal</h2>
@@ -341,12 +344,12 @@
                 </button>
             </div>
             <!-- Corpo do Modal -->
-            <div id="modal-body" class="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1">
+            <div id="modal-body" class="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1 text-slate-200">
                 <!-- Conteúdo injetado dinamicamente -->
             </div>
             <!-- Rodapé do Modal -->
             <div id="modal-footer"
-                class="bg-slate-50 border-t border-slate-200 px-5 py-3.5 flex flex-wrap items-center justify-end gap-2 shrink-0">
+                class="bg-slate-850 border-t border-slate-800 px-5 py-3.5 flex flex-wrap items-center justify-end gap-2 shrink-0">
                 <!-- Botões injetados dinamicamente -->
             </div>
         </div>
@@ -401,7 +404,6 @@
                     const parsed = JSON.parse(raw);
                     db = { ...db, ...parsed };
                 } else {
-                    // Popula automaticamente dados de demonstração na primeira abertura para facilitar avaliação imediata
                     seedDemoData(false);
                 }
             } catch (err) {
@@ -468,10 +470,10 @@
             const toast = document.createElement('div');
 
             const styles = {
-                success: 'bg-slate-900 border-emerald-500 text-white',
-                error: 'bg-red-950 border-red-500 text-white',
-                info: 'bg-slate-900 border-blue-500 text-white',
-                warning: 'bg-amber-950 border-amber-500 text-white'
+                success: 'bg-slate-900 border-emerald-500 text-white shadow-black/50',
+                error: 'bg-red-950 border-red-500 text-white shadow-black/50',
+                info: 'bg-slate-900 border-blue-500 text-white shadow-black/50',
+                warning: 'bg-amber-950 border-amber-500 text-white shadow-black/50'
             };
             const icons = {
                 success: 'fa-circle-check text-emerald-400',
@@ -480,7 +482,7 @@
                 warning: 'fa-triangle-exclamation text-amber-400'
             };
 
-            toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl border-l-4 ${styles[type] || styles.info} transform transition-all duration-300 translate-y-2 opacity-0`;
+            toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl border border-slate-800 border-l-4 ${styles[type] || styles.info} transform transition-all duration-300 translate-y-2 opacity-0`;
             toast.innerHTML = `
                 <i class="fa-solid ${icons[type] || icons.info} text-base"></i>
                 <span class="text-xs sm:text-sm font-medium flex-1">${escapeHtml(message)}</span>
@@ -503,7 +505,7 @@
         function openModal({ title, icon = 'fa-wrench', bodyHtml, footerHtml, maxWidth = 'max-w-4xl' }) {
             const backdrop = document.getElementById('modal-backdrop');
             const box = document.getElementById('modal-box');
-            box.className = `bg-white rounded-2xl shadow-2xl border border-slate-200 w-full ${maxWidth} max-h-[92vh] flex flex-col overflow-hidden my-auto`;
+            box.className = `bg-slate-900 rounded-2xl shadow-2xl border border-slate-800 w-full ${maxWidth} max-h-[92vh] flex flex-col overflow-hidden my-auto`;
 
             document.getElementById('modal-title').textContent = title;
             document.getElementById('modal-icon').className = `fa-solid ${icon} text-blue-400 text-lg`;
@@ -529,7 +531,7 @@
             const subtotal = partsTotal + servicesTotal;
 
             const discountVal = parseFloat(order.discountValue) || 0;
-            const discountType = order.discountType || 'R$'; // 'R$' ou '%'
+            const discountType = order.discountType || 'R$';
             let discountAmount = 0;
 
             if (discountType === '%') {
@@ -595,7 +597,6 @@
          * Atualização Geral da Interface (KPIs, Badges e Aba Ativa)
          */
         function refreshUI() {
-            // Contadores
             const inDiag = db.orders.filter(o => o.stage === 'DIAGNOSTICO');
             const inOs = db.orders.filter(o => o.stage === 'OS');
             const inCheckout = db.orders.filter(o => o.stage === 'CHECKOUT');
@@ -604,29 +605,26 @@
 
             const totalRevenue = completed.reduce((acc, o) => acc + calculateOrderTotals(o).grandTotal, 0);
 
-            // Atualiza KPIs
             document.getElementById('kpi-patio').textContent = inYard.length;
             document.getElementById('kpi-diagnostico').textContent = inDiag.length;
             document.getElementById('kpi-os').textContent = inOs.length;
             document.getElementById('kpi-faturamento').textContent = formatCurrency(totalRevenue);
 
-            // Atualiza Badges das Abas
             document.getElementById('badge-patio').textContent = inYard.length;
             document.getElementById('badge-diagnostico').textContent = inDiag.length;
             document.getElementById('badge-os').textContent = inOs.length;
             document.getElementById('badge-checkout').textContent = inCheckout.length;
 
-            // Atualiza Estilização das Abas
+            // Atualiza Estilização das Abas (Tema Escuro)
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 const isActive = btn.dataset.tab === currentTab;
                 if (isActive) {
-                    btn.className = 'tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition bg-slate-900 text-white shadow';
+                    btn.className = 'tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition bg-blue-600 text-white shadow-md shadow-blue-950/50';
                 } else {
-                    btn.className = 'tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition text-slate-600 hover:bg-slate-100';
+                    btn.className = 'tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition text-slate-400 hover:bg-slate-800 hover:text-slate-200';
                 }
             });
 
-            // Renderiza conteúdo da aba atual
             const area = document.getElementById('main-content-area');
             switch (currentTab) {
                 case 'patio':
@@ -665,8 +663,8 @@
             return `
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
-                        <h2 class="text-lg font-bold text-slate-900">Painel Operacional do Pátio</h2>
-                        <p class="text-xs text-slate-500">Acompanhe em tempo real o fluxo dos veículos desde o Check-in até o Check-out.</p>
+                        <h2 class="text-lg font-bold text-white">Painel Operacional do Pátio</h2>
+                        <p class="text-xs text-slate-400">Acompanhe em tempo real o fluxo dos veículos desde o Check-in até o Check-out.</p>
                     </div>
                     <button onclick="openCheckinModal()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl shadow-sm flex items-center gap-2 self-start sm:self-auto transition">
                         <i class="fa-solid fa-plus"></i> 1. Realizar Novo Check-in
@@ -675,13 +673,13 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
                     <!-- Coluna 1: Diagnóstico -->
-                    <div class="bg-slate-200/60 rounded-2xl p-3.5 border border-slate-200 flex flex-col gap-3">
+                    <div class="bg-slate-900/60 rounded-2xl p-3.5 border border-slate-800 flex flex-col gap-3">
                         <div class="flex items-center justify-between px-1">
                             <div class="flex items-center gap-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                                <h3 class="font-bold text-sm text-slate-800">Aguardando Diagnóstico</h3>
+                                <h3 class="font-bold text-sm text-slate-200">Aguardando Diagnóstico</h3>
                             </div>
-                            <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded-full">${diagOrders.length}</span>
+                            <span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold px-2.5 py-0.5 rounded-full">${diagOrders.length}</span>
                         </div>
                         <div class="space-y-3">
                             ${diagOrders.length ? diagOrders.map(o => renderOrderCard(o)).join('') : renderEmptyColumn('Nenhum veículo aguardando diagnóstico.')}
@@ -689,13 +687,13 @@
                     </div>
 
                     <!-- Coluna 2: Ordem de Serviço -->
-                    <div class="bg-slate-200/60 rounded-2xl p-3.5 border border-slate-200 flex flex-col gap-3">
+                    <div class="bg-slate-900/60 rounded-2xl p-3.5 border border-slate-800 flex flex-col gap-3">
                         <div class="flex items-center justify-between px-1">
                             <div class="flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
-                                <h3 class="font-bold text-sm text-slate-800">Ordem de Serviço (Execução)</h3>
+                                <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                                <h3 class="font-bold text-sm text-slate-200">Ordem de Serviço (Execução)</h3>
                             </div>
-                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-0.5 rounded-full">${osOrders.length}</span>
+                            <span class="bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold px-2.5 py-0.5 rounded-full">${osOrders.length}</span>
                         </div>
                         <div class="space-y-3">
                             ${osOrders.length ? osOrders.map(o => renderOrderCard(o)).join('') : renderEmptyColumn('Nenhuma OS em andamento no momento.')}
@@ -703,13 +701,13 @@
                     </div>
 
                     <!-- Coluna 3: Check-out -->
-                    <div class="bg-slate-200/60 rounded-2xl p-3.5 border border-slate-200 flex flex-col gap-3">
+                    <div class="bg-slate-900/60 rounded-2xl p-3.5 border border-slate-800 flex flex-col gap-3">
                         <div class="flex items-center justify-between px-1">
                             <div class="flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span>
-                                <h3 class="font-bold text-sm text-slate-800">Prontos p/ Check-out</h3>
+                                <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
+                                <h3 class="font-bold text-sm text-slate-200">Prontos p/ Check-out</h3>
                             </div>
-                            <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2.5 py-0.5 rounded-full">${checkoutOrders.length}</span>
+                            <span class="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-bold px-2.5 py-0.5 rounded-full">${checkoutOrders.length}</span>
                         </div>
                         <div class="space-y-3">
                             ${checkoutOrders.length ? checkoutOrders.map(o => renderOrderCard(o)).join('') : renderEmptyColumn('Nenhum veículo pronto para entrega.')}
@@ -721,7 +719,7 @@
 
         function renderEmptyColumn(msg) {
             return `
-                <div class="bg-white/60 border border-dashed border-slate-300 rounded-xl p-6 text-center text-xs text-slate-400">
+                <div class="bg-slate-900/40 border border-dashed border-slate-800 rounded-xl p-6 text-center text-xs text-slate-500">
                     ${msg}
                 </div>
             `;
@@ -737,39 +735,39 @@
             let subStatusBadge = '';
 
             if (order.stage === 'DIAGNOSTICO') {
-                subStatusBadge = `<span class="text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-md">Check-in OK</span>`;
+                subStatusBadge = `<span class="text-[11px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-md">Check-in OK</span>`;
                 actionBtn = `
-                    <button onclick="openDiagnosisModal('${order.id}')" class="w-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold py-2 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                    <button onclick="openDiagnosisModal('${order.id}')" class="w-full bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold py-2 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
                         <i class="fa-solid fa-stethoscope"></i> Realizar Diagnóstico
                     </button>
                 `;
             } else if (order.stage === 'OS') {
                 const statusColors = {
-                    'Aguardando Aprovação': 'bg-orange-50 text-orange-700 border-orange-200',
-                    'Em Execução': 'bg-blue-50 text-blue-700 border-blue-200',
-                    'Aguardando Peça': 'bg-rose-50 text-rose-700 border-rose-200',
-                    'Concluído': 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                    'Aguardando Aprovação': 'bg-orange-500/15 text-orange-300 border-orange-500/30',
+                    'Em Execução': 'bg-blue-500/15 text-blue-300 border-blue-500/30',
+                    'Aguardando Peça': 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+                    'Concluído': 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
                 };
                 const st = order.osSubStatus || 'Em Execução';
                 subStatusBadge = `<span class="text-[11px] font-semibold border px-2 py-0.5 rounded-md ${statusColors[st] || statusColors['Em Execução']}">${escapeHtml(st)}</span>`;
                 actionBtn = `
                     <div class="flex gap-2">
-                        <button onclick="openOsModal('${order.id}')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                        <button onclick="openOsModal('${order.id}')" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold py-2 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
                             <i class="fa-solid fa-pen-to-square"></i> Gerenciar OS
                         </button>
-                        <button onclick="printDocument('${order.id}', 'OS')" title="Imprimir Ordem de Serviço" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2 px-3 rounded-xl transition">
+                        <button onclick="printDocument('${order.id}', 'OS')" title="Imprimir Ordem de Serviço" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-bold py-2 px-3 rounded-xl transition">
                             <i class="fa-solid fa-print"></i>
                         </button>
                     </div>
                 `;
             } else if (order.stage === 'CHECKOUT') {
-                subStatusBadge = `<span class="text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded-md">Serviço Finalizado</span>`;
+                subStatusBadge = `<span class="text-[11px] font-semibold bg-purple-500/15 text-purple-300 border border-purple-500/30 px-2 py-0.5 rounded-md">Serviço Finalizado</span>`;
                 actionBtn = `
                     <div class="flex gap-2">
-                        <button onclick="openCheckoutModal('${order.id}')" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                        <button onclick="openCheckoutModal('${order.id}')" class="flex-1 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-2 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
                             <i class="fa-solid fa-flag-checkered"></i> Realizar Check-out
                         </button>
-                        <button onclick="printDocument('${order.id}', 'OS')" title="Imprimir OS" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2 px-3 rounded-xl transition">
+                        <button onclick="printDocument('${order.id}', 'OS')" title="Imprimir OS" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-bold py-2 px-3 rounded-xl transition">
                             <i class="fa-solid fa-print"></i>
                         </button>
                     </div>
@@ -777,37 +775,37 @@
             }
 
             return `
-                <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 hover:shadow-md transition space-y-3">
+                <div class="bg-slate-900 rounded-xl p-4 shadow-sm border border-slate-800 hover:border-slate-700 hover:shadow-md transition space-y-3">
                     <div class="flex items-start justify-between gap-2">
                         <div>
                             <div class="flex items-center gap-2">
-                                <span class="text-xs font-extrabold text-slate-500">OS #${formatOsNumber(order.osNumber)}</span>
-                                <span class="bg-slate-900 text-white font-mono text-xs font-bold px-2 py-0.5 rounded tracking-wider">${escapeHtml(vehicle.plate)}</span>
+                                <span class="text-xs font-extrabold text-slate-400">OS #${formatOsNumber(order.osNumber)}</span>
+                                <span class="bg-slate-800 text-blue-300 border border-slate-700 font-mono text-xs font-bold px-2 py-0.5 rounded tracking-wider">${escapeHtml(vehicle.plate)}</span>
                             </div>
-                            <h4 class="font-bold text-sm text-slate-900 mt-1">${escapeHtml(vehicle.brandModel)}</h4>
+                            <h4 class="font-bold text-sm text-white mt-1">${escapeHtml(vehicle.brandModel)}</h4>
                         </div>
                         ${subStatusBadge}
                     </div>
 
-                    <div class="text-xs text-slate-600 space-y-1 border-t border-slate-100 pt-2">
+                    <div class="text-xs text-slate-400 space-y-1 border-t border-slate-800 pt-2">
                         <div class="flex items-center gap-1.5">
-                            <i class="fa-solid fa-user text-slate-400 w-3.5"></i>
-                            <span class="font-medium truncate">${escapeHtml(client.name)}</span>
+                            <i class="fa-solid fa-user text-slate-500 w-3.5"></i>
+                            <span class="font-medium text-slate-300 truncate">${escapeHtml(client.name)}</span>
                         </div>
-                        <div class="flex items-center justify-between text-slate-500">
-                            <span><i class="fa-solid fa-gauge-high text-slate-400 w-3.5"></i> ${Number(order.checkin?.km || 0).toLocaleString('pt-BR')} km</span>
+                        <div class="flex items-center justify-between text-slate-400">
+                            <span><i class="fa-solid fa-gauge-high text-slate-500 w-3.5"></i> ${Number(order.checkin?.km || 0).toLocaleString('pt-BR')} km</span>
                             <span>${formatDateTime(order.createdAt).split(' ')[0]}</span>
                         </div>
                     </div>
 
-                    <div class="bg-slate-50 rounded-lg p-2 text-xs text-slate-600 line-clamp-2 border border-slate-100">
-                        <strong class="text-slate-700">Relato:</strong> ${escapeHtml(order.checkin?.complaint || 'Não informado')}
+                    <div class="bg-slate-850 rounded-lg p-2 text-xs text-slate-300 line-clamp-2 border border-slate-800">
+                        <strong class="text-slate-200">Relato:</strong> ${escapeHtml(order.checkin?.complaint || 'Não informado')}
                     </div>
 
                     ${totals.grandTotal > 0 ? `
                         <div class="flex items-center justify-between text-xs pt-1">
-                            <span class="text-slate-500 font-medium">Total Previsto:</span>
-                            <span class="font-extrabold text-slate-900 text-sm">${formatCurrency(totals.grandTotal)}</span>
+                            <span class="text-slate-400 font-medium">Total Previsto:</span>
+                            <span class="font-extrabold text-emerald-400 text-sm">${formatCurrency(totals.grandTotal)}</span>
                         </div>
                     ` : ''}
 
@@ -825,8 +823,8 @@
             return `
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                        <h2 class="text-lg font-bold text-slate-900">${title}</h2>
-                        <p class="text-xs text-slate-500">${subtitle}</p>
+                        <h2 class="text-lg font-bold text-white">${title}</h2>
+                        <p class="text-xs text-slate-400">${subtitle}</p>
                     </div>
                     ${stage === 'DIAGNOSTICO' ? `
                         <button onclick="openCheckinModal()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-xl shadow-sm self-start">
@@ -836,10 +834,10 @@
                 </div>
 
                 ${list.length === 0 ? `
-                    <div class="bg-white rounded-2xl border border-slate-200 p-12 text-center space-y-2">
-                        <i class="fa-solid fa-car-tunnel text-3xl text-slate-300"></i>
-                        <p class="text-sm font-semibold text-slate-600">Nenhum veículo encontrado nesta etapa.</p>
-                        <p class="text-xs text-slate-400">Verifique outras abas do fluxo ou realize um novo Check-in.</p>
+                    <div class="bg-slate-900 rounded-2xl border border-slate-800 p-12 text-center space-y-2">
+                        <i class="fa-solid fa-car-tunnel text-3xl text-slate-600"></i>
+                        <p class="text-sm font-semibold text-slate-300">Nenhum veículo encontrado nesta etapa.</p>
+                        <p class="text-xs text-slate-500">Verifique outras abas do fluxo ou realize um novo Check-in.</p>
                     </div>
                 ` : `
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -857,16 +855,16 @@
             return `
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
-                        <h2 class="text-lg font-bold text-slate-900">Histórico de Atendimentos & Faturamento</h2>
-                        <p class="text-xs text-slate-500">Registros finalizados com check-out concluído e recibo de garantia emitido.</p>
+                        <h2 class="text-lg font-bold text-white">Histórico de Atendimentos & Faturamento</h2>
+                        <p class="text-xs text-slate-400">Registros finalizados com check-out concluído e recibo de garantia emitido.</p>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-slate-900 rounded-2xl shadow-sm border border-slate-800 overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
-                                <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                                <tr class="bg-slate-850 border-b border-slate-800 text-[11px] font-bold uppercase tracking-wider text-slate-400">
                                     <th class="py-3.5 px-4">OS</th>
                                     <th class="py-3.5 px-4">Data Saída</th>
                                     <th class="py-3.5 px-4">Cliente</th>
@@ -876,10 +874,10 @@
                                     <th class="py-3.5 px-4 text-center">Documentos</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-100 text-xs sm:text-sm">
+                            <tbody class="divide-y divide-slate-800 text-xs sm:text-sm">
                                 ${completed.length === 0 ? `
                                     <tr>
-                                        <td colspan="7" class="py-10 text-center text-slate-400 text-xs">
+                                        <td colspan="7" class="py-10 text-center text-slate-500 text-xs">
                                             Nenhum atendimento finalizado ainda.
                                         </td>
                                     </tr>
@@ -890,29 +888,29 @@
                 const isPaid = o.checkout?.paymentStatus === 'Pago';
 
                 return `
-                                        <tr class="hover:bg-slate-50/80 transition">
-                                            <td class="py-3 px-4 font-bold text-slate-900">#${formatOsNumber(o.osNumber)}</td>
-                                            <td class="py-3 px-4 text-slate-600 text-xs">${formatDateTime(o.checkout?.completedAt)}</td>
-                                            <td class="py-3 px-4 font-medium text-slate-800">${escapeHtml(client.name)}</td>
+                                        <tr class="hover:bg-slate-800/50 transition">
+                                            <td class="py-3 px-4 font-bold text-white">#${formatOsNumber(o.osNumber)}</td>
+                                            <td class="py-3 px-4 text-slate-400 text-xs">${formatDateTime(o.checkout?.completedAt)}</td>
+                                            <td class="py-3 px-4 font-medium text-slate-200">${escapeHtml(client.name)}</td>
                                             <td class="py-3 px-4">
-                                                <span class="bg-slate-800 text-white font-mono text-[11px] px-1.5 py-0.5 rounded mr-1">${escapeHtml(vehicle.plate)}</span>
-                                                <span class="text-slate-600 text-xs">${escapeHtml(vehicle.brandModel)}</span>
+                                                <span class="bg-slate-800 text-blue-300 border border-slate-700 font-mono text-[11px] px-1.5 py-0.5 rounded mr-1">${escapeHtml(vehicle.plate)}</span>
+                                                <span class="text-slate-300 text-xs">${escapeHtml(vehicle.brandModel)}</span>
                                             </td>
                                             <td class="py-3 px-4">
                                                 <div class="flex flex-col">
-                                                    <span class="text-xs font-medium text-slate-700">${escapeHtml(o.checkout?.paymentMethod || '-')}</span>
-                                                    <span class="text-[10px] font-bold ${isPaid ? 'text-emerald-600' : 'text-amber-600'}">
+                                                    <span class="text-xs font-medium text-slate-300">${escapeHtml(o.checkout?.paymentMethod || '-')}</span>
+                                                    <span class="text-[10px] font-bold ${isPaid ? 'text-emerald-400' : 'text-amber-400'}">
                                                         ${isPaid ? '● PAGO' : '● PENDENTE'}
                                                     </span>
                                                 </div>
                                             </td>
-                                            <td class="py-3 px-4 text-right font-extrabold text-slate-900">${formatCurrency(totals.grandTotal)}</td>
+                                            <td class="py-3 px-4 text-right font-extrabold text-emerald-400">${formatCurrency(totals.grandTotal)}</td>
                                             <td class="py-3 px-4">
                                                 <div class="flex items-center justify-center gap-1.5">
-                                                    <button onclick="printDocument('${o.id}', 'OS')" title="Imprimir OS" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition">
+                                                    <button onclick="printDocument('${o.id}', 'OS')" title="Imprimir OS" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition">
                                                         <i class="fa-solid fa-file-lines"></i> OS
                                                     </button>
-                                                    <button onclick="printDocument('${o.id}', 'CHECKOUT')" title="Imprimir Recibo de Entrega e Garantia" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition">
+                                                    <button onclick="printDocument('${o.id}', 'CHECKOUT')" title="Imprimir Recibo de Entrega e Garantia" class="bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition">
                                                         <i class="fa-solid fa-receipt"></i> Recibo
                                                     </button>
                                                 </div>
@@ -942,38 +940,38 @@
             });
 
             return `
-                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-slate-900 p-5 rounded-2xl shadow-sm border border-slate-800">
                     <div>
-                        <h2 class="text-lg font-bold text-slate-900">Banco de Dados Local & Backup</h2>
-                        <p class="text-xs text-slate-500">Todos os clientes, veículos e ordens de serviço ficam salvos no armazenamento do navegador.</p>
+                        <h2 class="text-lg font-bold text-white">Banco de Dados Local & Backup</h2>
+                        <p class="text-xs text-slate-400">Todos os clientes, veículos e ordens de serviço ficam salvos no armazenamento do navegador.</p>
                     </div>
                     <div class="flex flex-wrap items-center gap-2">
                         <button onclick="openClientVehicleModal()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-3.5 py-2 rounded-xl shadow-sm flex items-center gap-1.5 transition">
                             <i class="fa-solid fa-user-plus"></i> Novo Cliente / Veículo
                         </button>
-                        <button onclick="exportDatabaseJson()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold px-3.5 py-2 rounded-xl shadow-sm flex items-center gap-1.5 transition">
+                        <button onclick="exportDatabaseJson()" class="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 text-xs font-semibold px-3.5 py-2 rounded-xl shadow-sm flex items-center gap-1.5 transition">
                             <i class="fa-solid fa-file-export"></i> Exportar JSON
                         </button>
-                        <label class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-semibold px-3.5 py-2 rounded-xl cursor-pointer flex items-center gap-1.5 transition">
+                        <label class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-3.5 py-2 rounded-xl cursor-pointer flex items-center gap-1.5 transition">
                             <i class="fa-solid fa-file-import"></i> Importar JSON
                             <input type="file" accept=".json" onchange="importDatabaseJson(event)" class="hidden">
                         </label>
-                        <button onclick="seedDemoData(true)" class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-xs font-semibold px-3 py-2 rounded-xl flex items-center gap-1.5 transition">
+                        <button onclick="seedDemoData(true)" class="bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-xs font-semibold px-3 py-2 rounded-xl flex items-center gap-1.5 transition">
                             <i class="fa-solid fa-wand-magic-sparkles"></i> Popular Exemplo
                         </button>
                     </div>
                 </div>
 
                 <!-- Tabela de Clientes e Veículos Vinculados -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="px-5 py-3.5 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
-                        <h3 class="text-sm font-bold text-slate-800">Base de Clientes & Frota Cadastrada (${filteredClients.length})</h3>
-                        <span class="text-xs text-slate-500">Total de Veículos: <strong>${db.vehicles.length}</strong></span>
+                <div class="bg-slate-900 rounded-2xl shadow-sm border border-slate-800 overflow-hidden">
+                    <div class="px-5 py-3.5 border-b border-slate-800 bg-slate-850 flex items-center justify-between">
+                        <h3 class="text-sm font-bold text-slate-200">Base de Clientes & Frota Cadastrada (${filteredClients.length})</h3>
+                        <span class="text-xs text-slate-400">Total de Veículos: <strong class="text-white">${db.vehicles.length}</strong></span>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
-                                <tr class="border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                                <tr class="border-b border-slate-800 text-[11px] font-bold uppercase tracking-wider text-slate-400 bg-slate-850/50">
                                     <th class="py-3 px-4">Cliente</th>
                                     <th class="py-3 px-4">CPF / CNPJ</th>
                                     <th class="py-3 px-4">Contato</th>
@@ -981,33 +979,33 @@
                                     <th class="py-3 px-4 text-right">Ações</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-100 text-xs sm:text-sm">
+                            <tbody class="divide-y divide-slate-800 text-xs sm:text-sm">
                                 ${filteredClients.length === 0 ? `
                                     <tr>
-                                        <td colspan="5" class="py-8 text-center text-slate-400 text-xs">Nenhum cliente cadastrado ou encontrado na busca.</td>
+                                        <td colspan="5" class="py-8 text-center text-slate-500 text-xs">Nenhum cliente cadastrado ou encontrado na busca.</td>
                                     </tr>
                                 ` : filteredClients.map(c => {
                 const vehicles = db.vehicles.filter(v => v.clientId === c.id);
                 return `
-                                        <tr class="hover:bg-slate-50 transition">
-                                            <td class="py-3 px-4 font-bold text-slate-900">${escapeHtml(c.name)}</td>
-                                            <td class="py-3 px-4 text-slate-600 font-mono text-xs">${escapeHtml(c.document || '-')}</td>
-                                            <td class="py-3 px-4 text-slate-600 text-xs">
-                                                <div><i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i>${escapeHtml(c.phone || '-')}</div>
-                                                <div class="text-slate-400 text-[11px]">${escapeHtml(c.email || '')}</div>
+                                        <tr class="hover:bg-slate-800/50 transition">
+                                            <td class="py-3 px-4 font-bold text-white">${escapeHtml(c.name)}</td>
+                                            <td class="py-3 px-4 text-slate-400 font-mono text-xs">${escapeHtml(c.document || '-')}</td>
+                                            <td class="py-3 px-4 text-slate-300 text-xs">
+                                                <div><i class="fa-brands fa-whatsapp text-emerald-400 mr-1"></i>${escapeHtml(c.phone || '-')}</div>
+                                                <div class="text-slate-500 text-[11px]">${escapeHtml(c.email || '')}</div>
                                             </td>
                                             <td class="py-3 px-4">
                                                 <div class="flex flex-wrap gap-1.5">
                                                     ${vehicles.map(v => `
-                                                        <span class="inline-flex items-center gap-1.5 bg-slate-100 border border-slate-200 px-2 py-1 rounded-lg text-xs">
-                                                            <strong class="font-mono text-slate-900">${escapeHtml(v.plate)}</strong>
-                                                            <span class="text-slate-600">${escapeHtml(v.brandModel)}</span>
+                                                        <span class="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 px-2 py-1 rounded-lg text-xs">
+                                                            <strong class="font-mono text-blue-300">${escapeHtml(v.plate)}</strong>
+                                                            <span class="text-slate-300">${escapeHtml(v.brandModel)}</span>
                                                         </span>
-                                                    `).join('') || '<span class="text-xs text-slate-400">Sem veículos</span>'}
+                                                    `).join('') || '<span class="text-xs text-slate-500">Sem veículos</span>'}
                                                 </div>
                                             </td>
                                             <td class="py-3 px-4 text-right whitespace-nowrap">
-                                                <button onclick="openCheckinModal('${c.id}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold text-xs px-2.5 py-1.5 rounded-lg transition">
+                                                <button onclick="openCheckinModal('${c.id}')" class="bg-blue-500/15 hover:bg-blue-500/25 text-blue-300 border border-blue-500/30 font-semibold text-xs px-2.5 py-1.5 rounded-lg transition">
                                                     <i class="fa-solid fa-car-side mr-1"></i> Check-in
                                                 </button>
                                             </td>
@@ -1034,19 +1032,19 @@
             const bodyHtml = `
                 <form id="checkin-form" class="space-y-5">
                     <!-- Bloco 1: Seleção ou Cadastro de Cliente -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                    <div class="bg-slate-850 p-4 rounded-xl border border-slate-800 space-y-3">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
                                 <span class="bg-blue-600 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center">1</span>
                                 Identificação do Cliente
                             </h3>
                             <div class="flex items-center gap-3 text-xs">
-                                <label class="flex items-center gap-1.5 cursor-pointer font-semibold text-slate-700">
-                                    <input type="radio" name="clientMode" value="existing" ${db.clients.length > 0 ? 'checked' : ''} onchange="toggleCheckinClientMode()">
+                                <label class="flex items-center gap-1.5 cursor-pointer font-semibold text-slate-300">
+                                    <input type="radio" name="clientMode" value="existing" ${db.clients.length > 0 ? 'checked' : ''} onchange="toggleCheckinClientMode()" class="accent-blue-500">
                                     Cliente Cadastrado
                                 </label>
-                                <label class="flex items-center gap-1.5 cursor-pointer font-semibold text-blue-700">
-                                    <input type="radio" name="clientMode" value="new" ${db.clients.length === 0 ? 'checked' : ''} onchange="toggleCheckinClientMode()">
+                                <label class="flex items-center gap-1.5 cursor-pointer font-semibold text-blue-400">
+                                    <input type="radio" name="clientMode" value="new" ${db.clients.length === 0 ? 'checked' : ''} onchange="toggleCheckinClientMode()" class="accent-blue-500">
                                     + Novo Cliente
                                 </label>
                             </div>
@@ -1054,8 +1052,8 @@
 
                         <!-- Modo Cliente Existente -->
                         <div id="checkin-existing-client-box" class="${db.clients.length === 0 ? 'hidden' : ''}">
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Selecione o Cliente</label>
-                            <select id="ci-client-select" onchange="onCheckinClientSelectChange()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Selecione o Cliente</label>
+                            <select id="ci-client-select" onchange="onCheckinClientSelectChange()" class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                                 <option value="">-- Escolha um cliente --</option>
                                 ${clientOptions}
                             </select>
@@ -1064,90 +1062,90 @@
                         <!-- Modo Novo Cliente -->
                         <div id="checkin-new-client-box" class="${db.clients.length > 0 ? 'hidden' : ''} grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Nome Completo / Razão Social *</label>
-                                <input type="text" id="ci-new-name" placeholder="Ex: Carlos Eduardo Silva" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Nome Completo / Razão Social *</label>
+                                <input type="text" id="ci-new-name" placeholder="Ex: Carlos Eduardo Silva" class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">CPF / CNPJ</label>
-                                <input type="text" id="ci-new-doc" placeholder="000.000.000-00" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">CPF / CNPJ</label>
+                                <input type="text" id="ci-new-doc" placeholder="000.000.000-00" class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Telefone / WhatsApp *</label>
-                                <input type="text" id="ci-new-phone" placeholder="(11) 99999-8888" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Telefone / WhatsApp *</label>
+                                <input type="text" id="ci-new-phone" placeholder="(11) 99999-8888" class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">E-mail</label>
-                                <input type="email" id="ci-new-email" placeholder="cliente@email.com" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">E-mail</label>
+                                <input type="email" id="ci-new-email" placeholder="cliente@email.com" class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                             </div>
                         </div>
                     </div>
 
                     <!-- Bloco 2: Identificação do Veículo -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                    <div class="bg-slate-850 p-4 rounded-xl border border-slate-800 space-y-3">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
                                 <span class="bg-blue-600 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center">2</span>
                                 Dados do Veículo
                             </h3>
                             <div id="vehicle-mode-radios" class="flex items-center gap-3 text-xs">
-                                <label class="flex items-center gap-1.5 cursor-pointer font-semibold text-slate-700">
-                                    <input type="radio" name="vehicleMode" value="existing" onchange="toggleCheckinVehicleMode()">
+                                <label class="flex items-center gap-1.5 cursor-pointer font-semibold text-slate-300">
+                                    <input type="radio" name="vehicleMode" value="existing" onchange="toggleCheckinVehicleMode()" class="accent-blue-500">
                                     Veículo do Cliente
                                 </label>
-                                <label class="flex items-center gap-1.5 cursor-pointer font-semibold text-blue-700">
-                                    <input type="radio" name="vehicleMode" value="new" checked onchange="toggleCheckinVehicleMode()">
+                                <label class="flex items-center gap-1.5 cursor-pointer font-semibold text-blue-400">
+                                    <input type="radio" name="vehicleMode" value="new" checked onchange="toggleCheckinVehicleMode()" class="accent-blue-500">
                                     + Cadastrar Veículo
                                 </label>
                             </div>
                         </div>
 
                         <div id="checkin-existing-vehicle-box" class="hidden">
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Selecione o Veículo</label>
-                            <select id="ci-vehicle-select" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Selecione o Veículo</label>
+                            <select id="ci-vehicle-select" class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                                 <option value="">-- Selecione primeiro o cliente --</option>
                             </select>
                         </div>
 
                         <div id="checkin-new-vehicle-box" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Placa *</label>
-                                <input type="text" id="ci-v-plate" placeholder="ABC-1D23" maxlength="8" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm uppercase font-mono font-bold">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Placa *</label>
+                                <input type="text" id="ci-v-plate" placeholder="ABC-1D23" maxlength="8" class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm uppercase font-mono font-bold focus:outline-none focus:border-blue-500">
                             </div>
                             <div class="sm:col-span-2">
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Marca / Modelo *</label>
-                                <input type="text" id="ci-v-model" placeholder="Ex: Honda Civic EXL 2.0" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Marca / Modelo *</label>
+                                <input type="text" id="ci-v-model" placeholder="Ex: Honda Civic EXL 2.0" class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Ano Fab/Mod</label>
-                                <input type="text" id="ci-v-year" placeholder="2021/2022" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Ano Fab/Mod</label>
+                                <input type="text" id="ci-v-year" placeholder="2021/2022" class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Motorização</label>
-                                <input type="text" id="ci-v-engine" placeholder="2.0 16V Flex" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Motorização</label>
+                                <input type="text" id="ci-v-engine" placeholder="2.0 16V Flex" class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Quilometragem Atual (KM) *</label>
-                                <input type="number" id="ci-km" placeholder="54200" min="0" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-semibold">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Quilometragem Atual (KM) *</label>
+                                <input type="number" id="ci-km" placeholder="54200" min="0" class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-blue-500">
                             </div>
                         </div>
                         
                         <div id="ci-km-existing-wrapper" class="hidden">
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Quilometragem Atual na Entrada (KM) *</label>
-                            <input type="number" id="ci-km-existing" placeholder="54200" min="0" class="w-full sm:w-1/3 bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-semibold">
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Quilometragem Atual na Entrada (KM) *</label>
+                            <input type="number" id="ci-km-existing" placeholder="54200" min="0" class="w-full sm:w-1/3 bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-blue-500">
                         </div>
                     </div>
 
                     <!-- Bloco 3: Checklist Visual Rápido de Entrada & Sintomas -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                        <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                    <div class="bg-slate-850 p-4 rounded-xl border border-slate-800 space-y-3">
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
                             <span class="bg-blue-600 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center">3</span>
                             Checklist Visual de Entrada & Relato do Cliente
                         </h3>
 
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Nível de Combustível</label>
-                                <select id="ci-fuel" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Nível de Combustível</label>
+                                <select id="ci-fuel" class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-blue-500">
                                     <option value="Reserva">Reserva (E)</option>
                                     <option value="1/4">1/4 Tanque</option>
                                     <option value="1/2" selected>1/2 Tanque</option>
@@ -1156,40 +1154,40 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Estado dos Pneus</label>
-                                <select id="ci-tires" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Estado dos Pneus</label>
+                                <select id="ci-tires" class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-blue-500">
                                     <option value="Bons">Bons / Regulares</option>
                                     <option value="Meia Vida">Meia Vida</option>
                                     <option value="Desgastados / Carecas">Desgastados / Atenção</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Luzes de Anomalia no Painel</label>
-                                <input type="text" id="ci-dash-lights" placeholder="Ex: Injeção acesa, ABS, Nenhuma" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Luzes de Anomalia no Painel</label>
+                                <input type="text" id="ci-dash-lights" placeholder="Ex: Injeção acesa, ABS, Nenhuma" class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-blue-500">
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Avarias Visíveis na Lataria / Vidros</label>
-                                <input type="text" id="ci-body-damage" placeholder="Ex: Risco para-choque dianteiro direito, sem avarias..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Avarias Visíveis na Lataria / Vidros</label>
+                                <input type="text" id="ci-body-damage" placeholder="Ex: Risco para-choque dianteiro direito, sem avarias..." class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-blue-500">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Pertences Deixados no Veículo</label>
-                                <input type="text" id="ci-belongings" placeholder="Ex: Estepe, macaco, chave de roda, cadeirinha..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Pertences Deixados no Veículo</label>
+                                <input type="text" id="ci-belongings" placeholder="Ex: Estepe, macaco, chave de roda, cadeirinha..." class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-blue-500">
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Relato do Cliente / Sintomas Apresentados *</label>
-                            <textarea id="ci-complaint" rows="3" placeholder="Descreva detalhadamente o motivo da visita, barulhos, falhas ou serviços solicitados..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm"></textarea>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Relato do Cliente / Sintomas Apresentados *</label>
+                            <textarea id="ci-complaint" rows="3" placeholder="Descreva detalhadamente o motivo da visita, barulhos, falhas ou serviços solicitados..." class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500"></textarea>
                         </div>
                     </div>
                 </form>
             `;
 
             const footerHtml = `
-                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-200 transition">Cancelar</button>
+                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-800 transition">Cancelar</button>
                 <button type="button" onclick="submitCheckin()" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow flex items-center gap-2 transition">
                     <i class="fa-solid fa-check"></i> Finalizar Check-in & Enviar p/ Diagnóstico
                 </button>
@@ -1218,7 +1216,6 @@
             } else {
                 existingBox.classList.add('hidden');
                 newBox.classList.remove('hidden');
-                // Se é novo cliente, obrigatoriamente é novo veículo
                 document.querySelector('input[name="vehicleMode"][value="new"]').checked = true;
                 toggleCheckinVehicleMode();
             }
@@ -1393,56 +1390,56 @@
             const bodyHtml = `
                 <div class="space-y-4">
                     <!-- Resumo do Check-in -->
-                    <div class="bg-slate-900 text-white p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="bg-slate-950 text-white p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
                             <div class="flex items-center gap-2">
                                 <span class="text-xs font-bold text-blue-400">OS #${formatOsNumber(order.osNumber)}</span>
-                                <span class="bg-slate-800 px-2 py-0.5 rounded font-mono text-xs font-bold">${escapeHtml(vehicle.plate)}</span>
+                                <span class="bg-slate-800 px-2 py-0.5 rounded font-mono text-xs font-bold text-blue-300">${escapeHtml(vehicle.plate)}</span>
                                 <span class="text-sm font-bold">${escapeHtml(vehicle.brandModel)}</span>
                             </div>
-                            <p class="text-xs text-slate-300 mt-1">Cliente: <strong>${escapeHtml(client.name)}</strong> • Entrada: ${Number(order.checkin.km).toLocaleString('pt-BR')} km • Combustível: ${escapeHtml(order.checkin.fuel)}</p>
+                            <p class="text-xs text-slate-400 mt-1">Cliente: <strong class="text-slate-200">${escapeHtml(client.name)}</strong> • Entrada: ${Number(order.checkin.km).toLocaleString('pt-BR')} km • Combustível: ${escapeHtml(order.checkin.fuel)}</p>
                         </div>
-                        <div class="bg-slate-800/90 p-2.5 rounded-lg text-xs max-w-md border border-slate-700">
+                        <div class="bg-slate-900 p-2.5 rounded-lg text-xs max-w-md border border-slate-800">
                             <span class="text-amber-400 font-bold block mb-0.5">Queixa / Relato do Cliente:</span>
-                            <span class="text-slate-200">${escapeHtml(order.checkin.complaint)}</span>
+                            <span class="text-slate-300">${escapeHtml(order.checkin.complaint)}</span>
                         </div>
                     </div>
 
                     <!-- Formulário Técnico -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Códigos de Falha (Scanner OBD-II / DTC)</label>
-                            <input type="text" id="diag-dtc" value="${escapeHtml(order.diagnosis?.dtcCodes || '')}" placeholder="Ex: P0300, P0171 - Falha de ignição cilindro 1" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm font-mono">
+                            <label class="block text-xs font-bold text-slate-300 mb-1">Códigos de Falha (Scanner OBD-II / DTC)</label>
+                            <input type="text" id="diag-dtc" value="${escapeHtml(order.diagnosis?.dtcCodes || '')}" placeholder="Ex: P0300, P0171 - Falha de ignição cilindro 1" class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm font-mono focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Mecânico / Técnico Responsável *</label>
-                            <input type="text" id="diag-mechanic" value="${escapeHtml(order.diagnosis?.mechanicName || '')}" placeholder="Nome do técnico" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                            <label class="block text-xs font-bold text-slate-300 mb-1">Mecânico / Técnico Responsável *</label>
+                            <input type="text" id="diag-mechanic" value="${escapeHtml(order.diagnosis?.mechanicName || '')}" placeholder="Nome do técnico" class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Testes Realizados (Bateria, Alternador, Pressão Linha, Compressão, etc.)</label>
-                        <input type="text" id="diag-tests" value="${escapeHtml(order.diagnosis?.testsPerformed || '')}" placeholder="Ex: Teste de alternador 14.2V OK; Pressão bomba combustível 3.8 bar; Bobina cil. 1 sem centelha." class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Testes Realizados (Bateria, Alternador, Pressão Linha, Compressão, etc.)</label>
+                        <input type="text" id="diag-tests" value="${escapeHtml(order.diagnosis?.testsPerformed || '')}" placeholder="Ex: Teste de alternador 14.2V OK; Pressão bomba combustível 3.8 bar; Bobina cil. 1 sem centelha." class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Parecer Técnico Detalhado (Causa Raiz) *</label>
-                        <textarea id="diag-report" rows="3" placeholder="Descreva a causa raiz identificada após inspeção..." class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">${escapeHtml(order.diagnosis?.technicalReport || '')}</textarea>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Parecer Técnico Detalhado (Causa Raiz) *</label>
+                        <textarea id="diag-report" rows="3" placeholder="Descreva a causa raiz identificada após inspeção..." class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">${escapeHtml(order.diagnosis?.technicalReport || '')}</textarea>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Peças & Serviços Recomendados (Resumo p/ Orçamento)</label>
-                        <textarea id="diag-recommended" rows="2" placeholder="Ex: 1x Jogo de Velas Iridium, 1x Bobina de Ignição, Limpeza de Bicos e Mão de Obra." class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">${escapeHtml(order.diagnosis?.recommendedItems || '')}</textarea>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Peças & Serviços Recomendados (Resumo p/ Orçamento)</label>
+                        <textarea id="diag-recommended" rows="2" placeholder="Ex: 1x Jogo de Velas Iridium, 1x Bobina de Ignição, Limpeza de Bicos e Mão de Obra." class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">${escapeHtml(order.diagnosis?.recommendedItems || '')}</textarea>
                     </div>
                 </div>
             `;
 
             const footerHtml = `
-                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-200 transition">Cancelar</button>
-                <button type="button" onclick="saveDiagnosis('${order.id}', false)" class="bg-slate-700 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition">
+                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-800 transition">Cancelar</button>
+                <button type="button" onclick="saveDiagnosis('${order.id}', false)" class="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition">
                     Salvar Rascunho
                 </button>
-                <button type="button" onclick="saveDiagnosis('${order.id}', true)" class="bg-amber-500 hover:bg-amber-600 text-white px-5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow flex items-center gap-2 transition">
+                <button type="button" onclick="saveDiagnosis('${order.id}', true)" class="bg-amber-600 hover:bg-amber-500 text-white px-5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow flex items-center gap-2 transition">
                     <i class="fa-solid fa-arrow-right"></i> Aprovar Diagnóstico & Gerar OS
                 </button>
             `;
@@ -1482,7 +1479,6 @@
                 saveDatabase();
                 closeModal();
                 showToast(`Diagnóstico concluído! OS #${formatOsNumber(order.osNumber)} aberta para orçamento/execução.`, 'success');
-                // Abre automaticamente a OS para o usuário já lançar peças/serviços se desejar
                 openOsModal(order.id);
             } else {
                 saveDatabase();
@@ -1502,7 +1498,6 @@
             const order = db.orders.find(o => o.id === orderId);
             if (!order) return;
 
-            // Clona profundamente o estado da OS para edição fluida na modal
             activeOsDraft = JSON.parse(JSON.stringify(order));
             if (!activeOsDraft.parts) activeOsDraft.parts = [];
             if (!activeOsDraft.services) activeOsDraft.services = [];
@@ -1513,19 +1508,19 @@
             const bodyHtml = `
                 <div class="space-y-5">
                     <!-- Cabeçalho de Status da OS -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                    <div class="bg-slate-850 p-4 rounded-xl border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
                         <div>
                             <div class="flex items-center gap-2">
                                 <span class="bg-blue-600 text-white text-xs font-extrabold px-2.5 py-0.5 rounded-lg">OS #${formatOsNumber(order.osNumber)}</span>
-                                <span class="font-mono font-bold text-sm text-slate-900">${escapeHtml(vehicle.plate)}</span>
-                                <span class="text-sm font-semibold text-slate-700">${escapeHtml(vehicle.brandModel)}</span>
+                                <span class="font-mono font-bold text-sm text-blue-300">${escapeHtml(vehicle.plate)}</span>
+                                <span class="text-sm font-semibold text-white">${escapeHtml(vehicle.brandModel)}</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">Cliente: <strong>${escapeHtml(client.name)}</strong> (${escapeHtml(client.phone || '')})</p>
+                            <p class="text-xs text-slate-400 mt-1">Cliente: <strong class="text-slate-200">${escapeHtml(client.name)}</strong> (${escapeHtml(client.phone || '')})</p>
                         </div>
 
                         <div class="flex items-center gap-2">
-                            <label class="text-xs font-bold text-slate-600">Status Execução:</label>
-                            <select id="os-substatus-select" onchange="activeOsDraft.osSubStatus = this.value" class="bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs sm:text-sm font-bold text-slate-800">
+                            <label class="text-xs font-bold text-slate-400">Status Execução:</label>
+                            <select id="os-substatus-select" onchange="activeOsDraft.osSubStatus = this.value" class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-1.5 text-xs sm:text-sm font-bold text-white focus:outline-none focus:border-blue-500">
                                 <option value="Aguardando Aprovação" ${activeOsDraft.osSubStatus === 'Aguardando Aprovação' ? 'selected' : ''}>Aguardando Aprovação</option>
                                 <option value="Em Execução" ${activeOsDraft.osSubStatus === 'Em Execução' ? 'selected' : ''}>Em Execução</option>
                                 <option value="Aguardando Peça" ${activeOsDraft.osSubStatus === 'Aguardando Peça' ? 'selected' : ''}>Aguardando Peça</option>
@@ -1536,30 +1531,30 @@
 
                     <!-- Resumo do Parecer Técnico -->
                     ${order.diagnosis?.technicalReport ? `
-                        <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3 text-xs space-y-1">
-                            <div class="font-bold text-amber-900 flex items-center justify-between">
+                        <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-xs space-y-1">
+                            <div class="font-bold text-amber-300 flex items-center justify-between">
                                 <span><i class="fa-solid fa-clipboard-list mr-1"></i> Laudo Técnico (${escapeHtml(order.diagnosis.mechanicName || 'Mecânico')})</span>
-                                ${order.diagnosis.dtcCodes ? `<span class="font-mono bg-amber-100 px-1.5 py-0.5 rounded">DTC: ${escapeHtml(order.diagnosis.dtcCodes)}</span>` : ''}
+                                ${order.diagnosis.dtcCodes ? `<span class="font-mono bg-amber-500/20 text-amber-200 px-1.5 py-0.5 rounded">DTC: ${escapeHtml(order.diagnosis.dtcCodes)}</span>` : ''}
                             </div>
-                            <p class="text-slate-700">${escapeHtml(order.diagnosis.technicalReport)}</p>
-                            ${order.diagnosis.recommendedItems ? `<p class="text-slate-600"><strong>Recomendação:</strong> ${escapeHtml(order.diagnosis.recommendedItems)}</p>` : ''}
+                            <p class="text-slate-300">${escapeHtml(order.diagnosis.technicalReport)}</p>
+                            ${order.diagnosis.recommendedItems ? `<p class="text-slate-400"><strong class="text-slate-200">Recomendação:</strong> ${escapeHtml(order.diagnosis.recommendedItems)}</p>` : ''}
                         </div>
                     ` : ''}
 
                     <!-- Tabela Dinâmica 1: PEÇAS & INSUMOS -->
                     <div class="space-y-2">
                         <div class="flex items-center justify-between">
-                            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
-                                <i class="fa-solid fa-box-open text-blue-600"></i> Peças & Insumos
+                            <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+                                <i class="fa-solid fa-box-open text-blue-400"></i> Peças & Insumos
                             </h3>
-                            <button type="button" onclick="addOsItem('parts')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold px-3 py-1.5 rounded-lg transition">
+                            <button type="button" onclick="addOsItem('parts')" class="bg-blue-500/15 hover:bg-blue-500/25 text-blue-300 border border-blue-500/30 text-xs font-bold px-3 py-1.5 rounded-lg transition">
                                 + Adicionar Peça
                             </button>
                         </div>
-                        <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                        <div class="overflow-x-auto border border-slate-800 rounded-xl bg-slate-850/40">
                             <table class="w-full text-left border-collapse">
                                 <thead>
-                                    <tr class="bg-slate-100 text-[11px] font-bold uppercase text-slate-600 border-b border-slate-200">
+                                    <tr class="bg-slate-850 text-[11px] font-bold uppercase text-slate-400 border-b border-slate-800">
                                         <th class="py-2 px-3">Descrição da Peça</th>
                                         <th class="py-2 px-3 w-28">Cód / Ref</th>
                                         <th class="py-2 px-3 w-20 text-center">Qtd</th>
@@ -1568,7 +1563,7 @@
                                         <th class="py-2 px-2 w-10"></th>
                                     </tr>
                                 </thead>
-                                <tbody id="os-parts-tbody" class="divide-y divide-slate-100 text-xs">
+                                <tbody id="os-parts-tbody" class="divide-y divide-slate-800 text-xs">
                                     <!-- Renderizado via JS -->
                                 </tbody>
                             </table>
@@ -1578,17 +1573,17 @@
                     <!-- Tabela Dinâmica 2: MÃO DE OBRA & SERVIÇOS -->
                     <div class="space-y-2">
                         <div class="flex items-center justify-between">
-                            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
-                                <i class="fa-solid fa-wrench text-blue-600"></i> Mão de Obra & Serviços
+                            <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+                                <i class="fa-solid fa-wrench text-blue-400"></i> Mão de Obra & Serviços
                             </h3>
-                            <button type="button" onclick="addOsItem('services')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold px-3 py-1.5 rounded-lg transition">
+                            <button type="button" onclick="addOsItem('services')" class="bg-blue-500/15 hover:bg-blue-500/25 text-blue-300 border border-blue-500/30 text-xs font-bold px-3 py-1.5 rounded-lg transition">
                                 + Adicionar Serviço
                             </button>
                         </div>
-                        <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                        <div class="overflow-x-auto border border-slate-800 rounded-xl bg-slate-850/40">
                             <table class="w-full text-left border-collapse">
                                 <thead>
-                                    <tr class="bg-slate-100 text-[11px] font-bold uppercase text-slate-600 border-b border-slate-200">
+                                    <tr class="bg-slate-850 text-[11px] font-bold uppercase text-slate-400 border-b border-slate-800">
                                         <th class="py-2 px-3">Descrição do Serviço / Mão de Obra</th>
                                         <th class="py-2 px-3 w-24 text-center">Horas/Qtd</th>
                                         <th class="py-2 px-3 w-32 text-right">Valor Unit. (R$)</th>
@@ -1596,7 +1591,7 @@
                                         <th class="py-2 px-2 w-10"></th>
                                     </tr>
                                 </thead>
-                                <tbody id="os-services-tbody" class="divide-y divide-slate-100 text-xs">
+                                <tbody id="os-services-tbody" class="divide-y divide-slate-800 text-xs">
                                     <!-- Renderizado via JS -->
                                 </tbody>
                             </table>
@@ -1604,14 +1599,14 @@
                     </div>
 
                     <!-- Resumo Financeiro e Descontos -->
-                    <div class="bg-slate-900 text-white rounded-xl p-4 grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                    <div class="bg-slate-950 text-white rounded-xl p-4 border border-slate-800 grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
                         <div class="flex items-center gap-2">
                             <label class="text-xs font-semibold text-slate-300">Desconto:</label>
-                            <select id="os-discount-type" onchange="updateOsDiscount()" class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs font-bold text-white">
+                            <select id="os-discount-type" onchange="updateOsDiscount()" class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-blue-500">
                                 <option value="R$" ${activeOsDraft.discountType === 'R$' ? 'selected' : ''}>R$ (Fixo)</option>
                                 <option value="%" ${activeOsDraft.discountType === '%' ? 'selected' : ''}>% (Percentual)</option>
                             </select>
-                            <input type="number" id="os-discount-val" value="${activeOsDraft.discountValue || 0}" min="0" step="0.01" oninput="updateOsDiscount()" class="w-28 bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white">
+                            <input type="number" id="os-discount-val" value="${activeOsDraft.discountValue || 0}" min="0" step="0.01" oninput="updateOsDiscount()" class="w-28 bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-blue-500">
                         </div>
 
                         <div id="os-totals-summary" class="space-y-1 text-right text-xs">
@@ -1622,11 +1617,11 @@
             `;
 
             const footerHtml = `
-                <button type="button" onclick="saveOsDraft(false, true)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition mr-auto">
+                <button type="button" onclick="saveOsDraft(false, true)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition mr-auto">
                     <i class="fa-solid fa-print"></i> Salvar & Imprimir OS
                 </button>
-                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-200 transition">Fechar</button>
-                <button type="button" onclick="saveOsDraft(false, false)" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition">
+                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-800 transition">Fechar</button>
+                <button type="button" onclick="saveOsDraft(false, false)" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition">
                     Salvar OS
                 </button>
                 <button type="button" onclick="saveOsDraft(true, false)" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow flex items-center gap-1.5 transition">
@@ -1650,35 +1645,35 @@
             const servicesTbody = document.getElementById('os-services-tbody');
 
             if (activeOsDraft.parts.length === 0) {
-                partsTbody.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-slate-400">Nenhuma peça adicionada. Clique em "+ Adicionar Peça".</td></tr>`;
+                partsTbody.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-slate-500">Nenhuma peça adicionada. Clique em "+ Adicionar Peça".</td></tr>`;
             } else {
                 partsTbody.innerHTML = activeOsDraft.parts.map((p, idx) => {
                     const sub = (parseFloat(p.qty) || 0) * (parseFloat(p.unitPrice) || 0);
                     return `
                         <tr>
-                            <td class="p-2"><input type="text" value="${escapeHtml(p.desc)}" onchange="updateOsItem('parts', ${idx}, 'desc', this.value)" placeholder="Ex: Filtro de Óleo" class="w-full border border-slate-200 rounded-lg px-2 py-1"></td>
-                            <td class="p-2"><input type="text" value="${escapeHtml(p.code || '')}" onchange="updateOsItem('parts', ${idx}, 'code', this.value)" placeholder="REF-01" class="w-full border border-slate-200 rounded-lg px-2 py-1 font-mono"></td>
-                            <td class="p-2"><input type="number" value="${p.qty}" min="1" step="1" onchange="updateOsItem('parts', ${idx}, 'qty', this.value)" class="w-full border border-slate-200 rounded-lg px-2 py-1 text-center"></td>
-                            <td class="p-2"><input type="number" value="${p.unitPrice}" min="0" step="0.01" onchange="updateOsItem('parts', ${idx}, 'unitPrice', this.value)" class="w-full border border-slate-200 rounded-lg px-2 py-1 text-right"></td>
-                            <td class="p-2 text-right font-bold text-slate-800">${formatCurrency(sub)}</td>
-                            <td class="p-2 text-center"><button type="button" onclick="removeOsItem('parts', ${idx})" class="text-rose-500 hover:text-rose-700"><i class="fa-solid fa-trash"></i></button></td>
+                            <td class="p-2"><input type="text" value="${escapeHtml(p.desc)}" onchange="updateOsItem('parts', ${idx}, 'desc', this.value)" placeholder="Ex: Filtro de Óleo" class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-lg px-2 py-1 focus:outline-none focus:border-blue-500"></td>
+                            <td class="p-2"><input type="text" value="${escapeHtml(p.code || '')}" onchange="updateOsItem('parts', ${idx}, 'code', this.value)" placeholder="REF-01" class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-lg px-2 py-1 font-mono focus:outline-none focus:border-blue-500"></td>
+                            <td class="p-2"><input type="number" value="${p.qty}" min="1" step="1" onchange="updateOsItem('parts', ${idx}, 'qty', this.value)" class="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-2 py-1 text-center focus:outline-none focus:border-blue-500"></td>
+                            <td class="p-2"><input type="number" value="${p.unitPrice}" min="0" step="0.01" onchange="updateOsItem('parts', ${idx}, 'unitPrice', this.value)" class="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-2 py-1 text-right focus:outline-none focus:border-blue-500"></td>
+                            <td class="p-2 text-right font-bold text-slate-200">${formatCurrency(sub)}</td>
+                            <td class="p-2 text-center"><button type="button" onclick="removeOsItem('parts', ${idx})" class="text-rose-400 hover:text-rose-300"><i class="fa-solid fa-trash"></i></button></td>
                         </tr>
                     `;
                 }).join('');
             }
 
             if (activeOsDraft.services.length === 0) {
-                servicesTbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-400">Nenhum serviço adicionado. Clique em "+ Adicionar Serviço".</td></tr>`;
+                servicesTbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-500">Nenhum serviço adicionado. Clique em "+ Adicionar Serviço".</td></tr>`;
             } else {
                 servicesTbody.innerHTML = activeOsDraft.services.map((s, idx) => {
                     const sub = (parseFloat(s.qty) || 0) * (parseFloat(s.unitPrice) || 0);
                     return `
                         <tr>
-                            <td class="p-2"><input type="text" value="${escapeHtml(s.desc)}" onchange="updateOsItem('services', ${idx}, 'desc', this.value)" placeholder="Ex: Troca de óleo e filtros" class="w-full border border-slate-200 rounded-lg px-2 py-1"></td>
-                            <td class="p-2"><input type="number" value="${s.qty}" min="0.5" step="0.5" onchange="updateOsItem('services', ${idx}, 'qty', this.value)" class="w-full border border-slate-200 rounded-lg px-2 py-1 text-center"></td>
-                            <td class="p-2"><input type="number" value="${s.unitPrice}" min="0" step="0.01" onchange="updateOsItem('services', ${idx}, 'unitPrice', this.value)" class="w-full border border-slate-200 rounded-lg px-2 py-1 text-right"></td>
-                            <td class="p-2 text-right font-bold text-slate-800">${formatCurrency(sub)}</td>
-                            <td class="p-2 text-center"><button type="button" onclick="removeOsItem('services', ${idx})" class="text-rose-500 hover:text-rose-700"><i class="fa-solid fa-trash"></i></button></td>
+                            <td class="p-2"><input type="text" value="${escapeHtml(s.desc)}" onchange="updateOsItem('services', ${idx}, 'desc', this.value)" placeholder="Ex: Troca de óleo e filtros" class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-lg px-2 py-1 focus:outline-none focus:border-blue-500"></td>
+                            <td class="p-2"><input type="number" value="${s.qty}" min="0.5" step="0.5" onchange="updateOsItem('services', ${idx}, 'qty', this.value)" class="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-2 py-1 text-center focus:outline-none focus:border-blue-500"></td>
+                            <td class="p-2"><input type="number" value="${s.unitPrice}" min="0" step="0.01" onchange="updateOsItem('services', ${idx}, 'unitPrice', this.value)" class="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-2 py-1 text-right focus:outline-none focus:border-blue-500"></td>
+                            <td class="p-2 text-right font-bold text-slate-200">${formatCurrency(sub)}</td>
+                            <td class="p-2 text-center"><button type="button" onclick="removeOsItem('services', ${idx})" class="text-rose-400 hover:text-rose-300"><i class="fa-solid fa-trash"></i></button></td>
                         </tr>
                     `;
                 }).join('');
@@ -1719,7 +1714,7 @@
         function renderOsSummaryBox() {
             const totals = calculateOrderTotals(activeOsDraft);
             document.getElementById('os-totals-summary').innerHTML = `
-                <div class="text-slate-300">Peças: <strong>${formatCurrency(totals.partsTotal)}</strong> | Serviços: <strong>${formatCurrency(totals.servicesTotal)}</strong></div>
+                <div class="text-slate-300">Peças: <strong class="text-white">${formatCurrency(totals.partsTotal)}</strong> | Serviços: <strong class="text-white">${formatCurrency(totals.servicesTotal)}</strong></div>
                 <div class="text-slate-400">Subtotal: ${formatCurrency(totals.subtotal)} | Desconto: -${formatCurrency(totals.discountAmount)}</div>
                 <div class="text-base sm:text-lg font-extrabold text-emerald-400 pt-0.5">TOTAL DA OS: ${formatCurrency(totals.grandTotal)}</div>
             `;
@@ -1729,7 +1724,6 @@
             const idx = db.orders.findIndex(o => o.id === activeOsDraft.id);
             if (idx === -1) return;
 
-            // Filtra linhas totalmente vazias
             activeOsDraft.parts = activeOsDraft.parts.filter(p => p.desc.trim() !== '');
             activeOsDraft.services = activeOsDraft.services.filter(s => s.desc.trim() !== '');
 
@@ -1773,51 +1767,51 @@
             const bodyHtml = `
                 <div class="space-y-5">
                     <!-- Resumo Financeiro e do Veículo -->
-                    <div class="bg-slate-900 text-white p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="bg-slate-950 text-white p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
                             <span class="text-xs font-bold text-purple-400">CHECK-OUT — OS #${formatOsNumber(order.osNumber)}</span>
                             <h3 class="text-base font-bold mt-0.5">${escapeHtml(vehicle.plate)} — ${escapeHtml(vehicle.brandModel)}</h3>
-                            <p class="text-xs text-slate-300">Cliente: ${escapeHtml(client.name)} • KM Entrada: ${Number(order.checkin.km).toLocaleString('pt-BR')} km</p>
+                            <p class="text-xs text-slate-400">Cliente: <span class="text-slate-200">${escapeHtml(client.name)}</span> • KM Entrada: ${Number(order.checkin.km).toLocaleString('pt-BR')} km</p>
                         </div>
-                        <div class="bg-slate-800 px-4 py-2.5 rounded-xl border border-slate-700 text-right">
+                        <div class="bg-slate-900 px-4 py-2.5 rounded-xl border border-slate-800 text-right">
                             <span class="text-[11px] uppercase text-slate-400 block">Valor Final a Receber</span>
                             <span class="text-xl font-extrabold text-emerald-400">${formatCurrency(totals.grandTotal)}</span>
                         </div>
                     </div>
 
                     <!-- Conferência Final de Entrega -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                        <h4 class="text-sm font-bold text-slate-800">Conferência Técnica de Saída & Garantia</h4>
+                    <div class="bg-slate-850 p-4 rounded-xl border border-slate-800 space-y-3">
+                        <h4 class="text-sm font-bold text-white">Conferência Técnica de Saída & Garantia</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Quilometragem de Saída (KM) *</label>
-                                <input type="number" id="co-km-out" value="${order.checkin.km}" min="${order.checkin.km}" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Quilometragem de Saída (KM) *</label>
+                                <input type="number" id="co-km-out" value="${order.checkin.km}" min="${order.checkin.km}" class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-sm font-bold focus:outline-none focus:border-blue-500">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Termo de Garantia (Dias / KM)</label>
-                                <input type="text" id="co-warranty" value="90 dias ou 5.000 km (o que ocorrer primeiro)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Termo de Garantia (Dias / KM)</label>
+                                <input type="text" id="co-warranty" value="90 dias ou 5.000 km (o que ocorrer primeiro)" class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                             </div>
                         </div>
 
                         <div class="flex flex-col sm:flex-row gap-4 pt-1">
-                            <label class="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
-                                <input type="checkbox" id="co-road-test" checked class="w-4 h-4 rounded text-blue-600">
+                            <label class="flex items-center gap-2 text-xs font-semibold text-slate-300 cursor-pointer">
+                                <input type="checkbox" id="co-road-test" checked class="w-4 h-4 rounded accent-blue-500">
                                 Teste de rodagem / qualidade realizado
                             </label>
-                            <label class="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
-                                <input type="checkbox" id="co-old-parts" checked class="w-4 h-4 rounded text-blue-600">
+                            <label class="flex items-center gap-2 text-xs font-semibold text-slate-300 cursor-pointer">
+                                <input type="checkbox" id="co-old-parts" checked class="w-4 h-4 rounded accent-blue-500">
                                 Peças substituídas devolvidas ao cliente
                             </label>
                         </div>
                     </div>
 
                     <!-- Faturamento / Pagamento -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                        <h4 class="text-sm font-bold text-slate-800">Faturamento & Recebimento</h4>
+                    <div class="bg-slate-850 p-4 rounded-xl border border-slate-800 space-y-3">
+                        <h4 class="text-sm font-bold text-white">Faturamento & Recebimento</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Forma de Pagamento</label>
-                                <select id="co-payment-method" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-semibold">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Forma de Pagamento</label>
+                                <select id="co-payment-method" class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-blue-500">
                                     <option value="PIX">PIX Instantâneo</option>
                                     <option value="Cartão de Crédito">Cartão de Crédito</option>
                                     <option value="Cartão de Débito">Cartão de Débito</option>
@@ -1826,24 +1820,24 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Status do Pagamento</label>
-                                <select id="co-payment-status" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Status do Pagamento</label>
+                                <select id="co-payment-status" class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-sm font-bold focus:outline-none focus:border-blue-500">
                                     <option value="Pago">Pago (Quitado no ato)</option>
                                     <option value="Pendente">Pendente (A receber)</option>
                                 </select>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Observações Finais / Recomendações Próxima Revisão</label>
-                            <input type="text" id="co-notes" placeholder="Ex: Retornar em 10.000 km para troca de óleo e revisão de freios." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Observações Finais / Recomendações Próxima Revisão</label>
+                            <input type="text" id="co-notes" placeholder="Ex: Retornar em 10.000 km para troca de óleo e revisão de freios." class="w-full bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                         </div>
                     </div>
                 </div>
             `;
 
             const footerHtml = `
-                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-200 transition">Cancelar</button>
-                <button type="button" onclick="submitCheckout('${order.id}', false)" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition">
+                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:bg-slate-800 transition">Cancelar</button>
+                <button type="button" onclick="submitCheckout('${order.id}', false)" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow transition">
                     Finalizar Entrega
                 </button>
                 <button type="button" onclick="submitCheckout('${order.id}', true)" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-xl text-xs sm:text-sm font-bold shadow flex items-center gap-2 transition">
@@ -2048,7 +2042,6 @@
                 </div>
             `;
 
-            // Dispara diálogo nativo de impressão do navegador
             setTimeout(() => {
                 window.print();
             }, 150);
@@ -2064,32 +2057,32 @@
 
             const bodyHtml = `
                 <div class="space-y-4">
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                        <h4 class="text-sm font-bold text-slate-800">Cadastrar Novo Cliente</h4>
+                    <div class="bg-slate-850 p-4 rounded-xl border border-slate-800 space-y-3">
+                        <h4 class="text-sm font-bold text-white">Cadastrar Novo Cliente</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" id="db-c-name" placeholder="Nome Completo *" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
-                            <input type="text" id="db-c-doc" placeholder="CPF / CNPJ" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
-                            <input type="text" id="db-c-phone" placeholder="Telefone / WhatsApp *" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
-                            <input type="email" id="db-c-email" placeholder="E-mail" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
+                            <input type="text" id="db-c-name" placeholder="Nome Completo *" class="border border-slate-700 rounded-xl px-3 py-2 text-sm bg-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                            <input type="text" id="db-c-doc" placeholder="CPF / CNPJ" class="border border-slate-700 rounded-xl px-3 py-2 text-sm bg-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                            <input type="text" id="db-c-phone" placeholder="Telefone / WhatsApp *" class="border border-slate-700 rounded-xl px-3 py-2 text-sm bg-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                            <input type="email" id="db-c-email" placeholder="E-mail" class="border border-slate-700 rounded-xl px-3 py-2 text-sm bg-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500">
                         </div>
-                        <button type="button" onclick="saveNewClientOnly()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition">
+                        <button type="button" onclick="saveNewClientOnly()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition">
                             Salvar Cliente
                         </button>
                     </div>
 
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                        <h4 class="text-sm font-bold text-slate-800">Vincular Novo Veículo a Cliente Existente</h4>
-                        <select id="db-v-client" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
+                    <div class="bg-slate-850 p-4 rounded-xl border border-slate-800 space-y-3">
+                        <h4 class="text-sm font-bold text-white">Vincular Novo Veículo a Cliente Existente</h4>
+                        <select id="db-v-client" class="w-full border border-slate-700 rounded-xl px-3 py-2 text-sm bg-slate-800 text-white focus:outline-none focus:border-blue-500">
                             <option value="">-- Selecione o Proprietário --</option>
                             ${clientOptions}
                         </select>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" id="db-v-plate" placeholder="Placa (ABC-1234) *" maxlength="8" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white uppercase font-mono">
-                            <input type="text" id="db-v-model" placeholder="Marca / Modelo *" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
-                            <input type="text" id="db-v-year" placeholder="Ano (Ex: 2020)" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
-                            <input type="text" id="db-v-engine" placeholder="Motorização (Ex: 1.6 MSI)" class="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white">
+                            <input type="text" id="db-v-plate" placeholder="Placa (ABC-1234) *" maxlength="8" class="border border-slate-700 rounded-xl px-3 py-2 text-sm bg-slate-800 text-white placeholder-slate-500 uppercase font-mono focus:outline-none focus:border-blue-500">
+                            <input type="text" id="db-v-model" placeholder="Marca / Modelo *" class="border border-slate-700 rounded-xl px-3 py-2 text-sm bg-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                            <input type="text" id="db-v-year" placeholder="Ano (Ex: 2020)" class="border border-slate-700 rounded-xl px-3 py-2 text-sm bg-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                            <input type="text" id="db-v-engine" placeholder="Motorização (Ex: 1.6 MSI)" class="border border-slate-700 rounded-xl px-3 py-2 text-sm bg-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500">
                         </div>
-                        <button type="button" onclick="saveNewVehicleOnly()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl transition">
+                        <button type="button" onclick="saveNewVehicleOnly()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition">
                             Vincular Veículo
                         </button>
                     </div>
@@ -2100,7 +2093,7 @@
                 title: 'Cadastro Rápido no Banco de Dados',
                 icon: 'fa-user-plus',
                 bodyHtml,
-                footerHtml: `<button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-200">Fechar</button>`,
+                footerHtml: `<button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800">Fechar</button>`,
                 maxWidth: 'max-w-2xl'
             });
         }
@@ -2150,30 +2143,30 @@
             const ws = db.workshop;
             const bodyHtml = `
                 <div class="space-y-3">
-                    <p class="text-xs text-slate-500">Estas informações aparecem no cabeçalho das Ordens de Serviço e Recibos impressos.</p>
+                    <p class="text-xs text-slate-400">Estas informações aparecem no cabeçalho das Ordens de Serviço e Recibos impressos.</p>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Nome / Razão Social da Oficina</label>
-                        <input type="text" id="ws-name" value="${escapeHtml(ws.name)}" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Nome / Razão Social da Oficina</label>
+                        <input type="text" id="ws-name" value="${escapeHtml(ws.name)}" class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">CNPJ</label>
-                            <input type="text" id="ws-cnpj" value="${escapeHtml(ws.cnpj)}" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                            <label class="block text-xs font-bold text-slate-300 mb-1">CNPJ</label>
+                            <input type="text" id="ws-cnpj" value="${escapeHtml(ws.cnpj)}" class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Telefone / WhatsApp</label>
-                            <input type="text" id="ws-phone" value="${escapeHtml(ws.phone)}" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                            <label class="block text-xs font-bold text-slate-300 mb-1">Telefone / WhatsApp</label>
+                            <input type="text" id="ws-phone" value="${escapeHtml(ws.phone)}" class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Endereço Completo</label>
-                        <input type="text" id="ws-address" value="${escapeHtml(ws.address)}" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Endereço Completo</label>
+                        <input type="text" id="ws-address" value="${escapeHtml(ws.address)}" class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
                     </div>
                 </div>
             `;
             const footerHtml = `
-                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-200">Cancelar</button>
-                <button type="button" onclick="saveWorkshopSettings()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold">Salvar Dados</button>
+                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800">Cancelar</button>
+                <button type="button" onclick="saveWorkshopSettings()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-bold">Salvar Dados</button>
             `;
             openModal({
                 title: 'Configurações da Oficina (Impressão)',
